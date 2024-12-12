@@ -30,6 +30,7 @@
   - Utilize Laravel's Eloquent ORM for database interactions.
   - Use Laravel's query builder for complex database operations.
   - Create and maintain proper database migrations and seeders.
+  - Create and maintain proper database factories.
   
   Testing
   - Use PHPUnit for unit testing.

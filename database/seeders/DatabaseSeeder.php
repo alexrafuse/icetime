@@ -20,5 +20,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'hey@alexrafuse.com',
             'password' => bcrypt('laravel123'),
         ]);
+
+        $this->call([
+            AreaAndAvailabilitySeeder::class,
+        ]);
     }
 }
