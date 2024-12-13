@@ -28,8 +28,8 @@ class Booking extends Model
 
     protected $casts = [
         'date' => 'date',
-        'start_time' => 'datetime',
-        'end_time' => 'datetime',
+        'start_time' => 'datetime:H:i:s',
+        'end_time' => 'datetime:H:i:s',
         'event_type' => EventType::class,
         'payment_status' => PaymentStatus::class,
     ];

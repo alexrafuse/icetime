@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AreaResource\Pages;
-use App\Models\Area;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\Area;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Resources\AreaResource\Pages;
+use App\Filament\Resources\AreaResource\RelationManagers\AvailabilitiesRelationManager;
 
 class AreaResource extends Resource
 {
@@ -66,6 +67,7 @@ class AreaResource extends Resource
                     ->falseLabel('Inactive Areas'),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -73,13 +75,15 @@ class AreaResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('name')
+            ->recordUrl(fn(Area $record): string => static::getUrl('view', ['record' => $record]));
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            AvailabilitiesRelationManager::make(),
         ];
     }
 
@@ -88,6 +92,7 @@ class AreaResource extends Resource
         return [
             'index' => Pages\ListAreas::route('/'),
             'create' => Pages\CreateArea::route('/create'),
+            'view' => Pages\ViewArea::route('/{record}'),
             'edit' => Pages\EditArea::route('/{record}/edit'),
         ];
     }

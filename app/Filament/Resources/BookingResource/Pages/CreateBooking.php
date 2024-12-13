@@ -18,8 +18,7 @@ class CreateBooking extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        Log::info('Raw form data:', $data);
-        Log::info('Areas from form:', ['areas' => $data['areas'] ?? 'not set']);
+    //    dd('Raw form data:', $data);
 
         try {
 
@@ -50,7 +49,16 @@ class CreateBooking extends CreateRecord
             $startTime = \Carbon\Carbon::parse($data['start_time']);
             $endTime = \Carbon\Carbon::parse($data['end_time']);
 
-            if (!$validationService->validateBooking($areas, $date, $startTime, $endTime)) {
+            $validation = $validationService->validateBooking($areas, $date, $startTime, $endTime);
+            // dd([
+            //     'validation' => $validation,
+            //     'areas' => $areas,
+            //     'date' => $date,
+            //     'startTime' => $startTime,
+            //     'endTime' => $endTime,
+            // ]);
+           
+            if (!$validation) {
                 Notification::make()
                     ->danger()
                     ->title('Booking Conflict')

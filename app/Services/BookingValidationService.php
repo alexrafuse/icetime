@@ -9,7 +9,7 @@ use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
-class BookingValidationService
+final class BookingValidationService
 {
     public function validateBooking(
         Collection $areas,
@@ -18,15 +18,19 @@ class BookingValidationService
         Carbon $endTime,
         ?int $excludeBookingId = null
     ): bool {
-        // First check if each area is available (active and within availability windows)
+        // Check if each area is available (active and within availability windows)
         foreach ($areas as $area) {
             if (!$area->is_active || !$this->isAreaAvailable($area, $date, $startTime, $endTime)) {
                 return false;
             }
+
+            // Check if the area has any booking conflicts
+            if ($this->isAreaBooked($area, $date, $startTime, $endTime, $excludeBookingId)) {
+                return false;
+            }
         }
 
-        // Then check if any of the requested areas have booking conflicts
-        return !$this->isAreaBooked($areas, $date, $startTime, $endTime, $excludeBookingId);
+        return true;
     }
 
     public function isAreaAvailable(
@@ -35,22 +39,17 @@ class BookingValidationService
         Carbon $startTime,
         Carbon $endTime
     ): bool {
-        // Create full datetime objects for comparison
-        $requestedStart = $date->copy()->setTimeFrom($startTime);
-        $requestedEnd = $date->copy()->setTimeFrom($endTime);
-
-        // Check specific date availability first, then weekly availability
         $availability = $area->availabilities()
             ->where('is_available', true)
-            ->where(function ($query) use ($requestedStart) {
-                $query->where(function ($q) use ($requestedStart) {
+            ->where(function ($query) use ($date) {
+                $query->where(function ($q) use ($date) {
                     // Specific date availability
                     $q->whereNull('day_of_week')
-                      ->whereDate('start_time', $requestedStart->format('Y-m-d'));
-                })->orWhere(function ($q) use ($requestedStart) {
+                      ->whereDate('start_time', $date->format('Y-m-d'));
+                })->orWhere(function ($q) use ($date) {
                     // Weekly availability
                     $q->whereNotNull('day_of_week')
-                      ->where('day_of_week', $requestedStart->dayOfWeek);
+                      ->where('day_of_week', $date->dayOfWeek);
                 });
             })
             ->first();
@@ -59,33 +58,40 @@ class BookingValidationService
             return false;
         }
 
-        // Check if requested time is within available hours
-        return $requestedStart->format('H:i:s') >= $availability->start_time->format('H:i:s') &&
-               $requestedEnd->format('H:i:s') <= $availability->end_time->format('H:i:s');
+        // Compare only the time portions
+        $requestedStartTime = $startTime->format('H:i:s');
+        $requestedEndTime = $endTime->format('H:i:s');
+        $availableStartTime = $availability->start_time->format('H:i:s');
+        $availableEndTime = $availability->end_time->format('H:i:s');
+
+        return $requestedStartTime >= $availableStartTime && 
+               $requestedEndTime <= $availableEndTime;
     }
 
     public function isAreaBooked(
-        Collection $areas,
+        Area $area,
         Carbon $date,
         Carbon $startTime,
         Carbon $endTime,
         ?int $excludeBookingId = null
     ): bool {
-        $requestedStart = $date->copy()->setTimeFrom($startTime);
-        $requestedEnd = $date->copy()->setTimeFrom($endTime);
-
-        return Booking::query()
+        $query = Booking::query()
             ->whereDate('date', $date->format('Y-m-d'))
-            ->where(function ($q) use ($requestedStart, $requestedEnd) {
-                $q->where(function ($inner) use ($requestedStart, $requestedEnd) {
-                    $inner->where('start_time', '<', $requestedEnd)
-                          ->where('end_time', '>', $requestedStart);
-                });
-            })
-            ->when($excludeBookingId, fn($q) => $q->where('id', '!=', $excludeBookingId))
-            ->whereHas('areas', function ($q) use ($areas) {
-                $q->whereIn('areas.id', $areas->pluck('id'));
-            })
-            ->exists();
+            ->whereHas('areas', function ($query) use ($area) {
+                $query->where('areas.id', $area->id);
+            });
+
+        if ($excludeBookingId) {
+            $query->where('id', '!=', $excludeBookingId);
+        }
+
+        // Check for any overlapping bookings
+        // An overlap occurs when:
+        // - New booking start time is less than existing booking end time AND
+        // - New booking end time is greater than existing booking start time
+        return $query->where(function ($query) use ($startTime, $endTime) {
+            $query->whereTime('start_time', '<', $endTime->format('H:i:s'))
+                  ->whereTime('end_time', '>', $startTime->format('H:i:s'));
+        })->exists();
     }
 } 
