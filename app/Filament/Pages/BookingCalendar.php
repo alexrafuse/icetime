@@ -6,11 +6,16 @@ namespace App\Filament\Pages;
 
 use App\Models\Area;
 use App\Models\Booking;
+use App\Enums\EventType;
 use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
-use Illuminate\Contracts\View\View;
-use App\Enums\EventType;
+use Filament\Support\Assets\Js;
+use Filament\Support\Assets\Css;
 use Illuminate\Support\Collection;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Vite;
+use App\Http\Resources\FullCalBooking;
+use App\Http\Resources\FullCalArea;
 
 final class BookingCalendar extends Page
 {
@@ -34,38 +39,7 @@ final class BookingCalendar extends Page
         return true;
     }
     
-    private function getBookingsForCalendar(): array
-    {
-        return $this->bookings
-            ->map(function (Booking $booking) {
-                $areas = $booking->areas->pluck('name')->join(', ');
-                
-                // Clean and format the date strings
-                $date = Carbon::parse($booking->date)->format('Y-m-d');
-                $startTime = Carbon::parse($booking->start_time)->format('H:i:s');
-                $endTime = Carbon::parse($booking->end_time)->format('H:i:s');
-                
-                // Create Carbon instances
-                $startDateTime = Carbon::parse($date . ' ' . $startTime);
-                $endDateTime = Carbon::parse($date . ' ' . $endTime);
-                
-                return [
-                    'id' => $booking->id,
-                    'title' => $booking->user->name,
-                    'start' => $startDateTime->format('Y-m-d\TH:i:s'),
-                    'end' => $endDateTime->format('Y-m-d\TH:i:s'),
-                    'backgroundColor' => $this->getEventColor($booking->event_type),
-                    'borderColor' => $this->getEventColor($booking->event_type),
-                    'extendedProps' => [
-                        'areas' => $areas,
-                        'event_type' => $booking->event_type->value,
-                        'payment_status' => $booking->payment_status->value,
-                        'setup_instructions' => $booking->setup_instructions,
-                    ],
-                ];
-            })
-            ->toArray();
-    }
+  
 
     private function getEventColor(EventType $eventType): string
     {
@@ -76,17 +50,36 @@ final class BookingCalendar extends Page
         };
     }
 
-    public function getViewData(): array
+    protected function getViewData(): array
     {
         return [
-            'bookings' => collect($this->getBookingsForCalendar()),
-            'areas' => collect(Area::query()
-                ->select(['id', 'name'])
-                ->get()
-                ->map(fn (Area $area) => (object)[
-                    'id' => $area->id,
-                    'title' => $area->name,
-                ])),
+            'bookings' => FullCalBooking::collection($this->bookings)->resolve(),
+            'areas' =>FullCalArea::collection(Area::all())->resolve(),
+        ];
+    }
+
+    protected function getHeadComponents(): array
+    {
+        return [
+            ...parent::getHeadComponents(),
+            Vite::asset('resources/js/calendar.js'),
+        ];
+    }
+
+    public function getScripts(): array
+    {
+        return [
+            Js::make('calendar', resource_path('js/calendar.js')),
+        ];
+    }
+
+    public function getStyles(): array
+    {
+        return [
+            Css::make('fullcalendar', 'node_modules/@fullcalendar/core/main.css'),
+            Css::make('fullcalendar-timegrid', 'node_modules/@fullcalendar/timegrid/main.css'),
+            Css::make('fullcalendar-daygrid', 'node_modules/@fullcalendar/daygrid/main.css'),
+            Css::make('fullcalendar-resource', 'node_modules/@fullcalendar/resource-timegrid/main.css'),
         ];
     }
 }
