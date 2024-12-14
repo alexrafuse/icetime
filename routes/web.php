@@ -1,11 +1,14 @@
 <?php
 
 use App\Models\Area;
+use App\Models\Booking;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\Services\BookingValidationService;
 
 Route::get('/', function () {
+
+    return Booking::all();
 
 return true;
 

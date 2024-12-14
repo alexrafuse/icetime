@@ -13,6 +13,16 @@ final class FullCalBooking extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        // try {
+        //     $date = Carbon::parse($this->date)->format('Y-m-d');
+        //     $startTime = Carbon::parse($this->start_time)->format('H:i:s');
+        //     $endTime = Carbon::parse($this->end_time)->format('H:i:s');
+            
+        // } catch (\Throwable $th) {
+
+        //     dd($this);
+        //     //throw $th;
+        // }
         $date = Carbon::parse($this->date)->format('Y-m-d');
         $startTime = Carbon::parse($this->start_time)->format('H:i:s');
         $endTime = Carbon::parse($this->end_time)->format('H:i:s');

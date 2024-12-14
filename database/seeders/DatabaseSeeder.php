@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AreaAndAvailabilitySeeder::class,
+            BookingSeeder::class,
         ]);
     }
 }

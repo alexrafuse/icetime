@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 class BookingFactory extends Factory
 {
@@ -16,7 +17,7 @@ class BookingFactory extends Factory
     {
         $startHour = $this->faker->numberBetween(8, 20);
         $duration = $this->faker->numberBetween(1, 4);
-            
+
         return [
             'user_id' => User::factory(),
             'date' => $this->faker->date(),
@@ -26,5 +27,13 @@ class BookingFactory extends Factory
             'payment_status' => $this->faker->randomElement(PaymentStatus::cases()),
             'setup_instructions' => $this->faker->sentence,
         ];
+    }
+
+    // with areas
+    public function withAreas(Collection $areas): self
+    {
+        return $this->afterCreating(function (Booking $booking) use ($areas) {
+            $booking->areas()->attach($areas);
+        });
     }
 } 
