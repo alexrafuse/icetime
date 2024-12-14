@@ -4,7 +4,7 @@ import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid';
 import interaction from '@fullcalendar/interaction';
 
-window.initializeCalendar = function(bookings, areas) {
+function initializeCalendar(bookings, areas) {
     const calendarEl = document.getElementById('calendar');
     
     const calendar = new Calendar(calendarEl, {
@@ -25,11 +25,13 @@ window.initializeCalendar = function(bookings, areas) {
             field: 'title',
             headerContent: 'Areas'
         }],
+        datesAboveResources: true,
+        resourceOrder: 'title',
+        resourcesInitiallyExpanded: true,
         eventDidMount: function(info) {
             const event = info.event;
             const props = event.extendedProps;
             
-            // Create tooltip content
             info.el.title = `
                 ${event.title}
                 Type: ${props.event_type}
@@ -37,8 +39,14 @@ window.initializeCalendar = function(bookings, areas) {
                 Areas: ${props.areas}
                 ${props.setup_instructions ? `Setup: ${props.setup_instructions}` : ''}
             `.trim();
+        },
+        datesSet: function(info) {
+            calendar.refetchResources();
         }
     });
 
     calendar.render();
-}; 
+    return calendar;
+}
+
+window.initializeCalendar = initializeCalendar; 
