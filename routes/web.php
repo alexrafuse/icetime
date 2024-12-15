@@ -8,7 +8,7 @@ use App\Services\BookingValidationService;
 
 Route::get('/', function () {
 
-    return Booking::all();
+    // return Booking::all();
 
 return true;
 
