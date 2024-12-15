@@ -19,6 +19,9 @@ class AreaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
+    protected static ?string $navigationGroup = 'Rentals';
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form

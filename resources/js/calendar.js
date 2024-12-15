@@ -7,6 +7,8 @@ import interaction from '@fullcalendar/interaction';
 function initializeCalendar(bookings, areas) {
     const calendarEl = document.getElementById('calendar');
     
+    console.log('Initializing calendar with:', { bookings, areas });
+    
     const calendar = new Calendar(calendarEl, {
         plugins: [resourceTimeGrid, dayGrid, timeGrid, interaction],
         initialView: 'resourceTimeGridWeek',
@@ -19,7 +21,53 @@ function initializeCalendar(bookings, areas) {
             center: 'title',
             right: 'resourceTimeGridDay,resourceTimeGridWeek,dayGridMonth'
         },
-        resourceGroupField: 'building',
+        selectable: true,
+        selectMirror: true,
+        selectMinDistance: 5,
+        selectConstraint: {
+            startTime: '08:00:00',
+            endTime: '23:00:00',
+        },
+        select: function(info) {
+            console.log('Selection made:', info);
+            const bookingButton = document.getElementById('create-booking-button');
+            if (bookingButton) {
+                // Get the resource ID from the selection
+                const resourceId = info.resource ? info.resource.id : 
+                                  (info.resources && info.resources.length > 0 ? info.resources[0].id : '');
+
+                // Update the button's data attributes
+                bookingButton.dataset.date = info.start.toISOString().split('T')[0];
+                bookingButton.dataset.startTime = info.start.toTimeString().split(' ')[0];
+                bookingButton.dataset.endTime = info.end.toTimeString().split(' ')[0];
+                bookingButton.dataset.resourceId = resourceId; // Store the resource ID
+
+                // Only show the button if we have a resource selected
+                if (resourceId) {
+                    bookingButton.classList.remove('hidden');
+                    
+                    // Update to use the Filament admin route
+                    bookingButton.addEventListener('click', () => {
+                        const params = new URLSearchParams({
+                            date: bookingButton.dataset.date,
+                            start_time: bookingButton.dataset.startTime,
+                            end_time: bookingButton.dataset.endTime,
+                            areas: bookingButton.dataset.resourceId
+                        });
+                        
+                        window.location.href = `/admin/bookings/create?${params.toString()}`;
+                    }, { once: true });
+                }
+            }
+        },
+        unselect: function(info) {
+            console.log('Selection cleared');
+            const bookingButton = document.getElementById('create-booking-button');
+            if (bookingButton) {
+                bookingButton.classList.add('hidden');
+            }
+        },
+        selectOverlap: false,
         resourceAreaWidth: '150px',
         resourceAreaColumns: [{
             field: 'title',
@@ -40,9 +88,11 @@ function initializeCalendar(bookings, areas) {
                 ${props.setup_instructions ? `Setup: ${props.setup_instructions}` : ''}
             `.trim();
         },
-        datesSet: function(info) {
-            calendar.refetchResources();
-        }
+    });
+
+    // Add click handler for debugging
+    calendarEl.addEventListener('mousedown', (e) => {
+        console.log('Mouse down on calendar:', e);
     });
 
     calendar.render();

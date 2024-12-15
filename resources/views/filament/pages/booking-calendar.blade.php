@@ -14,6 +14,8 @@
                 this.bookings,
                 this.getFilteredResources()
             );
+            
+            console.log('Calendar initialized with active areas:', this.activeAreas);
         },
         
         getFilteredResources() {
@@ -22,8 +24,6 @@
         
         toggleArea(areaId) {
             areaId = Number(areaId);
-            console.log('Toggling area:', areaId, typeof areaId);
-            
             const index = this.activeAreas.indexOf(areaId);
             
             if (index > -1) {
@@ -32,70 +32,37 @@
                 this.activeAreas.push(areaId);
             }
             
-            console.log('Active areas:', this.activeAreas.map(id => typeof id));
-            
             const filteredResources = this.getFilteredResources();
-            
             this.calendar.setOption('resources', filteredResources);
-            
             this.calendar.refetchEvents();
-            this.calendar.render();
         },
         
         isAreaActive(areaId) {
             return this.activeAreas.includes(Number(areaId));
         }
     }" x-init="initializeCalendar()">
-    
-
-        <div class="flex flex-wrap gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div class="text-sm font-medium text-gray-500 flex items-center">Filter Areas:</div>
-            @foreach($areas as $area)
-                <button
-                    type="button"
-                    class="area-toggle inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 border"
-                    x-on:click="toggleArea('{{ $area['id'] }}')"
-                    :class="{
-                        'bg-primary-600 text-white border-primary-600 shadow-sm': isAreaActive('{{ $area['id'] }}'),
-                        'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700': !isAreaActive('{{ $area['id'] }}')
-                    }"
-                >
-                    <span 
-                        class="w-2.5 h-2.5 mr-2 rounded-full transition-colors"
-                        :class="{
-                            'bg-white': isAreaActive('{{ $area['id'] }}'),
-                            'bg-gray-400 dark:bg-gray-500': !isAreaActive('{{ $area['id'] }}')
-                        }"
-                    ></span>
-                    {{ $area['title'] }}
-                </button>
-            @endforeach
-        </div>
-
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-            <div id="calendar"></div>
-        </div>
-
-        <div class="grid grid-cols-4 gap-6">
-            <x-filament::card>
-                <div class="text-sm font-medium text-gray-500">Total Bookings</div>
-                <div class="text-2xl font-bold">{{ collect($bookings)->count() }}</div>
-            </x-filament::card>
-
-            <x-filament::card>
-                <div class="text-sm font-medium text-gray-500">Private Events</div>
-                <div class="text-2xl font-bold">{{ collect($bookings)->where('event_type', 'private')->count() }}</div>
-            </x-filament::card>
-
-            <x-filament::card>
-                <div class="text-sm font-medium text-gray-500">League Events</div>
-                <div class="text-2xl font-bold">{{ collect($bookings)->where('event_type', 'league')->count() }}</div>
-            </x-filament::card>
-
-            <x-filament::card>
-                <div class="text-sm font-medium text-gray-500">Tournaments</div>
-                <div class="text-2xl font-bold">{{ collect($bookings)->where('event_type', 'tournament')->count() }}</div>
-            </x-filament::card>
+        <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <button
+                id="create-booking-button"
+                class="hidden fixed bottom-4 right-4 z-50 inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition"
+                x-data
+                @click="
+                    const button = $el;
+                    const url = '/admin/bookings/create?' + new URLSearchParams({
+                        date: button.dataset.date,
+                        start_time: button.dataset.startTime,
+                        end_time: button.dataset.endTime,
+                        areas: button.dataset.resources
+                    });
+                    window.location.href = url;
+                "
+            >
+                Create Booking
+            </button>   
+        
+        <div id="calendar"></div>
+            
+           
         </div>
     </div>
 
