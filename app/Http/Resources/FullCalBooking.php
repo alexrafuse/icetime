@@ -50,8 +50,8 @@ final class FullCalBooking extends JsonResource
                         'name' => $area->name,
                     ];
                 }),
-                'event_type' => $this->event_type->value,
-                'payment_status' => $this->payment_status->value,
+                'event_type' => $this->event_type,
+                'payment_status' => $this->payment_status,
                 'setup_instructions' => $this->setup_instructions,
             ],
         ];

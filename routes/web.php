@@ -1,15 +1,18 @@
 <?php
 
+use App\Enums\Permission;
+use App\Enums\PermissionEnum;
 use App\Models\Area;
 use App\Models\Booking;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Services\BookingValidationService;
 
 Route::get('/', function () {
 
     // return Booking::all();
-
+return Auth::user()->can(Permission::VIEW_SPARES);
 return true;
 
     // $validationService = app(BookingValidationService::class);

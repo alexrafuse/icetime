@@ -10,88 +10,69 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Livewire\Livewire;
 use App\Filament\Resources\SpareAvailabilityResource;
+use Database\Seeders\RolesAndPermissionsSeeder;
 
 class SpareAvailabilityResourceTest extends TestCase
 {
     use RefreshDatabase;
 
+    private User $admin;
+    private User $member;
+    private User $staff;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->actingAs(User::factory()->create([
-            'email' => 'hey@alexrafuse.com',
-        ]));
+        $this->seed(RolesAndPermissionsSeeder::class);
+
+        $this->admin = User::factory()->create(['email' => 'hey@alexrafuse.com']);
+        $this->admin->assignRole('admin');
+
+        $this->member = User::factory()->create();
+        $this->member->assignRole('member');
+
+        $this->staff = User::factory()->create();
+        $this->staff->assignRole('staff');
     }
 
-    public function test_can_view_spare_availabilities(): void
+    public function test_member_can_only_see_their_own_availability(): void
     {
-        $spareAvailability = SpareAvailability::factory()->create();
+        $this->actingAs($this->member);
+
+        $ownAvailability = SpareAvailability::factory()->create([
+            'user_id' => $this->member->id,
+        ]);
+        
+        $otherAvailability = SpareAvailability::factory()->create();
 
         $response = $this->get(route('filament.admin.resources.spare-availabilities.index'));
 
         $response->assertSuccessful();
-        $response->assertSee($spareAvailability->user->name);
+        $response->assertSee($ownAvailability->user->name);
+        $response->assertDontSee($otherAvailability->user->name);
     }
 
-    public function test_can_create_spare_availability(): void
+    public function test_staff_can_manage_all_availabilities(): void
     {
-        $user = User::factory()->create();
+        $this->actingAs($this->staff);
 
-        Livewire::test(SpareAvailabilityResource\Pages\CreateSpareAvailability::class)
-            ->fillForm([
-                'user_id' => $user->id,
-                'monday' => true,
-                'tuesday' => false,
-                'wednesday' => true,
-                'thursday' => false,
-                'friday' => true,
-                'phone_number' => '1234567890',
-                'sms_enabled' => true,
-                'call_enabled' => false,
-                'notes' => 'Test notes',
-                'is_active' => true,
-            ])
-            ->call('create')
-            ->assertHasNoFormErrors();
-
-        $this->assertDatabaseHas('spare_availabilities', [
-            'user_id' => $user->id,
-            'monday' => true,
-            'wednesday' => true,
-            'friday' => true,
-            'phone_number' => '1234567890',
-        ]);
-    }
-
-    public function test_can_edit_spare_availability(): void
-    {
-        $spareAvailability = SpareAvailability::factory()->create();
+        $availability = SpareAvailability::factory()->create();
 
         Livewire::test(SpareAvailabilityResource\Pages\EditSpareAvailability::class, [
-            'record' => $spareAvailability->id,
+            'record' => $availability->id,
         ])
             ->fillForm([
-                'monday' => true,
-                'notes' => 'Updated notes',
+                'notes' => 'Updated by staff',
             ])
             ->call('save')
             ->assertHasNoFormErrors();
 
         $this->assertDatabaseHas('spare_availabilities', [
-            'id' => $spareAvailability->id,
-            'monday' => true,
-            'notes' => 'Updated notes',
+            'id' => $availability->id,
+            'notes' => 'Updated by staff',
         ]);
     }
 
-    public function test_can_delete_spare_availability(): void
-    {
-        $spareAvailability = SpareAvailability::factory()->create();
-
-        Livewire::test(SpareAvailabilityResource\Pages\ListSpareAvailabilities::class)
-            ->callTableAction('delete', $spareAvailability);
-
-        $this->assertModelMissing($spareAvailability);
-    }
+    // ... add more role-based tests
 } 

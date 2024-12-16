@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SpareAvailabilityResource\Pages;
-use App\Models\SpareAvailability;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Enums\Permission;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Models\SpareAvailability;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\SpareAvailabilityResource\Pages;
 
 class SpareAvailabilityResource extends Resource
 {
     protected static ?string $model = SpareAvailability::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    protected static ?string $navigationGroup = 'League Management';
+    // protected static ?string $navigationGroup = 'League Management';
     protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Spare List';
+    protected static ?string $heading = 'Spare List';
+
+    
 
     public static function form(Form $form): Form
     {
@@ -28,7 +36,9 @@ class SpareAvailabilityResource extends Resource
                     ->relationship('user', 'name')
                     ->required()
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->default(fn () => auth()->id())
+                    ->visible(fn () => auth()->user()->can('manage spares')),
                 Forms\Components\Grid::make(5)
                     ->schema([
                         Forms\Components\Toggle::make('monday')
@@ -67,6 +77,11 @@ class SpareAvailabilityResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if (!auth()->user()->can('manage spares')) {
+                    $query->where('user_id', auth()->id());
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable()
@@ -127,5 +142,13 @@ class SpareAvailabilityResource extends Resource
             'create' => Pages\CreateSpareAvailability::route('/create'),
             'edit' => Pages\EditSpareAvailability::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+
+        return Auth::user()->can(Permission::MANAGE_SPARES) 
+            ? 'League Management' 
+            : 'My Account';
     }
 } 

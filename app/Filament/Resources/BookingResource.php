@@ -101,7 +101,7 @@ class BookingResource extends Resource
                         PaymentStatus::PENDING->value => 'Pending',
                     ])
                     ->required()
-                    ->default(PaymentStatus::PENDING->value),
+                    ->default(PaymentStatus::PENDING),
                 Forms\Components\Textarea::make('setup_instructions')
                     ->nullable()
                     ->columnSpanFull(),
@@ -142,15 +142,15 @@ class BookingResource extends Resource
                     ->preload(),
                 Tables\Filters\SelectFilter::make('event_type')
                     ->options([
-                        EventType::PRIVATE->value => 'Private',
-                        EventType::LEAGUE->value => 'League',
-                        EventType::TOURNAMENT->value => 'Tournament',
+                        EventType::PRIVATE => 'Private',
+                        EventType::LEAGUE => 'League',
+                        EventType::TOURNAMENT => 'Tournament',
                     ]),
                 Tables\Filters\SelectFilter::make('payment_status')
                     ->options([
-                        PaymentStatus::PAID->value => 'Paid',
-                        PaymentStatus::UNPAID->value => 'Unpaid',
-                        PaymentStatus::PENDING->value => 'Pending',
+                        PaymentStatus::PAID => 'Paid',
+                        PaymentStatus::UNPAID => 'Unpaid',
+                        PaymentStatus::PENDING => 'Pending',
                     ]),
                 Tables\Filters\SelectFilter::make('areas')
                     ->relationship('areas', 'name')
