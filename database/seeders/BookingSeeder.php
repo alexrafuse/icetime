@@ -31,22 +31,24 @@ class BookingSeeder extends Seeder
 
         $randomAreas = $areas->random(fake()->numberBetween(1, 4));
 
-        // grab the availabilities for the areas and generate a random start time and end time within the availability
+        
 
-        $randomAvailability = $randomAreas->first()->availabilities->random();
+        // Create 0-4 bookings per day
+        $numberOfBookings = fake()->numberBetween(0, 4);
 
-        $startTime = Carbon::parse($randomAvailability->start_time)->addHours(fake()->numberBetween(1, 6));
-        $endTime = Carbon::parse($startTime)->addHours(fake()->numberBetween(1, 2));
+        for ($i = 0; $i < $numberOfBookings; $i++) {
+            // grab the availabilities for the areas and generate a random start time and end time within the availability
+            $randomAvailability = $randomAreas->first()->availabilities->random();
 
-        Booking::factory()->withAreas($randomAreas)->create(
-            
+            $startTime = Carbon::parse($randomAvailability->start_time)->addHours(fake()->numberBetween(1, 6));
+            $endTime = Carbon::parse($startTime)->addHours(fake()->numberBetween(1, 2));
 
-            [
+            Booking::factory()->withAreas($randomAreas)->create([
                 'date' => $date,
                 'start_time' => $startTime,
                 'end_time' => $endTime,
-            ]
-        );
+            ]);
+        }
 
 
 

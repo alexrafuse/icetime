@@ -122,11 +122,14 @@ class CreateBooking extends CreateRecord
 
     public function mount(): void
     {
+
+
+        $areas = 
         $this->form->fill([
             'date' => request()->query('date'),
             'start_time' => request()->query('start_time'),
             'end_time' => request()->query('end_time'),
-            'areas' => explode(',', request()->query('areas')),
+            'areas' =>  explode(',', request()->query('areas') ?? ''),
         ]);
 
         parent::mount();

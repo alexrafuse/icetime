@@ -48,11 +48,7 @@ class BookingResource extends Resource
                             ->after('start_time'),
                     ]),
                 Forms\Components\Select::make('event_type')
-                    ->options([
-                        EventType::PRIVATE->value => 'Private',
-                        EventType::LEAGUE->value => 'League',
-                        EventType::TOURNAMENT->value => 'Tournament',
-                    ])
+                    ->options(EventType::class)
                     ->required(),
                 Forms\Components\Select::make('areas')
                     ->multiple()
@@ -95,11 +91,10 @@ class BookingResource extends Resource
                     ->addActionLabel('Add Custom Price')
                     ->dehydrated(true),
                 Forms\Components\Select::make('payment_status')
-                    ->options([
-                        PaymentStatus::PAID->value => 'Paid',
-                        PaymentStatus::UNPAID->value => 'Unpaid',
-                        PaymentStatus::PENDING->value => 'Pending',
-                    ])
+                    ->options(
+                        PaymentStatus::class
+                        
+                       )
                     ->required()
                     ->default(PaymentStatus::PENDING),
                 Forms\Components\Textarea::make('setup_instructions')
@@ -141,17 +136,9 @@ class BookingResource extends Resource
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('event_type')
-                    ->options([
-                        EventType::PRIVATE => 'Private',
-                        EventType::LEAGUE => 'League',
-                        EventType::TOURNAMENT => 'Tournament',
-                    ]),
+                    ->options(EventType::class),
                 Tables\Filters\SelectFilter::make('payment_status')
-                    ->options([
-                        PaymentStatus::PAID => 'Paid',
-                        PaymentStatus::UNPAID => 'Unpaid',
-                        PaymentStatus::PENDING => 'Pending',
-                    ]),
+                    ->options(PaymentStatus::class),
                 Tables\Filters\SelectFilter::make('areas')
                     ->relationship('areas', 'name')
                     ->multiple()

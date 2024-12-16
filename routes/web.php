@@ -12,7 +12,7 @@ use App\Services\BookingValidationService;
 Route::get('/', function () {
 
     // return Booking::all();
-return Auth::user()->can(Permission::VIEW_SPARES);
+// return Auth::user()->can(Permission::VIEW_SPARES);
 return true;
 
     // $validationService = app(BookingValidationService::class);

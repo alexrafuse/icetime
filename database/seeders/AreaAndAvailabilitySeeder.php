@@ -43,6 +43,7 @@ class AreaAndAvailabilitySeeder extends Seeder
                 'name' => $sheetName,
                 'description' => "Ice sheet {$sheetName}",
                 'is_active' => true,
+                'base_price' => 20
             ]);
             $this->createAvailabilities($area);
         }
