@@ -19,7 +19,8 @@ class RecurringPatternFactory extends Factory
         $startDate = Carbon::now()->addDays(fake()->numberBetween(1, 10));
         
         return [
-            'booking_id' => Booking::factory(),
+            'title' => $this->faker->words(2, true),
+            'primary_booking_id' => Booking::factory(),
             'frequency' => FrequencyType::WEEKLY,
             'interval' => fake()->numberBetween(1, 3),
             'start_date' => $startDate,

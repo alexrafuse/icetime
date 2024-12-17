@@ -18,12 +18,7 @@ final class EditBooking extends EditRecord
         return [
             DeleteAction::make()
                 ->before(function () {
-                    // If this is part of a recurring pattern, ask if they want to delete all
                     if ($this->record->recurring_pattern_id) {
-                        // Delete just this booking, keeping the pattern
-                        $this->record->areas()->detach();
-                        $this->record->delete();
-
                         Notification::make()
                             ->success()
                             ->title('Booking deleted')

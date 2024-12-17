@@ -18,8 +18,10 @@ class BookingFactory extends Factory
         $startHour = $this->faker->numberBetween(8, 20);
         $duration = $this->faker->numberBetween(1, 4);
 
+
         return [
             'user_id' => User::factory(),
+            'title' => $this->faker->words(2, true),
             'date' => $this->faker->date(),
             'start_time' => sprintf('%02d:00:00', $startHour),
             'end_time' => sprintf('%02d:00:00', $startHour + $duration),

@@ -16,12 +16,16 @@ use App\Enums\FrequencyType;
 use App\Enums\PaymentStatus;
 use Illuminate\Support\Carbon;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\CheckboxList;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\RecurringPatternResource;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\DatePicker;
 
 class BookingResource extends Resource
 {
@@ -37,6 +41,9 @@ class BookingResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->required(),
+
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->required()
@@ -47,13 +54,7 @@ class BookingResource extends Resource
                             ->required()
                             ->native(false)
                             ->displayFormat('Y-m-d')
-                            ->format('Y-m-d')
-                            ->live()
-                            ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
-                                if ($get('is_recurring')) {
-                                    $set('recurring.start_date', $state);
-                                }
-                            }),
+                            ->format('Y-m-d'),
                             
                         Forms\Components\TimePicker::make('start_time')
                             ->required()
@@ -76,7 +77,6 @@ class BookingResource extends Resource
                             ->relationship('areas', 'name')
                             ->multiple()
                             ->preload()
-                            ->dehydrated(true)
                             ->required(),
                             
                         Forms\Components\Textarea::make('setup_instructions')
@@ -86,44 +86,40 @@ class BookingResource extends Resource
 
                 Section::make('Recurring Booking')
                     ->schema([
-                        Toggle::make('is_recurring')
-                            ->reactive()
-                            ->afterStateUpdated(function (Get $get, Set $set) {
-                                if (!$get('is_recurring')) {
-                                    $set('recurring.frequency', null);
-                                    $set('recurring.interval', null);
-                                    $set('recurring.end_date', null);
-                                    $set('recurring.days_of_week', null);
-                                } else {
-                                    $set('recurring.start_date', $get('date'));
-                                }
-                            }),
+                        Forms\Components\Select::make('recurring_pattern_id')
+                            ->relationship(
+                                name: 'recurringPattern',
+                                titleAttribute: 'title'
+                            )
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('title')
+                                    ->required(),
+                                
+                                Forms\Components\Hidden::make('user_id')
+                                    ->default(fn () => Auth::id()),
 
-                        Section::make()
-                            ->schema([
-                                Select::make('recurring.frequency')
+                                Forms\Components\Select::make('frequency')
                                     ->options(FrequencyType::class)
-                                    ->required()
-                                    ->reactive(),
+                                    ->reactive()
+                                    ->required(),
 
-                                Select::make('recurring.interval')
-                                    ->options(fn () => array_combine(range(1, 12), range(1, 12)))
+                                Forms\Components\TextInput::make('interval')
+                                    ->numeric()
                                     ->default(1)
-                                    ->required()
-                                    ->label(fn (Get $get) => match ($get('recurring.frequency')) {
-                                        FrequencyType::DAILY->value => 'Every X days',
-                                        FrequencyType::WEEKLY->value => 'Every X weeks',
-                                        FrequencyType::MONTHLY->value => 'Every X months',
-                                        default => 'Interval',
-                                    }),
+                                    ->minValue(1)
+                                    ->required(),
 
-                                DatePicker::make('recurring.end_date')
+                                Forms\Components\DatePicker::make('start_date')
+                                    ->default(fn (Get $get) => $get('../../date'))
                                     ->required()
-                                    ->minDate(fn (Get $get) => $get('date'))
-                                    ->date(),
+                                    ->native(false),
 
-                                Select::make('recurring.days_of_week')
-                                    ->multiple()
+                                Forms\Components\DatePicker::make('end_date')
+                                    ->native(false)
+                                    ->after('start_date')
+                                    ->required(),
+
+                                Forms\Components\CheckboxList::make('days_of_week')
                                     ->options([
                                         1 => 'Monday',
                                         2 => 'Tuesday',
@@ -133,11 +129,50 @@ class BookingResource extends Resource
                                         6 => 'Saturday',
                                         0 => 'Sunday',
                                     ])
-                                    ->visible(fn (Get $get) => $get('recurring.frequency') === FrequencyType::WEEKLY->value)
-                                    ->required(fn (Get $get) => $get('recurring.frequency') === FrequencyType::WEEKLY->value)
-                                    ->label('Days of Week'),
+                                    ->columns(4)
+                                    ->visible(fn (Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
+                                    ->required(fn (Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
                             ])
-                            ->visible(fn (Get $get) => $get('is_recurring')),
+                            ->editOptionForm([
+                                Forms\Components\TextInput::make('title')
+                                    ->required(),
+                                
+                                Forms\Components\Hidden::make('user_id')
+                                    ->default(fn () => Auth::id()),
+
+                                Forms\Components\Select::make('frequency')
+                                    ->options(FrequencyType::class)
+                                    ->required(),
+
+                                Forms\Components\TextInput::make('interval')
+                                    ->numeric()
+                                    ->default(1)
+                                    ->minValue(1)
+                                    ->required(),
+
+                                Forms\Components\DatePicker::make('start_date')
+                                    ->required()
+                                    ->native(false),
+
+                                Forms\Components\DatePicker::make('end_date')
+                                    ->native(false)
+                                    ->after('start_date')
+                                    ->required(),
+
+                                Forms\Components\CheckboxList::make('days_of_week')
+                                    ->options([
+                                        1 => 'Monday',
+                                        2 => 'Tuesday',
+                                        3 => 'Wednesday',
+                                        4 => 'Thursday',
+                                        5 => 'Friday',
+                                        6 => 'Saturday',
+                                        0 => 'Sunday',
+                                    ])
+                                    ->columns(4)
+                                    ->visible(fn (Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
+                                    ->required(fn (Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
+                            ]),
                     ]),
             ]);
     }

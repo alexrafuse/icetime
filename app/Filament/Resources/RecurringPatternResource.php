@@ -10,6 +10,7 @@ use App\Enums\EventType;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Enums\FrequencyType;
+use App\Enums\PaymentStatus;
 use App\Models\RecurringPattern;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
@@ -24,62 +25,139 @@ final class RecurringPatternResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Bookings';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Bookings';
+    }
+
+    public static function getRelations(): array
+    {
+        return [];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
+ 
+
+    public static function getRecordWithRelations(): array
+    {
+        return ['primaryBooking', 'primaryBooking.areas'];
+    }
+    
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Select::make('user_id')
-                ->relationship('user', 'name')
-                ->searchable()
-                ->preload()
-                ->required(),
+            Forms\Components\Group::make()
+                ->schema([
+                    Forms\Components\Select::make('user_id')
+                        ->relationship('user', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->required(),
 
-            Forms\Components\Select::make('frequency')
-                ->options(FrequencyType::class)
-                ->required(),
+                    Forms\Components\Select::make('frequency')
+                        ->options(FrequencyType::class)
+                        ->required(),
 
-            Forms\Components\TextInput::make('interval')
-                ->numeric()
-                ->default(1)
-                ->minValue(1)
-                ->required(),
+                    Forms\Components\TextInput::make('interval')
+                        ->numeric()
+                        ->default(1)
+                        ->minValue(1)
+                        ->required(),
 
-            Forms\Components\DatePicker::make('start_date')
-                ->required()
-                ->native(false),
+                    Forms\Components\DatePicker::make('start_date')
+                        ->required()
+                        ->native(false),
 
-            Forms\Components\DatePicker::make('end_date')
-                ->native(false)
-                ->after('start_date'),
+                    Forms\Components\DatePicker::make('end_date')
+                        ->native(false)
+                        ->after('start_date'),
 
-            Forms\Components\CheckboxList::make('days_of_week')
-                ->options([
-                    1 => 'Monday',
-                    2 => 'Tuesday',
-                    3 => 'Wednesday',
-                    4 => 'Thursday',
-                    5 => 'Friday',
-                    6 => 'Saturday',
-                    7 => 'Sunday',
-                ])
-                ->columns(4)
-                ->required(),
+                    Forms\Components\CheckboxList::make('days_of_week')
+                        ->options([
+                            1 => 'Monday',
+                            2 => 'Tuesday',
+                            3 => 'Wednesday',
+                            4 => 'Thursday',
+                            5 => 'Friday',
+                            6 => 'Saturday',
+                            7 => 'Sunday',
+                        ])
+                        ->columns(4)
+                        ->visible(fn (Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
+                        ->required(fn (Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
+                ])->columns(2),
 
-            Forms\Components\TimePicker::make('start_time')
-                ->required()
-                ->native(false),
+                Forms\Components\Section::make('Booking Details')
+                ->schema([
+                    Forms\Components\Select::make('primaryBooking.id')
+                        ->relationship(
+                            name: 'primaryBooking',
+                            titleAttribute: 'id'
+                        )
+                        ->createOptionForm([
+                            Forms\Components\TextInput::make('title')
+                                ->required(),
 
-            Forms\Components\TimePicker::make('end_time')
-                ->required()
-                ->native(false)
-                ->after('start_time'),
+                            Forms\Components\DatePicker::make('date')
+                                ->required()
+                                ->native(false),
+                            Forms\Components\TimePicker::make('start_time')
+                                ->required()
+                                ->native(false),
+                            Forms\Components\TimePicker::make('end_time')
+                                ->required()
+                                ->native(false)
+                                ->after('start_time'),
+                            Forms\Components\Select::make('event_type')
+                                ->options(EventType::class)
+                                ->required(),
+                            Forms\Components\Select::make('payment_status')
+                                ->options(PaymentStatus::class)
+                                ->required(),
+                            Forms\Components\Select::make('areas')
+                                ->relationship('areas', 'name')
+                                ->multiple()
+                                ->preload()
+                                ->required(),
+                            Forms\Components\Textarea::make('setup_instructions')
+                                ->maxLength(65535)
+                                ->columnSpanFull(),
+                        ])
+                        ->editOptionForm([
+                            Forms\Components\TextInput::make('title')
+                                ->required(),
 
-            Forms\Components\Select::make('event_type')
-                ->options(EventType::class)
-                ->required(),
-
-            Forms\Components\Textarea::make('setup_instructions')
-                ->maxLength(65535)
-                ->columnSpanFull(),
+                            //date
+                            Forms\Components\DatePicker::make('date')
+                                ->required()
+                                ->native(false),
+                            Forms\Components\TimePicker::make('start_time')
+                                ->required()
+                                ->native(false),
+                            Forms\Components\TimePicker::make('end_time')
+                                ->required()
+                                ->native(false)
+                                ->after('start_time'),
+                            Forms\Components\Select::make('event_type')
+                                ->options(EventType::class)
+                                ->required(),
+                            Forms\Components\Select::make('payment_status')
+                                ->options(PaymentStatus::class)
+                                ->required(),
+                            Forms\Components\Select::make('areas')
+                                ->relationship('areas', 'name')
+                                ->multiple()
+                                ->preload()
+                                ->required(),
+                            Forms\Components\Textarea::make('setup_instructions')
+                                ->maxLength(65535)
+                                ->columnSpanFull(),
+                        ]),
+                ])->columns(2),
         ]);
     }
 
@@ -108,35 +186,39 @@ final class RecurringPatternResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('days_of_week')
-                    ->formatStateUsing(fn (array $state): string => collect($state)
-                        ->map(fn (int $day) => match($day) {
-                            1 => 'Mon',
-                            2 => 'Tue',
-                            3 => 'Wed',
-                            4 => 'Thu',
-                            5 => 'Fri',
-                            6 => 'Sat',
-                            7 => 'Sun',
-                        })
-                        ->join(', ')
-                    ),
+                // Tables\Columns\TextColumn::make('days_of_week')
+                //     ->formatStateUsing(fn (array $state): string => collect($state)
+                //         ->map(fn (int $day) => match($day) {
+                //             1 => 'Mon',
+                //             2 => 'Tue',
+                //             3 => 'Wed',
+                //             4 => 'Thu',
+                //             5 => 'Fri',
+                //             6 => 'Sat',
+                //             7 => 'Sun',
+                //         })
+                //         ->join(', ')
+                //     ),
 
-                Tables\Columns\TextColumn::make('start_time')
+                Tables\Columns\TextColumn::make('primaryBooking.start_time')
                     ->time()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Start Time'),
 
-                Tables\Columns\TextColumn::make('end_time')
+                Tables\Columns\TextColumn::make('primaryBooking.end_time')
                     ->time()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('End Time'),
 
-                Tables\Columns\TextColumn::make('event_type')
-                    ->badge()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('primaryBooking.event_type')
+                //     ->badge()
+                //     ->sortable()
+                //     ->label('Event Type'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('event_type')
-                    ->options(EventType::class),
+                // Tables\Filters\SelectFilter::make('event_type')
+                //     ->options(EventType::class)
+                //     ->relationship('primaryBooking', 'event_type'),
                 Tables\Filters\Filter::make('active')
                     ->query(fn (Builder $query): Builder => $query
                         ->where('end_date', '>=', now())
@@ -147,7 +229,6 @@ final class RecurringPatternResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->before(function (RecurringPattern $record) {
-                        // Delete all related bookings
                         $record->bookings()->delete();
                     }),
             ])
@@ -155,7 +236,6 @@ final class RecurringPatternResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->before(function (Collection $records) {
-                            // Delete all related bookings
                             $records->each(fn ($record) => $record->bookings()->delete());
                         }),
                 ]),
@@ -170,4 +250,6 @@ final class RecurringPatternResource extends Resource
             'edit' => EditRecurringPattern::route('/{record}/edit'),
         ];
     }
+
+
 } 

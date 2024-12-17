@@ -13,6 +13,7 @@ return new class extends Migration
         Schema::create('recurring_patterns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('title');
             $table->string('frequency');
             $table->integer('interval')->default(1);
             $table->date('start_date');
