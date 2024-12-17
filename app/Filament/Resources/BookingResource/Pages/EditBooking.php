@@ -4,44 +4,46 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\BookingResource\Pages;
 
-use Filament\Actions;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Resources\Pages\EditRecord;
-use App\Services\BookingValidationService;
 use App\Filament\Resources\BookingResource;
+use Filament\Actions\DeleteAction;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Notifications\Notification;
 
-class EditBooking extends EditRecord
+final class EditBooking extends EditRecord
 {
     protected static string $resource = BookingResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()
+                ->before(function () {
+                    // If this is part of a recurring pattern, ask if they want to delete all
+                    if ($this->record->recurring_pattern_id) {
+                        // Delete just this booking, keeping the pattern
+                        $this->record->areas()->detach();
+                        $this->record->delete();
+
+                        Notification::make()
+                            ->success()
+                            ->title('Booking deleted')
+                            ->body('The booking was deleted. Other recurring bookings were kept.')
+                            ->send();
+
+                        return redirect()->route('filament.admin.resources.bookings.index');
+                    }
+                }),
         ];
     }
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
+    protected function afterSave(): void
     {
-
-        Log::info('Raw form data:', $data);
-
-        $validationService = app(BookingValidationService::class);
-        
-        // Validate booking times against area availability
-        $areas = \App\Models\Area::findMany($data['areas']);
-        $date = \Carbon\Carbon::parse($data['date']);
-        $startTime = \Carbon\Carbon::parse($data['start_time']);
-        $endTime = \Carbon\Carbon::parse($data['end_time']);
-
-
-        if (!$validationService->validateBooking($areas, $date, $startTime, $endTime, $record->id)) {
-            $this->halt('One or more areas are not available during the selected time.');
+        if ($this->record->recurring_pattern_id) {
+            Notification::make()
+                ->warning()
+                ->title('Recurring booking updated')
+                ->body('Note: This update only affects this specific booking. Other recurring bookings were not changed.')
+                ->send();
         }
-
-        $record->update($data);
-
-        return $record;
     }
 } 

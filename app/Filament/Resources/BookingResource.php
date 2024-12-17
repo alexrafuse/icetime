@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\EventType;
-use App\Enums\PaymentStatus;
-use App\Filament\Resources\BookingResource\Pages;
-use App\Models\Booking;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Booking;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use App\Enums\EventType;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Enums\FrequencyType;
+use App\Enums\PaymentStatus;
+use Illuminate\Support\Carbon;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\Log;
+use App\Filament\Resources\BookingResource\Pages;
+use App\Filament\Resources\RecurringPatternResource;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\DatePicker;
 
 class BookingResource extends Resource
 {
@@ -28,78 +35,110 @@ class BookingResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload(),
-                Forms\Components\DatePicker::make('date')
-                    ->required()
-                    ->native(false)
-                    ->closeOnDateSelection(),
-                Forms\Components\Grid::make(2)
+                Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+                            
+                        Forms\Components\DatePicker::make('date')
+                            ->required()
+                            ->native(false)
+                            ->displayFormat('Y-m-d')
+                            ->format('Y-m-d')
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set, ?string $state) {
+                                if ($get('is_recurring')) {
+                                    $set('recurring.start_date', $state);
+                                }
+                            }),
+                            
                         Forms\Components\TimePicker::make('start_time')
                             ->required()
                             ->seconds(false),
+                            
                         Forms\Components\TimePicker::make('end_time')
                             ->required()
                             ->seconds(false)
                             ->after('start_time'),
-                    ]),
-                Forms\Components\Select::make('event_type')
-                    ->options(EventType::class)
-                    ->required(),
-                Forms\Components\Select::make('areas')
-                    ->multiple()
-                    ->relationship(
-                        'areas',
-                        'name',
-                        modifyQueryUsing: fn ($query) => $query->where('is_active', true)
-                    )
-                    ->preload()
-                    ->searchable()
-                    ->required()
-                    ->saveRelationshipsUsing(function ($record, $state) {
-                        if (! $state) return;
-                        $record->areas()->sync($state);
-                    })
-                    ->dehydrated(true)
-                    ->afterStateUpdated(function ($state) {
-                        Log::info('Areas state updated:', ['state' => $state]);
-                    }),
-                  
-                Forms\Components\Repeater::make('custom_prices')
-                    ->schema([
+                            
+                        Forms\Components\Select::make('event_type')
+                            ->options(EventType::class)
+                            ->required(),
+                            
+                        Forms\Components\Select::make('payment_status')
+                            ->options(PaymentStatus::class)
+                            ->required(),
+                            
                         Forms\Components\Select::make('areas')
-                            ->label('Area')
-                            ->options(function (Forms\Get $get) {
-                                // Only show selected areas
-                                $areaIds = $get('../../areas');
-                                if (!$areaIds) return [];
-                                return \App\Models\Area::whereIn('id', $areaIds)
-                                    ->pluck('name', 'id');
-                            })
+                            ->relationship('areas', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->dehydrated(true)
                             ->required(),
-                        Forms\Components\TextInput::make('price')
-                            ->numeric()
-                            ->prefix('$')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->defaultItems(0)
-                    ->addActionLabel('Add Custom Price')
-                    ->dehydrated(true),
-                Forms\Components\Select::make('payment_status')
-                    ->options(
-                        PaymentStatus::class
-                        
-                       )
-                    ->required()
-                    ->default(PaymentStatus::PENDING),
-                Forms\Components\Textarea::make('setup_instructions')
-                    ->nullable()
-                    ->columnSpanFull(),
+                            
+                        Forms\Components\Textarea::make('setup_instructions')
+                            ->nullable()
+                            ->columnSpanFull(),
+                    ])->columns(2),
+
+                Section::make('Recurring Booking')
+                    ->schema([
+                        Toggle::make('is_recurring')
+                            ->reactive()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                if (!$get('is_recurring')) {
+                                    $set('recurring.frequency', null);
+                                    $set('recurring.interval', null);
+                                    $set('recurring.end_date', null);
+                                    $set('recurring.days_of_week', null);
+                                } else {
+                                    $set('recurring.start_date', $get('date'));
+                                }
+                            }),
+
+                        Section::make()
+                            ->schema([
+                                Select::make('recurring.frequency')
+                                    ->options(FrequencyType::class)
+                                    ->required()
+                                    ->reactive(),
+
+                                Select::make('recurring.interval')
+                                    ->options(fn () => array_combine(range(1, 12), range(1, 12)))
+                                    ->default(1)
+                                    ->required()
+                                    ->label(fn (Get $get) => match ($get('recurring.frequency')) {
+                                        FrequencyType::DAILY->value => 'Every X days',
+                                        FrequencyType::WEEKLY->value => 'Every X weeks',
+                                        FrequencyType::MONTHLY->value => 'Every X months',
+                                        default => 'Interval',
+                                    }),
+
+                                DatePicker::make('recurring.end_date')
+                                    ->required()
+                                    ->minDate(fn (Get $get) => $get('date'))
+                                    ->date(),
+
+                                Select::make('recurring.days_of_week')
+                                    ->multiple()
+                                    ->options([
+                                        1 => 'Monday',
+                                        2 => 'Tuesday',
+                                        3 => 'Wednesday',
+                                        4 => 'Thursday',
+                                        5 => 'Friday',
+                                        6 => 'Saturday',
+                                        0 => 'Sunday',
+                                    ])
+                                    ->visible(fn (Get $get) => $get('recurring.frequency') === FrequencyType::WEEKLY->value)
+                                    ->required(fn (Get $get) => $get('recurring.frequency') === FrequencyType::WEEKLY->value)
+                                    ->label('Days of Week'),
+                            ])
+                            ->visible(fn (Get $get) => $get('is_recurring')),
+                    ]),
             ]);
     }
 
@@ -129,6 +168,16 @@ class BookingResource extends Resource
                     ->badge()
                     ->separator(',')
                     ->wrap(),
+                Tables\Columns\IconColumn::make('recurring_pattern_id')
+                    ->label('Recurring')
+                    ->boolean()
+                    ->action(
+                        Tables\Actions\Action::make('viewPattern')
+                            ->url(fn ($record) => $record->recurring_pattern_id 
+                                ? RecurringPatternResource::getUrl('edit', ['record' => $record->recurring_pattern_id])
+                                : null)
+                            ->visible(fn ($record) => $record->recurring_pattern_id !== null)
+                    ),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('user')

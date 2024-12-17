@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\FrequencyType;
 use App\Models\Area;
 use App\Models\Booking;
+use App\Models\RecurringPattern;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -19,25 +21,63 @@ final class RecurringBookingService
     public function createRecurringBookings(array $bookingData, array $patternData): Collection
     {
         $bookings = new Collection();
+
         $dates = $this->generateDates($patternData);
-        
+
         $areas = Area::findMany($bookingData['areas']);
         
-        DB::transaction(function () use ($bookingData, $dates, $areas, &$bookings) {
-            foreach ($dates as $date) {
-                $newBookingData = array_merge($bookingData, [
-                    'date' => $date->format('Y-m-d'),
+        // Extract areas from booking data to prevent insertion error
+        $areaIds = $bookingData['areas'];
+        unset($bookingData['areas']);
+        
+        DB::transaction(function () use ($bookingData, $patternData, $dates, $areas, &$bookings, $areaIds) {
+            // Create the first booking
+            $firstDate = array_shift($dates); // Remove and get the first date
+            $firstBookingData = array_merge($bookingData, [
+                'date' => $firstDate->format('Y-m-d'),
+            ]);
+            
+            if ($this->validationService->validateBooking(
+                $areas,
+                Carbon::parse($firstDate),
+                Carbon::parse($bookingData['start_time']),
+                Carbon::parse($bookingData['end_time'])
+            )) {
+                $firstBooking = Booking::create($firstBookingData);
+                $firstBooking->areas()->attach($areaIds);
+                $bookings->push($firstBooking);
+
+                // Create the recurring pattern with the first booking as primary
+                $pattern = RecurringPattern::create([
+                    'user_id' => $bookingData['user_id'],
+                    'frequency' => $patternData['frequency'],
+                    'interval' => $patternData['interval'],
+                    'start_date' => $patternData['start_date'],
+                    'end_date' => $patternData['end_date'],
+                    'days_of_week' => $patternData['days_of_week'] ?? null,
+                    'primary_booking_id' => $firstBooking->id,
                 ]);
-                
-                if ($this->validationService->validateBooking(
-                    $areas,
-                    Carbon::parse($date),
-                    Carbon::parse($bookingData['start_time']),
-                    Carbon::parse($bookingData['end_time'])
-                )) {
-                    $booking = Booking::create($newBookingData);
-                    $booking->areas()->attach($areas->pluck('id'));
-                    $bookings->push($booking);
+
+                // Update first booking with pattern ID
+                $firstBooking->update(['recurring_pattern_id' => $pattern->id]);
+
+                // Create remaining bookings
+                foreach ($dates as $date) {
+                    $newBookingData = array_merge($bookingData, [
+                        'date' => $date->format('Y-m-d'),
+                        'recurring_pattern_id' => $pattern->id,
+                    ]);
+                    
+                    if ($this->validationService->validateBooking(
+                        $areas,
+                        Carbon::parse($date),
+                        Carbon::parse($bookingData['start_time']),
+                        Carbon::parse($bookingData['end_time'])
+                    )) {
+                        $booking = Booking::create($newBookingData);
+                        $booking->areas()->attach($areaIds);
+                        $bookings->push($booking);
+                    }
                 }
             }
         });
@@ -47,18 +87,16 @@ final class RecurringBookingService
 
     public function generateDates(array $pattern): array
     {
+        $startDate = Carbon::parse($pattern['start_date']);
+        $endDate = Carbon::parse($pattern['end_date']);
         $dates = [];
-        $current = Carbon::parse($pattern['start_date']);
-        $end = Carbon::parse($pattern['end_date']);
-        
-        while ($current <= $end) {
-            if ($this->shouldIncludeDate($current, $pattern)) {
-                $dates[] = $current->copy();
+
+        for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+            if ($this->shouldIncludeDate($date, $pattern)) {
+                $dates[] = $date->copy();
             }
-            
-            $current->addDay();
         }
-        
+
         return $dates;
     }
 
@@ -70,9 +108,9 @@ final class RecurringBookingService
         }
 
         return match ($pattern['frequency']) {
-            'DAILY' => $this->isDailyMatch($date, $pattern),
-            'WEEKLY' => $this->isWeeklyMatch($date, $pattern),
-            'MONTHLY' => $this->isMonthlyMatch($date, $pattern),
+            FrequencyType::DAILY->value => $this->isDailyMatch($date, $pattern),
+            FrequencyType::WEEKLY->value => $this->isWeeklyMatch($date, $pattern),
+            FrequencyType::MONTHLY->value => $this->isMonthlyMatch($date, $pattern),
             default => false,
         };
     }
@@ -103,5 +141,34 @@ final class RecurringBookingService
         $monthsSinceStart = $date->diffInMonths($startDate);
         return $monthsSinceStart % ($pattern['interval'] ?? 1) === 0 &&
                $date->day === $startDate->day;
+    }
+
+    public function regenerateBookings(RecurringPattern $pattern): void
+    {
+        // Delete existing bookings except the original
+        $pattern->bookings()->where('id', '!=', $pattern->booking_id)->delete();
+
+        // Get the original booking data
+        $originalBooking = $pattern->booking;
+        
+        $bookingData = [
+            'user_id' => $originalBooking->user_id,
+            'start_time' => $originalBooking->start_time,
+            'end_time' => $originalBooking->end_time,
+            'event_type' => $originalBooking->event_type,
+            'payment_status' => $originalBooking->payment_status,
+            'setup_instructions' => $originalBooking->setup_instructions,
+            'areas' => $originalBooking->areas->pluck('id')->toArray(),
+        ];
+
+        $patternData = [
+            'frequency' => $pattern->frequency,
+            'interval' => $pattern->interval,
+            'start_date' => $pattern->start_date,
+            'end_date' => $pattern->end_date,
+            'days_of_week' => $pattern->days_of_week,
+        ];
+
+        $this->createRecurringBookings($bookingData, $patternData);
     }
 }

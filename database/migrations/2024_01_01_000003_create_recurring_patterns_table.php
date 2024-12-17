@@ -12,13 +12,14 @@ return new class extends Migration
     {
         Schema::create('recurring_patterns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
-            $table->string('frequency'); // DAILY, WEEKLY, MONTHLY
-            $table->integer('interval')->default(1); // Every X days/weeks/months
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('frequency');
+            $table->integer('interval')->default(1);
             $table->date('start_date');
             $table->date('end_date');
-            $table->json('days_of_week')->nullable(); // For weekly patterns
-            $table->json('excluded_dates')->nullable(); // Dates to skip
+            $table->json('days_of_week')->nullable();
+            $table->json('excluded_dates')->nullable();
+            $table->foreignId('primary_booking_id')->nullable()->constrained('bookings')->nullOnDelete();
             $table->timestamps();
         });
     }

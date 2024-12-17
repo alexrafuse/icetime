@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Booking;
+use App\Enums\FrequencyType;
+use Illuminate\Support\Carbon;
 use App\Models\RecurringPattern;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 class RecurringPatternFactory extends Factory
 {
@@ -19,7 +20,7 @@ class RecurringPatternFactory extends Factory
         
         return [
             'booking_id' => Booking::factory(),
-            'frequency' => fake()->randomElement(['DAILY', 'WEEKLY', 'MONTHLY']),
+            'frequency' => FrequencyType::WEEKLY,
             'interval' => fake()->numberBetween(1, 3),
             'start_date' => $startDate,
             'end_date' => $startDate->copy()->addMonths(3),

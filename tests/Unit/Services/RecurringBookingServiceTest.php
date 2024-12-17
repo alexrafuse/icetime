@@ -9,6 +9,7 @@ use App\Models\Area;
 use App\Models\User;
 use App\Models\Booking;
 use App\Enums\EventType;
+use App\Enums\FrequencyType;
 use App\Enums\PaymentStatus;
 use App\Models\Availability;
 use Illuminate\Support\Carbon;
@@ -33,27 +34,29 @@ class RecurringBookingServiceTest extends TestCase
     public function test_can_generate_daily_recurring_dates(): void
     {
         $pattern = [
-            'frequency' => 'DAILY',
+            'frequency' => FrequencyType::DAILY->value,
             'interval' => 1,
             'start_date' => '2024-04-01',
             'end_date' => '2024-04-07',
+            'excluded_dates' => [],
         ];
 
         $dates = $this->service->generateDates($pattern);
         
         $this->assertCount(7, $dates);
         $this->assertEquals('2024-04-01', $dates[0]->format('Y-m-d'));
-        $this->assertEquals('2024-04-07', $dates[6]->format('Y-m-d'));
+        $this->assertEquals('2024-04-07', end($dates)->format('Y-m-d'));
     }
 
     public function test_can_generate_weekly_recurring_dates(): void
     {
         $pattern = [
-            'frequency' => 'WEEKLY',
+            'frequency' => FrequencyType::WEEKLY->value,
             'interval' => 1,
             'start_date' => '2024-04-01', // Monday
             'end_date' => '2024-04-30',
             'days_of_week' => [1, 3, 5], // Mon, Wed, Fri
+            'excluded_dates' => [],
         ];
 
         $dates = $this->service->generateDates($pattern);
@@ -88,40 +91,41 @@ class RecurringBookingServiceTest extends TestCase
         ];
 
         $patternData = [
-            'frequency' => 'WEEKLY',
+            'frequency' => FrequencyType::WEEKLY->value,
             'interval' => 1,
             'start_date' => '2024-04-01', // Monday
             'end_date' => '2024-04-15',
             'days_of_week' => [1], // Mondays only
+            'excluded_dates' => [],
         ];
-
-        // Add debugging to check validation
-        $firstDate = Carbon::parse('2024-04-01');
-        $isValid = $this->validationService->validateBooking(
-            Area::findMany($bookingData['areas']),
-            $firstDate,
-            Carbon::parse($bookingData['start_time']),
-            Carbon::parse($bookingData['end_time'])
-        );
-        
-        $this->assertTrue($isValid, 'First booking should be valid');
 
         $bookings = $this->service->createRecurringBookings($bookingData, $patternData);
         
-        $this->assertCount(3, $bookings, 'Should create 3 bookings (3 Mondays)');
+        $this->assertCount(3, $bookings); // 3 Mondays in the date range
         
+        // Check primary booking
+        $primaryBooking = $bookings->first();
+        $this->assertNotNull($primaryBooking->recurring_pattern_id);
+        
+        // Check recurring pattern
+        $pattern = $primaryBooking->recurringPattern;
+        $this->assertNotNull($pattern);
+        $this->assertEquals($primaryBooking->id, $pattern->primary_booking_id);
+        
+        // Check all bookings
         foreach ($bookings as $booking) {
-            $this->assertTrue(Carbon::parse($booking->date)->isDayOfWeek(1), 'Booking should be on Monday');
-            $this->assertTrue($booking->areas->contains($area->id), 'Booking should include the area');
-            $this->assertEquals('10:00:00', $booking->start_time->format('H:i:s'), 'Start time should match');
-            $this->assertEquals('11:00:00', $booking->end_time->format('H:i:s'), 'End time should match');
+            $this->assertTrue(Carbon::parse($booking->date)->isDayOfWeek(1));
+            $this->assertTrue($booking->areas->contains($area->id));
+            $this->assertEquals('10:00:00', $booking->start_time->format('H:i:s'));
+            $this->assertEquals('11:00:00', $booking->end_time->format('H:i:s'));
+            $this->assertEquals($pattern->id, $booking->recurring_pattern_id);
         }
     }
 
     public function test_excludes_dates_properly(): void
     {
         $pattern = [
-            'frequency' => 'DAILY',
+            'frequency' => FrequencyType::DAILY->value,
             'interval' => 1,
             'start_date' => '2024-04-01',
             'end_date' => '2024-04-07',

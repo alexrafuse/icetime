@@ -16,15 +16,7 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'date',
-        'start_time',
-        'end_time',
-        'event_type',
-        'payment_status',
-        'setup_instructions',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'date' => 'date',
@@ -54,5 +46,10 @@ class Booking extends Model
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function recurringPattern(): BelongsTo
+    {
+        return $this->belongsTo(RecurringPattern::class);
     }
 } 

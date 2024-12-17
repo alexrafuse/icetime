@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             AreaAndAvailabilitySeeder::class,
-            BookingSeeder::class,
+            // BookingSeeder::class,
         ]);
     }
 }
