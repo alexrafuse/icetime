@@ -82,6 +82,7 @@ class RecurringBookingServiceTest extends TestCase
         ]);
 
         $bookingData = [
+            'title' => 'Test Booking',
             'user_id' => $user->id,
             'start_time' => '10:00:00',
             'end_time' => '11:00:00',
@@ -91,6 +92,7 @@ class RecurringBookingServiceTest extends TestCase
         ];
 
         $patternData = [
+            'title' => 'Test Pattern',
             'frequency' => FrequencyType::WEEKLY->value,
             'interval' => 1,
             'start_date' => '2024-04-01', // Monday
