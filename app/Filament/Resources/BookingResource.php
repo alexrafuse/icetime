@@ -110,7 +110,7 @@ class BookingResource extends Resource
                                     ->required(),
 
                                 Forms\Components\DatePicker::make('start_date')
-                                    ->default(fn (Get $get) => $get('../../date'))
+                            
                                     ->required()
                                     ->native(false),
 

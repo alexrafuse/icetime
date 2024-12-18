@@ -17,6 +17,8 @@ class RecurringPatternFactory extends Factory
     public function definition(): array
     {
         $startDate = Carbon::now()->addDays(fake()->numberBetween(1, 10));
+
+        
         
         return [
             'title' => $this->faker->words(2, true),

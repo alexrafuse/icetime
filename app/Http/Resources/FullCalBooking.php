@@ -29,7 +29,7 @@ final class FullCalBooking extends JsonResource
         
         return [
             'id' => $this->id,
-            'title' => $this->user->name,
+            'title' => $this->title ?? $this->user->name,
             'start' => Carbon::parse($date . ' ' . $startTime)->format('Y-m-d\TH:i:s'),
             'end' => Carbon::parse($date . ' ' . $endTime)->format('Y-m-d\TH:i:s'),
             'backgroundColor' => match($this->event_type) {

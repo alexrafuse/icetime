@@ -9,10 +9,38 @@
             this.activeAreas = this.areas
                 .filter(area => ['Sheet A', 'Sheet B', 'Sheet C', 'Sheet D'].includes(area.title))
                 .map(area => Number(area.id));
+
+                const calendarOptions = {
+                eventDidMount: function(info) {
+                    const booking = info.event.extendedProps;
+                    const tooltip = `
+                        <div>
+                            <p><strong>Owner:</strong> ${booking.owner_name}</p>
+                            <p><strong>Area:</strong> ${booking.area_name}</p>
+                            ${booking.is_recurring ? '<p><em>Recurring Booking</em></p>' : ''}
+                            ${booking.notes ? `<p><strong>Notes:</strong> ${booking.notes}</p>` : ''}
+                        </div>
+                    `;
+                    
+                    tippy(info.el, {
+                        content: tooltip,
+                        allowHTML: true,
+                        placement: 'top',
+                        interactive: true,
+                        theme: 'light',
+                    });
+
+                    if (booking.is_recurring) {
+                        info.el.style.borderWidth = '2px';
+                        info.el.style.borderStyle = 'dashed';
+                    }
+                }
+            };
             
             this.calendar = initializeCalendar(
                 this.bookings,
-                this.getFilteredResources()
+                this.getFilteredResources(),
+                calendarOptions
             );
             
             console.log('Calendar initialized with active areas:', this.activeAreas);
@@ -42,36 +70,31 @@
         }
     }" x-init="initializeCalendar()">
         <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-        
-            
 
-        <!-- <div class="flex flex-wrap gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"> -->
+
+
+            <!-- <div class="flex flex-wrap gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"> -->
             <!-- <div class="text-sm font-medium text-gray-500 flex items-center">Filter Areas:</div> -->
             @foreach($areas as $area)
             <button type="button"
-                    class="area-toggle inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 border"
-                    x-on:click="toggleArea('{{ $area['id'] }}')"
-                    :class="{
+                class="area-toggle inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 border"
+                x-on:click="toggleArea('{{ $area['id'] }}')"
+                :class="{
                         'bg-primary-600 text-white border-primary-600 shadow-sm': isAreaActive('{{ $area['id'] }}'),
                         'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700': !isAreaActive('{{ $area['id'] }}')
-                    }"
-                >
-                    <span 
-                        class="w-2.5 h-2.5 mr-2 rounded-full transition-colors"
-                        :class="{
+                    }">
+                <span
+                    class="w-2.5 h-2.5 mr-2 rounded-full transition-colors"
+                    :class="{
                             'bg-white': isAreaActive('{{ $area['id'] }}'),
                             'bg-gray-400 dark:bg-gray-500': !isAreaActive('{{ $area['id'] }}')
-                        }"
-                    ></span>
-                    {{ $area['title'] }}
+                        }"></span>
+                {{ $area['title'] }}
             </button>
             @endforeach
-    
 
-        
-        
-        
-        <button
+
+            <button
                 id="create-booking-button"
                 class="hidden fixed bottom-4 right-4 z-50 inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition"
                 x-data
@@ -84,45 +107,57 @@
                         areas: button.dataset.resources
                     });
                     window.location.href = url;
-                "
-            >
+                ">
                 Create Booking
-            </button>   
-        
-        <div id="calendar"></div>
-            
-           
+            </button>
+            <div id="calendar"></div>
         </div>
     </div>
 
+
+    <script>
+
+        
+
+    </script>
+
     @push('scripts')
-        @vite(['resources/js/calendar.js'])
+    @vite(['resources/js/calendar.js'])
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
     @endpush
 
     @push('styles')
-        <style>
-            .fc-event {
-                cursor: pointer;
-            }
-            .fc .fc-toolbar {
-                padding: 1rem;
-            }
-            .fc .fc-view-harness {
-                padding: 0 1rem 1rem 1rem;
-            }
-            .fc-resource-group {
-                font-weight: bold;
-                background-color: #f8fafc;
-            }
-            .area-toggle {
-                transform: translateY(0);
-            }
-            .area-toggle:hover {
-                transform: translateY(-1px);
-            }
-            .area-toggle:active {
-                transform: translateY(0);
-            }
-        </style>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+    <style>
+        .fc-event {
+            cursor: pointer;
+        }
+
+        .fc .fc-toolbar {
+            padding: 1rem;
+        }
+
+        .fc .fc-view-harness {
+            padding: 0 1rem 1rem 1rem;
+        }
+
+        .fc-resource-group {
+            font-weight: bold;
+            background-color: #f8fafc;
+        }
+
+        .area-toggle {
+            transform: translateY(0);
+        }
+
+        .area-toggle:hover {
+            transform: translateY(-1px);
+        }
+
+        .area-toggle:active {
+            transform: translateY(0);
+        }
+    </style>
     @endpush
 </x-filament-panels::page>

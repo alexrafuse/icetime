@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             AreaAndAvailabilitySeeder::class,
+            // RecurringPatternSeeder::class,
+            LeagueSeeder::class,
             // BookingSeeder::class,
         ]);
     }

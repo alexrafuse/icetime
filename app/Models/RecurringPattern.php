@@ -39,8 +39,5 @@ final class RecurringPattern extends Model
         return $this->belongsTo(Booking::class, 'primary_booking_id');
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+  
 } 

@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
 use App\Enums\EventType;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -40,23 +41,24 @@ final class RecurringPatternResource extends Resource
         return $this->getResource()::getUrl('index');
     }
 
- 
+
 
     public static function getRecordWithRelations(): array
     {
         return ['primaryBooking', 'primaryBooking.areas'];
     }
-    
+
     public static function form(Form $form): Form
     {
         return $form->schema([
             Forms\Components\Group::make()
                 ->schema([
-                    Forms\Components\Select::make('user_id')
-                        ->relationship('user', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->required(),
+
+
+
+
+                    Forms\Components\TextInput::make('title')
+                        ->default(fn(Get $get) => $get('primaryBooking.title')),
 
                     Forms\Components\Select::make('frequency')
                         ->options(FrequencyType::class)
@@ -86,12 +88,12 @@ final class RecurringPatternResource extends Resource
                             6 => 'Saturday',
                             7 => 'Sunday',
                         ])
-                        ->columns(4)
-                        ->visible(fn (Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
-                        ->required(fn (Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
+                        ->columns(2)
+                        ->visible(fn(Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
+                        ->required(fn(Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
                 ])->columns(2),
 
-                Forms\Components\Section::make('Booking Details')
+            Forms\Components\Section::make('Booking Details')
                 ->schema([
                     Forms\Components\Select::make('primaryBooking.id')
                         ->relationship(
@@ -165,9 +167,10 @@ final class RecurringPatternResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
+
 
                 Tables\Columns\TextColumn::make('frequency')
                     ->badge()
@@ -186,19 +189,7 @@ final class RecurringPatternResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
-                // Tables\Columns\TextColumn::make('days_of_week')
-                //     ->formatStateUsing(fn (array $state): string => collect($state)
-                //         ->map(fn (int $day) => match($day) {
-                //             1 => 'Mon',
-                //             2 => 'Tue',
-                //             3 => 'Wed',
-                //             4 => 'Thu',
-                //             5 => 'Fri',
-                //             6 => 'Sat',
-                //             7 => 'Sun',
-                //         })
-                //         ->join(', ')
-                //     ),
+                Tables\Columns\TextColumn::make('days_of_week'),
 
                 Tables\Columns\TextColumn::make('primaryBooking.start_time')
                     ->time()
@@ -220,9 +211,10 @@ final class RecurringPatternResource extends Resource
                 //     ->options(EventType::class)
                 //     ->relationship('primaryBooking', 'event_type'),
                 Tables\Filters\Filter::make('active')
-                    ->query(fn (Builder $query): Builder => $query
-                        ->where('end_date', '>=', now())
-                        ->orWhereNull('end_date')
+                    ->query(
+                        fn(Builder $query): Builder => $query
+                            ->where('end_date', '>=', now())
+                            ->orWhereNull('end_date')
                     ),
             ])
             ->actions([
@@ -236,7 +228,7 @@ final class RecurringPatternResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->before(function (Collection $records) {
-                            $records->each(fn ($record) => $record->bookings()->delete());
+                            $records->each(fn($record) => $record->bookings()->delete());
                         }),
                 ]),
             ]);
@@ -250,6 +242,4 @@ final class RecurringPatternResource extends Resource
             'edit' => EditRecurringPattern::route('/{record}/edit'),
         ];
     }
-
-
-} 
+}

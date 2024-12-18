@@ -23,7 +23,8 @@ class BookingResource extends JsonResource
         
         return [
             'id' => $this->id,
-            'title' => $this->user->name,
+            'owner_name' => $this->user->name,
+            'title' => $this->title ??' no title',
             'start' => Carbon::parse($date . ' ' . $startTime)->format('Y-m-d\TH:i:s'),
             'end' => Carbon::parse($date . ' ' . $endTime)->format('Y-m-d\TH:i:s'),
             'backgroundColor' => match($this->event_type) {

@@ -72,7 +72,6 @@ final class RecurringBookingService
     private function createRecurringPattern(array $patternData, int $userId, int $primaryBookingId): RecurringPattern
     {
         return RecurringPattern::create([
-            'user_id' => $userId ?? Auth::id(),
             'title' => $patternData['title'],
             'frequency' => $patternData['frequency'],
             'interval' => $patternData['interval'],
