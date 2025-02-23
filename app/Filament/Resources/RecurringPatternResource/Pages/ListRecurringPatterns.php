@@ -18,4 +18,9 @@ final class ListRecurringPatterns extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getTableContentBeforeActions(): ?string
+    {
+        return view('filament.pages.recurring-patterns.info-banner')->render();
+    }
 }

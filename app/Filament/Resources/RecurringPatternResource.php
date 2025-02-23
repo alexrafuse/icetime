@@ -23,12 +23,23 @@ use App\Filament\Resources\RecurringPatternResource\Pages\CreateRecurringPattern
 final class RecurringPatternResource extends Resource
 {
     protected static ?string $model = RecurringPattern::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Bookings';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-path';
+    protected static ?string $navigationGroup = 'Manage';
+    protected static ?int $navigationSort = 2;
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationLabel(): string
     {
-        return 'Bookings';
+        return 'Recurring Patterns 🔒';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
     }
 
     public static function getRelations(): array
@@ -51,47 +62,51 @@ final class RecurringPatternResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Group::make()
+            Forms\Components\Section::make()
+                ->description('Recurring patterns allow you to create repeating bookings based on a set of rules. When you save changes to a pattern, all future bookings will be regenerated to match the new settings. Existing bookings in the past will remain unchanged.')
                 ->schema([
+                    Forms\Components\Group::make()
+                        ->schema([
 
 
 
 
-                    Forms\Components\TextInput::make('title')
-                        ->default(fn(Get $get) => $get('primaryBooking.title')),
+                            Forms\Components\TextInput::make('title')
+                                ->default(fn(Get $get) => $get('primaryBooking.title')),
 
-                    Forms\Components\Select::make('frequency')
-                        ->options(FrequencyType::class)
-                        ->required(),
+                            Forms\Components\Select::make('frequency')
+                                ->options(FrequencyType::class)
+                                ->required(),
 
-                    Forms\Components\TextInput::make('interval')
-                        ->numeric()
-                        ->default(1)
-                        ->minValue(1)
-                        ->required(),
+                            Forms\Components\TextInput::make('interval')
+                                ->numeric()
+                                ->default(1)
+                                ->minValue(1)
+                                ->required(),
 
-                    Forms\Components\DatePicker::make('start_date')
-                        ->required()
-                        ->native(false),
+                            Forms\Components\DatePicker::make('start_date')
+                                ->required()
+                                ->native(false),
 
-                    Forms\Components\DatePicker::make('end_date')
-                        ->native(false)
-                        ->after('start_date'),
+                            Forms\Components\DatePicker::make('end_date')
+                                ->native(false)
+                                ->after('start_date'),
 
-                    Forms\Components\CheckboxList::make('days_of_week')
-                        ->options([
-                            1 => 'Monday',
-                            2 => 'Tuesday',
-                            3 => 'Wednesday',
-                            4 => 'Thursday',
-                            5 => 'Friday',
-                            6 => 'Saturday',
-                            7 => 'Sunday',
-                        ])
-                        ->columns(2)
-                        ->visible(fn(Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
-                        ->required(fn(Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
-                ])->columns(2),
+                            Forms\Components\CheckboxList::make('days_of_week')
+                                ->options([
+                                    1 => 'Monday',
+                                    2 => 'Tuesday',
+                                    3 => 'Wednesday',
+                                    4 => 'Thursday',
+                                    5 => 'Friday',
+                                    6 => 'Saturday',
+                                    7 => 'Sunday',
+                                ])
+                                ->columns(2)
+                                ->visible(fn(Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
+                                ->required(fn(Forms\Get $get) => $get('frequency') === FrequencyType::WEEKLY->value),
+                        ])->columns(2),
+                ])->columnSpanFull(),
 
             Forms\Components\Section::make('Booking Details')
                 ->schema([

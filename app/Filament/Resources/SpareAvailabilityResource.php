@@ -21,7 +21,7 @@ class SpareAvailabilityResource extends Resource
     protected static ?string $model = SpareAvailability::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    // protected static ?string $navigationGroup = 'League Management';
+    protected static ?string $navigationGroup = 'Members Area';
     protected static ?int $navigationSort = 2;
     protected static ?string $navigationLabel = 'Spare List';
     protected static ?string $heading = 'Spare List';
@@ -144,11 +144,5 @@ class SpareAvailabilityResource extends Resource
         ];
     }
 
-    public static function getNavigationGroup(): ?string
-    {
-
-        return Auth::user()->can(Permission::MANAGE_SPARES) 
-            ? 'League Management' 
-            : 'My Account';
-    }
+   
 } 

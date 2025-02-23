@@ -14,6 +14,29 @@ final class CreateBooking extends CreateRecord
 {
     protected static string $resource = BookingResource::class;
 
+   
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+    
+
+    protected function afterFill(): void
+    {
+
+        $this->data = [
+            'areas' => array_filter(explode(',', request()->query('areas', ''))),
+            'date' => request()->query('date'),
+            'start_time' => request()->query('start_time'),
+            'end_time' => request()->query('end_time'), 
+        ];
+        // Runs after the form fields are populated with their default values.
+                
+
+    }
+
+  
     protected function handleRecordCreation(array $data): Model
     {
         // Handle recurring booking
@@ -55,10 +78,5 @@ final class CreateBooking extends CreateRecord
 
         // Handle non-recurring booking
         return static::getModel()::create($data);
-    }
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
     }
 } 

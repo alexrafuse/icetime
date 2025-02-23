@@ -10,37 +10,10 @@
                 .filter(area => ['Sheet A', 'Sheet B', 'Sheet C', 'Sheet D'].includes(area.title))
                 .map(area => Number(area.id));
 
-                const calendarOptions = {
-                eventDidMount: function(info) {
-                    const booking = info.event.extendedProps;
-                    const tooltip = `
-                        <div>
-                            <p><strong>Owner:</strong> ${booking.owner_name}</p>
-                            <p><strong>Area:</strong> ${booking.area_name}</p>
-                            ${booking.is_recurring ? '<p><em>Recurring Booking</em></p>' : ''}
-                            ${booking.notes ? `<p><strong>Notes:</strong> ${booking.notes}</p>` : ''}
-                        </div>
-                    `;
-                    
-                    tippy(info.el, {
-                        content: tooltip,
-                        allowHTML: true,
-                        placement: 'top',
-                        interactive: true,
-                        theme: 'light',
-                    });
-
-                    if (booking.is_recurring) {
-                        info.el.style.borderWidth = '2px';
-                        info.el.style.borderStyle = 'dashed';
-                    }
-                }
-            };
             
             this.calendar = initializeCalendar(
                 this.bookings,
                 this.getFilteredResources(),
-                calendarOptions
             );
             
             console.log('Calendar initialized with active areas:', this.activeAreas);
@@ -60,9 +33,8 @@
                 this.activeAreas.push(areaId);
             }
             
-            const filteredResources = this.getFilteredResources();
-            this.calendar.setOption('resources', filteredResources);
-            this.calendar.refetchEvents();
+            this.calendar.setOption('resources', this.getFilteredResources());
+            this.calendar.render();
         },
         
         isAreaActive(areaId) {

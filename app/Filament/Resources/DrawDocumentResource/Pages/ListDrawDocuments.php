@@ -18,4 +18,9 @@ final class ListDrawDocuments extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getTableContentBeforeActions(): ?string
+    {
+        return view('filament.pages.draw-documents.info-banner')->render();
+    }
 } 

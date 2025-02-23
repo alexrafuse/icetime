@@ -23,7 +23,7 @@ final class BookingCalendar extends Page
     protected static ?string $navigationLabel = 'Calendar';
     protected static ?string $title = 'Booking Calendar';
     protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = 'Rentals';
+    protected static ?string $navigationGroup = 'Members Area';
     protected Collection $bookings;
 
     protected static string $view = 'filament.pages.booking-calendar';

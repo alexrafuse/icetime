@@ -8,7 +8,7 @@ use App\Filament\Resources\AvailabilityResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListAvailabilities extends ListRecords
+final class ListAvailabilities extends ListRecords
 {
     protected static string $resource = AvailabilityResource::class;
 
@@ -17,5 +17,10 @@ class ListAvailabilities extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getTableContentBeforeActions(): ?string
+    {
+        return view('filament.pages.availabilities.info-banner')->render();
     }
 } 

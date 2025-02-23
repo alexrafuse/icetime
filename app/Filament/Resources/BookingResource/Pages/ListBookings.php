@@ -8,7 +8,7 @@ use App\Filament\Resources\BookingResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListBookings extends ListRecords
+final class ListBookings extends ListRecords
 {
     protected static string $resource = BookingResource::class;
 
@@ -17,5 +17,10 @@ class ListBookings extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getTableContentBeforeActions(): ?string
+    {
+        return view('filament.pages.bookings.info-banner')->render();
     }
 } 

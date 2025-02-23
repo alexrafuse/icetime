@@ -4,46 +4,41 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use App\Models\Area;
+use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Filament\Resources\AreaResource\Pages;
-use App\Filament\Resources\AreaResource\RelationManagers\AvailabilitiesRelationManager;
+use Filament\Tables\Actions\Action;
 
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
+    protected static ?string $navigationIcon = 'heroicon-o-map';
+    protected static ?string $navigationGroup = 'Manage';
+    protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
-
-    protected static ?string $navigationGroup = 'Rentals';
-    protected static ?int $navigationSort = 2;
-
-    public static function form(Form $form): Form
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('base_price')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$')
-                    ->minValue(0)
-                    ->default(0),
-                Forms\Components\Toggle::make('is_active')
-                    ->required()
-                    ->default(true),
-            ]);
+        return 'Areas 🔒';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->description('Manage your ice sheets and other bookable spaces here. Each area can have its own base price and availability schedule.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -79,14 +74,13 @@ class AreaResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('name')
-            ->recordUrl(fn(Area $record): string => static::getUrl('view', ['record' => $record]));
+            ->defaultSort('name');
     }
 
     public static function getRelations(): array
     {
         return [
-            AvailabilitiesRelationManager::make(),
+            //
         ];
     }
 
@@ -95,7 +89,6 @@ class AreaResource extends Resource
         return [
             'index' => Pages\ListAreas::route('/'),
             'create' => Pages\CreateArea::route('/create'),
-            'view' => Pages\ViewArea::route('/{record}'),
             'edit' => Pages\EditArea::route('/{record}/edit'),
         ];
     }

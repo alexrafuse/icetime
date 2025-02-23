@@ -8,7 +8,7 @@ use App\Filament\Resources\AreaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListAreas extends ListRecords
+final class ListAreas extends ListRecords
 {
     protected static string $resource = AreaResource::class;
 
@@ -17,5 +17,10 @@ class ListAreas extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getTableContentBeforeActions(): ?string
+    {
+        return view('filament.pages.areas.info-banner')->render();
     }
 } 

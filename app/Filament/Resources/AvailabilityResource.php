@@ -16,11 +16,26 @@ class AvailabilityResource extends Resource
 {
     protected static ?string $model = Availability::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static ?string $navigationIcon = 'heroicon-o-clock';
 
-    protected static ?string $navigationGroup = 'Rentals';
+    protected static ?string $navigationGroup = 'Manage';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Availabilities 🔒';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function form(Form $form): Form
     {

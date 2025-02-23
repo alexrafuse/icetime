@@ -111,24 +111,4 @@ final class RoleResource extends Resource
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
     }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
 } 

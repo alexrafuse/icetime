@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\DrawDocumentResource\Pages\EditDrawDocument;
 use App\Filament\Resources\DrawDocumentResource\Pages\ListDrawDocuments;
 use App\Filament\Resources\DrawDocumentResource\Pages\CreateDrawDocument;
@@ -21,8 +22,23 @@ final class DrawDocumentResource extends Resource
 {
     protected static ?string $model = DrawDocument::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'Content';
-    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = 'Manage';
+    protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Draw Documents 🔒';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function form(Form $form): Form
     {
@@ -101,18 +117,19 @@ final class DrawDocumentResource extends Resource
                     ->icon('heroicon-m-eye')
                     ->url(fn (DrawDocument $record): string => $record->getFileUrl())
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn () => auth()->user()->hasAnyRole(['admin', 'staff'])),
                 Tables\Actions\DeleteAction::make()
+                    ->visible(fn () => auth()->user()->hasAnyRole(['admin', 'staff']))
                     ->before(function (DrawDocument $record) {
-                        // Delete the file when deleting the record
                         Storage::disk('public')->delete($record->file_path);
                     }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()->hasAnyRole(['admin', 'staff']))
                         ->before(function (Collection $records) {
-                            // Delete files for all deleted records
                             $records->each(function ($record) {
                                 Storage::disk('public')->delete($record->file_path);
                             });

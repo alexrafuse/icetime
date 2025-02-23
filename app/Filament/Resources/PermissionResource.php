@@ -121,24 +121,4 @@ final class PermissionResource extends Resource
     {
         return 'danger';
     }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
 } 
