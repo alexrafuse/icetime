@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Alex Rafuse',
-            'email' => 'hey@alexrafuse.com',
-            'password' => bcrypt('laravel123'),
+            'email' => 'hello@stacked.dev',
+            'password' => bcrypt('123456'),
         ]);
 
         $this->call([

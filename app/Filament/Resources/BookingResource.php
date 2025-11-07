@@ -52,6 +52,9 @@ class BookingResource extends Resource
 
     public static function form(Form $form): Form
     {
+        logger('Current Auth ID: ' . auth()->id());
+        logger('Is authenticated: ' . (auth()->check() ? 'yes' : 'no'));
+
         return $form
             ->schema([
                 Forms\Components\Group::make()
@@ -60,11 +63,13 @@ class BookingResource extends Resource
                             ->required(),
 
                         Forms\Components\Select::make('user_id')
-                            ->default(Auth::id())
+                            ->default(fn () => auth()->id())
                             ->relationship('user', 'name')
                             ->required()
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->dehydrated()
+                            ->live(),
                             
                         Forms\Components\DatePicker::make('date')
                             ->required()

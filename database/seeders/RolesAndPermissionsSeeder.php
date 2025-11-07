@@ -46,9 +46,9 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin->givePermissionTo(Permission::values());
 
         // Assign admin role to your email
-        $user = User::where('email', 'hey@alexrafuse.com')->first();
+        $user = User::where('email', 'hello@stacked.dev')->first();
         if ($user) {
             $user->assignRole('admin');
         }
     }
-} 
+}

@@ -24,16 +24,25 @@ final class CreateBooking extends CreateRecord
 
     protected function afterFill(): void
     {
-
-        $this->data = [
+        $this->data = array_merge([
+            'user_id' => auth()->id(),
+        ], [
             'areas' => array_filter(explode(',', request()->query('areas', ''))),
             'date' => request()->query('date'),
             'start_time' => request()->query('start_time'),
             'end_time' => request()->query('end_time'), 
-        ];
+        ]);
         // Runs after the form fields are populated with their default values.
                 
 
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        if (!isset($data['user_id'])) {
+            $data['user_id'] = auth()->id();
+        }
+        return $data;
     }
 
   

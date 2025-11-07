@@ -76,6 +76,12 @@ function initializeCalendar(bookings, areas) {
         datesAboveResources: true,
         resourceOrder: 'title',
         resourcesInitiallyExpanded: true,
+        eventClick: function(info) {
+            // Extract the booking ID from the event
+            const bookingId = info.event.id;
+            // Navigate to the booking's show page in Filament
+            window.location.href = `/admin/bookings/${bookingId}/edit`;
+        },
         eventDidMount: function(info) {
             const event = info.event;
             const props = event.extendedProps;
@@ -90,10 +96,10 @@ function initializeCalendar(bookings, areas) {
         },
     });
 
-    // Add click handler for debugging
-    calendarEl.addEventListener('mousedown', (e) => {
-        console.log('Mouse down on calendar:', e);
-    });
+    // // Add click handler for debugging
+    // calendarEl.addEventListener('mousedown', (e) => {
+    //     console.log('Mouse down on calendar:', e);
+    // });
 
     calendar.render();
     return calendar;
