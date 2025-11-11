@@ -4,13 +4,11 @@ namespace Database\Seeders;
 
 use App\Enums\EventType;
 use App\Enums\PaymentStatus;
-use App\Models\Area;
-use App\Models\Booking;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Domain\Booking\Models\Booking;
+use Domain\Facility\Models\Area;
+use Domain\User\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class CalendarImportSeeder extends Seeder
 {
@@ -24,20 +22,22 @@ class CalendarImportSeeder extends Seeder
     {
         $csvPath = database_path('seeders/data/calendar_import_2025_2026.csv');
 
-        if (!file_exists($csvPath)) {
+        if (! file_exists($csvPath)) {
             $this->command->error("CSV file not found: {$csvPath}");
-            $this->command->info("Please run the data filtering and Gemini preprocessing steps first.");
-            $this->command->info("See: scripts/gemini-prompt.md for instructions");
+            $this->command->info('Please run the data filtering and Gemini preprocessing steps first.');
+            $this->command->info('See: scripts/gemini-prompt.md for instructions');
+
             return;
         }
 
         $this->command->info('📅 Starting Calendar Import...');
-        $this->command->info('Reading CSV: ' . $csvPath);
+        $this->command->info('Reading CSV: '.$csvPath);
 
         // Get the admin user (first user or create a system user)
         $adminUser = User::first();
-        if (!$adminUser) {
+        if (! $adminUser) {
             $this->command->error('No users found in database. Please run UserSeeder first.');
+
             return;
         }
 
@@ -45,6 +45,7 @@ class CalendarImportSeeder extends Seeder
         $sheets = Area::where('name', 'like', 'Sheet %')->get();
         if ($sheets->isEmpty()) {
             $this->command->error('No ice sheets found. Please run AreaAndAvailabilitySeeder first.');
+
             return;
         }
 
@@ -55,8 +56,8 @@ class CalendarImportSeeder extends Seeder
         // Validate CSV header
         $expectedHeaders = ['date', 'title', 'start_time', 'end_time', 'notes', 'sheet_count'];
         if ($header !== $expectedHeaders) {
-            $this->command->warn('CSV header mismatch. Expected: ' . implode(',', $expectedHeaders));
-            $this->command->warn('Got: ' . implode(',', $header));
+            $this->command->warn('CSV header mismatch. Expected: '.implode(',', $expectedHeaders));
+            $this->command->warn('Got: '.implode(',', $header));
         }
 
         $imported = 0;
@@ -79,6 +80,7 @@ class CalendarImportSeeder extends Seeder
                 if (empty($date) || empty($title) || empty($startTime) || empty($endTime)) {
                     $skipped++;
                     $errors[] = "Skipped row: missing required fields - Date: {$date}, Title: {$title}";
+
                     continue;
                 }
 
@@ -112,7 +114,7 @@ class CalendarImportSeeder extends Seeder
                     }
                 } catch (\Exception $e) {
                     $skipped++;
-                    $errors[] = "Failed to create booking '{$title}' on {$date}: " . $e->getMessage();
+                    $errors[] = "Failed to create booking '{$title}' on {$date}: ".$e->getMessage();
                 }
             }
 
@@ -126,21 +128,21 @@ class CalendarImportSeeder extends Seeder
 
             if ($skipped > 0) {
                 $this->command->warn("Skipped: {$skipped} rows");
-                if (!empty($errors)) {
+                if (! empty($errors)) {
                     $this->command->warn('');
                     $this->command->warn('Errors:');
                     foreach (array_slice($errors, 0, 10) as $error) {
                         $this->command->warn("  - {$error}");
                     }
                     if (count($errors) > 10) {
-                        $this->command->warn("  ... and " . (count($errors) - 10) . " more errors");
+                        $this->command->warn('  ... and '.(count($errors) - 10).' more errors');
                     }
                 }
             }
         } catch (\Exception $e) {
             DB::rollBack();
             fclose($file);
-            $this->command->error('Import failed: ' . $e->getMessage());
+            $this->command->error('Import failed: '.$e->getMessage());
             throw $e;
         }
     }
@@ -148,18 +150,15 @@ class CalendarImportSeeder extends Seeder
     /**
      * Determine which areas/sheets to assign based on sheet count or title hints
      *
-     * @param \Illuminate\Database\Eloquent\Collection $sheets
-     * @param string|null $sheetCount
-     * @param string $title
-     * @return array
+     * @param  \Illuminate\Database\Eloquent\Collection  $sheets
      */
     private function determineAreas($sheets, ?string $sheetCount, string $title): array
     {
         // Parse sheet count from CSV
         $count = 1; // Default to 1 sheet
-        if (!empty($sheetCount) && is_numeric($sheetCount)) {
+        if (! empty($sheetCount) && is_numeric($sheetCount)) {
             $count = (int) $sheetCount;
-        } elseif (!empty($sheetCount) && preg_match('/(\d+)/', $sheetCount, $matches)) {
+        } elseif (! empty($sheetCount) && preg_match('/(\d+)/', $sheetCount, $matches)) {
             $count = (int) $matches[1];
         }
 

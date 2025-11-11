@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\RoleResource\Pages;
 use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Table;
 use Spatie\Permission\Models\Role;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\RoleResource\Pages;
-use Illuminate\Database\Eloquent\Model;
 
 final class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+
     protected static ?string $navigationGroup = 'Access Management';
+
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
@@ -28,7 +29,7 @@ final class RoleResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) static::getModel()::count();
+        return (string) self::getModel()::count();
     }
 
     public static function getNavigationBadgeColor(): ?string
@@ -111,4 +112,4 @@ final class RoleResource extends Resource
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
     }
-} 
+}

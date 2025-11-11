@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Area;
-use App\Models\Booking;
 use Carbon\Carbon;
+use Domain\Booking\Models\Booking;
+use Domain\Facility\Models\Area;
 use Illuminate\Support\Collection;
 
 final class BookingValidationService
@@ -20,7 +20,7 @@ final class BookingValidationService
     ): bool {
         // Check if each area is available (active and within availability windows)
         foreach ($areas as $area) {
-            if (!$area->is_active || !$this->isAreaAvailable($area, $date, $startTime, $endTime)) {
+            if (! $area->is_active || ! $this->isAreaAvailable($area, $date, $startTime, $endTime)) {
                 return false;
             }
 
@@ -45,16 +45,16 @@ final class BookingValidationService
                 $query->where(function ($q) use ($date) {
                     // Specific date availability
                     $q->whereNull('day_of_week')
-                      ->whereDate('start_time', $date->format('Y-m-d'));
+                        ->whereDate('start_time', $date->format('Y-m-d'));
                 })->orWhere(function ($q) use ($date) {
                     // Weekly availability
                     $q->whereNotNull('day_of_week')
-                      ->where('day_of_week', $date->dayOfWeek);
+                        ->where('day_of_week', $date->dayOfWeek);
                 });
             })
             ->first();
 
-        if (!$availability) {
+        if (! $availability) {
             return false;
         }
 
@@ -64,7 +64,7 @@ final class BookingValidationService
         $availableStartTime = $availability->start_time->format('H:i:s');
         $availableEndTime = $availability->end_time->format('H:i:s');
 
-        return $requestedStartTime >= $availableStartTime && 
+        return $requestedStartTime >= $availableStartTime &&
                $requestedEndTime <= $availableEndTime;
     }
 
@@ -91,7 +91,7 @@ final class BookingValidationService
         // - New booking end time is greater than existing booking start time
         return $query->where(function ($query) use ($startTime, $endTime) {
             $query->whereTime('start_time', '<', $endTime->format('H:i:s'))
-                  ->whereTime('end_time', '>', $startTime->format('H:i:s'));
+                ->whereTime('end_time', '>', $startTime->format('H:i:s'));
         })->exists();
     }
-} 
+}

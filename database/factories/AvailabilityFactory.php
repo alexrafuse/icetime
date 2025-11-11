@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Area;
-use App\Models\Availability;
 use Carbon\Carbon;
+use Domain\Facility\Models\Area;
+use Domain\Facility\Models\Availability;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AvailabilityFactory extends Factory
@@ -14,7 +14,7 @@ class AvailabilityFactory extends Factory
     public function definition(): array
     {
         $isWeekly = $this->faker->boolean;
-        
+
         if ($isWeekly) {
             $dayOfWeek = $this->faker->numberBetween(0, 6);
             $baseDate = Carbon::now()->startOfWeek()->addDays($dayOfWeek);
@@ -28,7 +28,7 @@ class AvailabilityFactory extends Factory
             0,
             0
         );
-        
+
         $endTime = $startTime->copy()->addHours($this->faker->numberBetween(1, 8));
 
         return [
@@ -46,13 +46,13 @@ class AvailabilityFactory extends Factory
         return $this->state(function () {
             $dayOfWeek = $this->faker->numberBetween(0, 6);
             $baseDate = Carbon::now()->startOfWeek()->addDays($dayOfWeek);
-            
+
             $startTime = Carbon::parse($baseDate)->setTime(
                 $this->faker->numberBetween(8, 20),
                 0,
                 0
             );
-            
+
             return [
                 'day_of_week' => $dayOfWeek,
                 'start_time' => $startTime,
@@ -61,17 +61,17 @@ class AvailabilityFactory extends Factory
         });
     }
 
-    public function specificDate(Carbon $date = null): static
+    public function specificDate(?Carbon $date = null): static
     {
         return $this->state(function () use ($date) {
             $baseDate = $date ?? $this->faker->dateTimeBetween('now', '+1 year');
-            
+
             $startTime = Carbon::parse($baseDate)->setTime(
                 $this->faker->numberBetween(8, 20),
                 0,
                 0
             );
-            
+
             return [
                 'day_of_week' => null,
                 'start_time' => $startTime,
@@ -84,4 +84,4 @@ class AvailabilityFactory extends Factory
     {
         return $this->specificDate($date);
     }
-} 
+}

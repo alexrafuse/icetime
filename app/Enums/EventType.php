@@ -12,10 +12,19 @@ enum EventType: string
 
     public function getColor(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PRIVATE => 'gray',
             self::LEAGUE => 'success',
             self::TOURNAMENT => 'warning',
         };
     }
-} 
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::PRIVATE => 'Private',
+            self::LEAGUE => 'League',
+            self::TOURNAMENT => 'Tournament',
+        };
+    }
+}

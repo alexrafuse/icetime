@@ -17,4 +17,4 @@ final class FullCalArea extends JsonResource
             'building' => $this->building ?? 'Main Building',
         ];
     }
-} 
+}

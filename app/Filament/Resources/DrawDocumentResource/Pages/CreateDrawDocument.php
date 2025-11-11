@@ -10,4 +10,4 @@ use Filament\Resources\Pages\CreateRecord;
 final class CreateDrawDocument extends CreateRecord
 {
     protected static string $resource = DrawDocumentResource::class;
-} 
+}

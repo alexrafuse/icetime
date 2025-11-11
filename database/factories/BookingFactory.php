@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Enums\EventType;
 use App\Enums\PaymentStatus;
-use App\Models\Booking;
-use App\Models\User;
+use Domain\Booking\Models\Booking;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
 
@@ -17,7 +17,6 @@ class BookingFactory extends Factory
     {
         $startHour = $this->faker->numberBetween(8, 20);
         $duration = $this->faker->numberBetween(1, 4);
-
 
         return [
             'user_id' => User::factory(),
@@ -38,4 +37,4 @@ class BookingFactory extends Factory
             $booking->areas()->attach($areas);
         });
     }
-} 
+}

@@ -23,4 +23,4 @@ final class ListAreas extends ListRecords
     {
         return view('filament.pages.areas.info-banner')->render();
     }
-} 
+}

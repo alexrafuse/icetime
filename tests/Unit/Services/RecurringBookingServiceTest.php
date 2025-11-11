@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use Tests\TestCase;
-use App\Models\Area;
-use App\Models\User;
-use App\Models\Booking;
 use App\Enums\EventType;
 use App\Enums\FrequencyType;
 use App\Enums\PaymentStatus;
-use App\Models\Availability;
-use Illuminate\Support\Carbon;
-use App\Services\RecurringBookingService;
 use App\Services\BookingValidationService;
+use App\Services\RecurringBookingService;
+use Domain\Booking\Models\Booking;
+use Domain\Facility\Models\Area;
+use Domain\Facility\Models\Availability;
+use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
 class RecurringBookingServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     private RecurringBookingService $service;
+
     private BookingValidationService $validationService;
 
     protected function setUp(): void
@@ -42,7 +43,7 @@ class RecurringBookingServiceTest extends TestCase
         ];
 
         $dates = $this->service->generateDates($pattern);
-        
+
         $this->assertCount(7, $dates);
         $this->assertEquals('2024-04-01', $dates[0]->format('Y-m-d'));
         $this->assertEquals('2024-04-07', end($dates)->format('Y-m-d'));
@@ -60,7 +61,7 @@ class RecurringBookingServiceTest extends TestCase
         ];
 
         $dates = $this->service->generateDates($pattern);
-        
+
         $this->assertCount(13, $dates); // 13 occurrences of Mon/Wed/Fri in April 2024
         foreach ($dates as $date) {
             $this->assertTrue(in_array($date->dayOfWeek, [1, 3, 5]));
@@ -102,18 +103,18 @@ class RecurringBookingServiceTest extends TestCase
         ];
 
         $bookings = $this->service->createRecurringBookings($bookingData, $patternData);
-        
+
         $this->assertCount(3, $bookings); // 3 Mondays in the date range
-        
+
         // Check primary booking
         $primaryBooking = $bookings->first();
         $this->assertNotNull($primaryBooking->recurring_pattern_id);
-        
+
         // Check recurring pattern
         $pattern = $primaryBooking->recurringPattern;
         $this->assertNotNull($pattern);
         $this->assertEquals($primaryBooking->id, $pattern->primary_booking_id);
-        
+
         // Check all bookings
         foreach ($bookings as $booking) {
             $this->assertTrue(Carbon::parse($booking->date)->isDayOfWeek(1));
@@ -135,7 +136,7 @@ class RecurringBookingServiceTest extends TestCase
         ];
 
         $dates = $this->service->generateDates($pattern);
-        
+
         $this->assertCount(5, $dates);
         foreach ($dates as $date) {
             $this->assertNotContains($date->format('Y-m-d'), $pattern['excluded_dates']);

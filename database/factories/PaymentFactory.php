@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\PaymentStatus;
-use App\Models\Booking;
-use App\Models\Payment;
+use Domain\Booking\Models\Booking;
+use Domain\Payment\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentFactory extends Factory
@@ -19,4 +19,4 @@ class PaymentFactory extends Factory
             'status' => $this->faker->randomElement(PaymentStatus::cases()),
         ];
     }
-} 
+}

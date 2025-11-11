@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Enums\Permission;
+use Domain\User\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission as PermissionModel;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -31,6 +31,8 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::VIEW_BOOKINGS,
             Permission::MANAGE_OWN_BOOKINGS,
             Permission::VIEW_AREAS,
+            Permission::VIEW_OWN_MEMBERSHIP,
+            Permission::VIEW_PRODUCTS,
         ]);
 
         $staff = Role::create(['name' => 'staff']);
@@ -40,6 +42,8 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::VIEW_BOOKINGS,
             Permission::MANAGE_BOOKINGS,
             Permission::VIEW_AREAS,
+            Permission::VIEW_MEMBERSHIPS,
+            Permission::VIEW_PRODUCTS,
         ]);
 
         $admin = Role::create(['name' => 'admin']);

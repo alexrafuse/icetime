@@ -18,4 +18,4 @@ class EditSpareAvailability extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-} 
+}

@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Models\SpareAvailability;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
-use Livewire\Livewire;
 use App\Filament\Resources\SpareAvailabilityResource;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Domain\Facility\Models\SpareAvailability;
+use Domain\User\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class SpareAvailabilityResourceTest extends TestCase
 {
     use RefreshDatabase;
 
     private User $admin;
+
     private User $member;
+
     private User $staff;
 
     protected function setUp(): void
@@ -43,7 +45,7 @@ class SpareAvailabilityResourceTest extends TestCase
         $ownAvailability = SpareAvailability::factory()->create([
             'user_id' => $this->member->id,
         ]);
-        
+
         $otherAvailability = SpareAvailability::factory()->create();
 
         $response = $this->get(route('filament.admin.resources.spare-availabilities.index'));
@@ -75,4 +77,4 @@ class SpareAvailabilityResourceTest extends TestCase
     }
 
     // ... add more role-based tests
-} 
+}

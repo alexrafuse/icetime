@@ -64,4 +64,4 @@ class AvailabilitiesRelationManager extends RelationManager
                 ]),
             ]);
     }
-} 
+}

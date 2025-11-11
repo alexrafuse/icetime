@@ -21,4 +21,4 @@ return new class extends Migration
             $table->dropForeignId('recurring_pattern_id');
         });
     }
-}; 
+};

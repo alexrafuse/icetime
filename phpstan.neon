@@ -1,0 +1,21 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    # Level 10 is the highest level
+    level: 1
+
+    ignoreErrors:
+        # Laravel Resource classes use magic properties
+        - '#Access to an undefined property App\\Http\\Resources#'
+        # Filament quirks - known issues
+        - '#Call to an undefined static method Filament\\Pages\\Page::getHeadComponents#'
+        - '#Call to an undefined method App\\Filament\\Resources\\RecurringPatternResource::getResource#'
+
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Area;
-use App\Models\Booking;
 use App\Enums\FrequencyType;
+use Domain\Booking\Models\Booking;
+use Domain\Booking\Models\RecurringPattern;
+use Domain\Facility\Models\Area;
 use Illuminate\Support\Carbon;
-use App\Models\RecurringPattern;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 
 final class RecurringBookingService
 {
@@ -23,52 +22,51 @@ final class RecurringBookingService
     public function createRecurringBookings(array $bookingData, array $patternData): Collection
     {
 
-
         // Extract and prepare data
         $areaIds = $bookingData['areas'];
         $areas = Area::findMany($areaIds);
 
         unset($bookingData['areas']);
-        
+
         $dates = collect($this->generateDates($patternData));
-        
+
         return DB::transaction(function () use ($bookingData, $patternData, $dates, $areas, $areaIds) {
             // Create primary booking and pattern
             $firstDate = $dates->shift();
             $primaryBooking = $this->createPrimaryBooking($firstDate, $bookingData, $areas, $areaIds);
-            
-            if (!$primaryBooking) {
+
+            if (! $primaryBooking) {
                 return collect();
             }
-            
+
             $pattern = $this->createRecurringPattern($patternData, $bookingData['user_id'], $primaryBooking->id);
             $primaryBooking->update(['recurring_pattern_id' => $pattern->id]);
-            
+
             // Create subsequent bookings
             $subsequentBookings = $this->createSubsequentBookings($dates, $bookingData, $areas, $areaIds, $pattern->id);
-            
+
             return collect([$primaryBooking])->merge($subsequentBookings);
         });
     }
-    
+
     private function createPrimaryBooking(Carbon $date, array $bookingData, Collection $areas, array $areaIds): ?Booking
     {
         $bookingData = array_merge($bookingData, [
             'date' => $date->format('Y-m-d'),
         ]);
-        
-        if (!$this->isBookingValid($areas, $date, $bookingData)) {
+
+        if (! $this->isBookingValid($areas, $date, $bookingData)) {
             return null;
         }
 
         unset($bookingData['areas']);
-        
+
         $booking = Booking::create($bookingData);
         $booking->areas()->attach($areaIds);
-        
+
         return $booking;
     }
-    
+
     private function createRecurringPattern(array $patternData, int $userId, int $primaryBookingId): RecurringPattern
     {
         return RecurringPattern::create([
@@ -81,50 +79,52 @@ final class RecurringBookingService
             'primary_booking_id' => $primaryBookingId,
         ]);
     }
-    
+
     private function createSubsequentBookings(Collection $dates, array $bookingData, Collection $areas, array $areaIds, int $patternId): Collection
     {
         return $dates
             ->map(function ($date) use ($bookingData, $areas, $areaIds, $patternId) {
-                if (!$this->isBookingValid($areas, $date, $bookingData)) {
+                if (! $this->isBookingValid($areas, $date, $bookingData)) {
                     return null;
                 }
-                
+
                 $newBookingData = array_merge($bookingData, [
                     'date' => $date->format('Y-m-d'),
                     'recurring_pattern_id' => $patternId,
                 ]);
-                
+
                 DB::beginTransaction();
                 try {
 
                     unset($newBookingData['areas']);
 
                     $booking = Booking::create($newBookingData);
-                    
+
                     // Ensure booking was created and has an ID
-                    if (!$booking || !$booking->id) {
+                    if (! $booking || ! $booking->id) {
                         throw new \Exception('Failed to create booking');
                     }
-                    
+
                     // Attach areas using sync instead of attach
                     $booking->areas()->sync($areaIds);
-                    
+
                     DB::commit();
+
                     return $booking;
                 } catch (\Exception $e) {
                     DB::rollBack();
                     Log::error('Failed to create subsequent booking', [
                         'error' => $e->getMessage(),
                         'booking_data' => $newBookingData,
-                        'area_ids' => $areaIds
+                        'area_ids' => $areaIds,
                     ]);
+
                     return null;
                 }
             })
             ->filter();
     }
-    
+
     private function isBookingValid(Collection $areas, Carbon $date, array $bookingData): bool
     {
         return $this->validationService->validateBooking(
@@ -169,18 +169,19 @@ final class RecurringBookingService
     {
         $startDate = Carbon::parse($pattern['start_date']);
         $daysSinceStart = $date->diffInDays($startDate);
+
         return $daysSinceStart % ($pattern['interval'] ?? 1) === 0;
     }
 
     private function isWeeklyMatch(Carbon $date, array $pattern): bool
     {
-        if (!isset($pattern['days_of_week'])) {
+        if (! isset($pattern['days_of_week'])) {
             return false;
         }
 
         $startDate = Carbon::parse($pattern['start_date']);
         $weeksSinceStart = $date->diffInWeeks($startDate);
-        
+
         return $weeksSinceStart % ($pattern['interval'] ?? 1) === 0 &&
                in_array($date->dayOfWeek, $pattern['days_of_week']);
     }
@@ -189,6 +190,7 @@ final class RecurringBookingService
     {
         $startDate = Carbon::parse($pattern['start_date']);
         $monthsSinceStart = $date->diffInMonths($startDate);
+
         return $monthsSinceStart % ($pattern['interval'] ?? 1) === 0 &&
                $date->day === $startDate->day;
     }
@@ -204,16 +206,16 @@ final class RecurringBookingService
 
                 // Get the primary booking data
                 $primaryBooking = $pattern->primaryBooking;
-                
-                if (!$primaryBooking) {
+
+                if (! $primaryBooking) {
                     throw new \Exception('Primary booking not found');
                 }
-                
+
                 Log::debug('Primary booking found:', [
                     'id' => $primaryBooking->id,
-                    'date' => $primaryBooking->date
+                    'date' => $primaryBooking->date,
                 ]);
-                
+
                 $bookingData = [
                     'title' => $primaryBooking->title,
                     'user_id' => $primaryBooking->user_id,
@@ -240,31 +242,31 @@ final class RecurringBookingService
 
                 // Generate dates
                 $allDates = collect($this->generateDates($patternData));
-                Log::debug('All generated dates:', ['dates' => $allDates->map(fn($date) => $date->format('Y-m-d'))->toArray()]);
+                Log::debug('All generated dates:', ['dates' => $allDates->map(fn ($date) => $date->format('Y-m-d'))->toArray()]);
 
                 // Filter out primary booking date
                 $dates = $allDates->filter(fn ($date) => $date->format('Y-m-d') !== Carbon::parse($primaryBooking->date)->format('Y-m-d'));
-                Log::debug('Filtered dates for new bookings:', ['dates' => $dates->map(fn($date) => $date->format('Y-m-d'))->toArray()]);
+                Log::debug('Filtered dates for new bookings:', ['dates' => $dates->map(fn ($date) => $date->format('Y-m-d'))->toArray()]);
 
                 // Create subsequent bookings
                 $newBookings = $this->createSubsequentBookings(
-                    $dates, 
-                    $bookingData, 
-                    $primaryBooking->areas, 
-                    $bookingData['areas'], 
+                    $dates,
+                    $bookingData,
+                    $primaryBooking->areas,
+                    $bookingData['areas'],
                     $pattern->id
                 );
 
                 Log::debug('Created new bookings:', [
                     'count' => $newBookings->count(),
-                    'booking_ids' => $newBookings->pluck('id')->toArray()
+                    'booking_ids' => $newBookings->pluck('id')->toArray(),
                 ]);
-                
+
             } catch (\Exception $e) {
                 Log::error('Failed to regenerate bookings', [
                     'pattern_id' => $pattern->id,
                     'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
+                    'trace' => $e->getTraceAsString(),
                 ]);
                 throw $e;
             }

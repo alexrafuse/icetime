@@ -23,4 +23,4 @@ final class ListBookings extends ListRecords
     {
         return view('filament.pages.bookings.info-banner')->render();
     }
-} 
+}

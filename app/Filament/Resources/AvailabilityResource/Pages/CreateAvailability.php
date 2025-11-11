@@ -14,10 +14,10 @@ class CreateAvailability extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Ensure we don't save both day_of_week and date
-        if (!empty($data['date'])) {
+        if (! empty($data['date'])) {
             $data['day_of_week'] = null;
         }
 
         return $data;
     }
-} 
+}

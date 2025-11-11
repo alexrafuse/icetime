@@ -18,4 +18,4 @@ class ViewArea extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
-} 
+}

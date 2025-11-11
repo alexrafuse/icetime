@@ -6,8 +6,8 @@ namespace App\Filament\Resources\RecurringPatternResource\Pages;
 
 use App\Filament\Resources\RecurringPatternResource;
 use App\Services\RecurringBookingService;
-use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\CreateRecord;
 
 final class CreateRecurringPattern extends CreateRecord
 {
@@ -18,7 +18,7 @@ final class CreateRecurringPattern extends CreateRecord
         // Generate the bookings
         try {
             app(RecurringBookingService::class)->regenerateBookings($this->record);
-            
+
             Notification::make()
                 ->success()
                 ->title('Recurring pattern created')
@@ -32,4 +32,4 @@ final class CreateRecurringPattern extends CreateRecord
                 ->send();
         }
     }
-} 
+}

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\PaymentStatus;
-use App\Models\Booking;
-use App\Models\Payment;
+use Domain\Booking\Models\Booking;
+use Domain\Payment\Models\Payment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -39,4 +39,4 @@ class PaymentTest extends TestCase
 
         $this->assertInstanceOf(PaymentStatus::class, $payment->status);
     }
-} 
+}

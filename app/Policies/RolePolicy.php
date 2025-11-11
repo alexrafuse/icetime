@@ -4,36 +4,42 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\User;
+use Domain\User\Models\User;
 use Spatie\Permission\Models\Role;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-final class RolePolicy
+/**
+ * Policy for Role model authorization
+ *
+ * Only admins can manage roles.
+ * All CRUD operations require admin role.
+ */
+final class RolePolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
+    /**
+     * All role management operations require admin role
+     */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $this->isAdmin($user);
     }
 
-    public function view(User $user, Role $role): bool
+    public function view(User $user, mixed $role): bool
     {
-        return $user->hasRole('admin');
+        return $this->isAdmin($user);
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $this->isAdmin($user);
     }
 
-    public function update(User $user, Role $role): bool
+    public function update(User $user, mixed $role): bool
     {
-        return $user->hasRole('admin');
+        return $this->isAdmin($user);
     }
 
-    public function delete(User $user, Role $role): bool
+    public function delete(User $user, mixed $role): bool
     {
-        return $user->hasRole('admin');
+        return $this->isAdmin($user);
     }
-} 
+}

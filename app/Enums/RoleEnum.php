@@ -17,7 +17,7 @@ enum RoleEnum: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ADMIN => 'Administrator',
             self::STAFF => 'Staff Member',
             self::MEMBER => 'Club Member',
@@ -26,22 +26,26 @@ enum RoleEnum: string
 
     public function permissions(): array
     {
-        return match($this) {
-            self::ADMIN => PermissionEnum::values(), // Admin gets all permissions
+        return match ($this) {
+            self::ADMIN => Permission::values(), // Admin gets all permissions
             self::STAFF => [
-                PermissionEnum::VIEW_SPARES,
-                PermissionEnum::MANAGE_SPARES,
-                PermissionEnum::VIEW_BOOKINGS,
-                PermissionEnum::MANAGE_BOOKINGS,
-                PermissionEnum::VIEW_AREAS,
+                Permission::VIEW_SPARES->value,
+                Permission::MANAGE_SPARES->value,
+                Permission::VIEW_BOOKINGS->value,
+                Permission::MANAGE_BOOKINGS->value,
+                Permission::VIEW_AREAS->value,
+                Permission::VIEW_MEMBERSHIPS->value,
+                Permission::VIEW_PRODUCTS->value,
             ],
             self::MEMBER => [
-                PermissionEnum::VIEW_SPARES,
-                PermissionEnum::MANAGE_OWN_SPARE,
-                PermissionEnum::VIEW_BOOKINGS,
-                PermissionEnum::MANAGE_OWN_BOOKINGS,
-                PermissionEnum::VIEW_AREAS,
+                Permission::VIEW_SPARES->value,
+                Permission::MANAGE_OWN_SPARE->value,
+                Permission::VIEW_BOOKINGS->value,
+                Permission::MANAGE_OWN_BOOKINGS->value,
+                Permission::VIEW_AREAS->value,
+                Permission::VIEW_OWN_MEMBERSHIP->value,
+                Permission::VIEW_PRODUCTS->value,
             ],
         };
     }
-} 
+}

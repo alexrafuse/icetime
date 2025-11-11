@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\DrawDocument;
-use Filament\Resources\Resource;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use App\Filament\Resources\DrawDocumentResource\Pages\CreateDrawDocument;
 use App\Filament\Resources\DrawDocumentResource\Pages\EditDrawDocument;
 use App\Filament\Resources\DrawDocumentResource\Pages\ListDrawDocuments;
-use App\Filament\Resources\DrawDocumentResource\Pages\CreateDrawDocument;
+use Domain\Shared\Models\DrawDocument;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 final class DrawDocumentResource extends Resource
 {
     protected static ?string $model = DrawDocument::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static ?string $navigationGroup = 'Manage';
+
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
@@ -32,7 +34,7 @@ final class DrawDocumentResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) static::getModel()::count();
+        return (string) self::getModel()::count();
     }
 
     public static function getNavigationBadgeColor(): ?string
@@ -146,4 +148,4 @@ final class DrawDocumentResource extends Resource
             'edit' => EditDrawDocument::route('/{record}/edit'),
         ];
     }
-} 
+}

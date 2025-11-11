@@ -23,4 +23,4 @@ final class ListAvailabilities extends ListRecords
     {
         return view('filament.pages.availabilities.info-banner')->render();
     }
-} 
+}

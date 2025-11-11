@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\DrawDocument;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Domain\Shared\Models\DrawDocument;
+use Domain\User\Models\User;
 
-final class DrawDocumentPolicy
+/**
+ * Policy for DrawDocument model authorization
+ *
+ * Custom policy where all users can view documents,
+ * but only admin/staff can create, update, or delete them.
+ */
+final class DrawDocumentPolicy extends BasePolicy
 {
-    use HandlesAuthorization;
-
     /**
      * Allow all users to view the list of documents
      */
@@ -23,32 +26,10 @@ final class DrawDocumentPolicy
     /**
      * Allow all users to view individual documents
      */
-    public function view(User $user, DrawDocument $drawDocument): bool
+    public function view(User $user, mixed $drawDocument): bool
     {
         return true;
     }
 
-    /**
-     * Only staff and admins can create documents
-     */
-    public function create(User $user): bool
-    {
-        return $user->hasAnyRole(['admin', 'staff']);
-    }
-
-    /**
-     * Only staff and admins can update documents
-     */
-    public function update(User $user, DrawDocument $drawDocument): bool
-    {
-        return $user->hasAnyRole(['admin', 'staff']);
-    }
-
-    /**
-     * Only staff and admins can delete documents
-     */
-    public function delete(User $user, DrawDocument $drawDocument): bool
-    {
-        return $user->hasAnyRole(['admin', 'staff']);
-    }
-} 
+    // create, update, delete inherited from BasePolicy (admin/staff only)
+}

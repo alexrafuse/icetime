@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
-use App\Models\Area;
-use App\Models\Booking;
 use App\Enums\EventType;
-use Filament\Pages\Page;
-use Illuminate\Support\Carbon;
-use Filament\Support\Assets\Js;
-use Filament\Support\Assets\Css;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Vite;
-use App\Http\Resources\FullCalBooking;
 use App\Http\Resources\FullCalArea;
+use App\Http\Resources\FullCalBooking;
+use Domain\Booking\Models\Booking;
+use Domain\Facility\Models\Area;
+use Filament\Pages\Page;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Vite;
 
 final class BookingCalendar extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
+
     protected static ?string $navigationLabel = 'Calendar';
+
     protected static ?string $title = 'Booking Calendar';
+
     protected static ?int $navigationSort = 1;
+
     protected static ?string $navigationGroup = 'Members Area';
+
     protected Collection $bookings;
 
     protected static string $view = 'filament.pages.booking-calendar';
@@ -39,12 +42,10 @@ final class BookingCalendar extends Page
     {
         return true;
     }
-    
-  
 
     private function getEventColor(EventType $eventType): string
     {
-        return match($eventType) {
+        return match ($eventType) {
             EventType::PRIVATE => '#4ade80',
             EventType::LEAGUE => '#3b82f6',
             EventType::TOURNAMENT => '#f97316',
@@ -55,7 +56,7 @@ final class BookingCalendar extends Page
     {
         return [
             'bookings' => FullCalBooking::collection($this->bookings)->resolve(),
-            'areas' =>FullCalArea::collection(Area::all())->resolve(),
+            'areas' => FullCalArea::collection(Area::all())->resolve(),
         ];
     }
 

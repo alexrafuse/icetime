@@ -9,4 +9,4 @@ enum FrequencyType: string
     case DAILY = 'daily';
     case WEEKLY = 'weekly';
     case MONTHLY = 'monthly';
-} 
+}

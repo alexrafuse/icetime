@@ -18,4 +18,4 @@ final class EditDrawDocument extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-} 
+}

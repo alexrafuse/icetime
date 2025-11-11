@@ -10,4 +10,4 @@ use Filament\Resources\Pages\CreateRecord;
 final class CreatePermission extends CreateRecord
 {
     protected static string $resource = PermissionResource::class;
-} 
+}

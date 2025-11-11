@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\User;
-use App\Models\SpareAvailability;
+use Domain\Facility\Models\SpareAvailability;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SpareAvailabilityFactory extends Factory
@@ -28,4 +28,4 @@ class SpareAvailabilityFactory extends Factory
             'is_active' => $this->faker->boolean(80), // 80% chance of being active
         ];
     }
-} 
+}

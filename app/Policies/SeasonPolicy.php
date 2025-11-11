@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Policies;
+
+use App\Enums\Permission;
+use Domain\User\Models\User;
+
+class SeasonPolicy extends BasePolicy
+{
+    public function viewAny(User $user): bool
+    {
+        return $this->hasPermission($user, Permission::MANAGE_SEASONS->value)
+            || $this->isAdminOrStaff($user);
+    }
+
+    public function view(User $user, mixed $model): bool
+    {
+        return $this->hasPermission($user, Permission::MANAGE_SEASONS->value)
+            || $this->isAdminOrStaff($user);
+    }
+
+    public function create(User $user): bool
+    {
+        return $this->hasPermission($user, Permission::MANAGE_SEASONS->value)
+            || $this->isAdmin($user);
+    }
+
+    public function update(User $user, mixed $model): bool
+    {
+        return $this->hasPermission($user, Permission::MANAGE_SEASONS->value)
+            || $this->isAdmin($user);
+    }
+
+    public function delete(User $user, mixed $model): bool
+    {
+        return $this->hasPermission($user, Permission::MANAGE_SEASONS->value)
+            || $this->isAdmin($user);
+    }
+
+    public function restore(User $user, mixed $model): bool
+    {
+        return $this->hasPermission($user, Permission::MANAGE_SEASONS->value)
+            || $this->isAdmin($user);
+    }
+
+    public function forceDelete(User $user, mixed $model): bool
+    {
+        return $this->isAdmin($user);
+    }
+}

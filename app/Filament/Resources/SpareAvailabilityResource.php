@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Enums\Permission;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Models\SpareAvailability;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\SpareAvailabilityResource\Pages;
+use Domain\Facility\Models\SpareAvailability;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class SpareAvailabilityResource extends Resource
 {
     protected static ?string $model = SpareAvailability::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    protected static ?string $navigationGroup = 'Members Area';
-    protected static ?int $navigationSort = 2;
-    protected static ?string $navigationLabel = 'Spare List';
-    protected static ?string $heading = 'Spare List';
 
-    
+    protected static ?string $navigationGroup = 'Members Area';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationLabel = 'Spare List';
+
+    protected static ?string $heading = 'Spare List';
 
     public static function form(Form $form): Form
     {
@@ -78,7 +77,7 @@ class SpareAvailabilityResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                if (!auth()->user()->can('manage spares')) {
+                if (! auth()->user()->can('manage spares')) {
                     $query->where('user_id', auth()->id());
                 }
             })
@@ -114,7 +113,7 @@ class SpareAvailabilityResource extends Resource
                         'friday' => 'Friday',
                     ])
                     ->query(function ($query, array $data) {
-                        if (!empty($data['values'])) {
+                        if (! empty($data['values'])) {
                             foreach ($data['values'] as $day) {
                                 $query->where($day, true);
                             }
@@ -143,6 +142,4 @@ class SpareAvailabilityResource extends Resource
             'edit' => Pages\EditSpareAvailability::route('/{record}/edit'),
         ];
     }
-
-   
-} 
+}

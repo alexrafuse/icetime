@@ -22,10 +22,10 @@ class EditAvailability extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         // Ensure we don't save both day_of_week and date
-        if (!empty($data['date'])) {
+        if (! empty($data['date'])) {
             $data['day_of_week'] = null;
         }
 
         return $data;
     }
-} 
+}

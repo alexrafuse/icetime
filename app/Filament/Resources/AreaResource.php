@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Models\Area;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
 use App\Filament\Resources\AreaResource\Pages;
-use Filament\Tables\Actions\Action;
+use Domain\Facility\Models\Area;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-map';
+
     protected static ?string $navigationGroup = 'Manage';
+
     protected static ?int $navigationSort = 4;
 
     public static function getNavigationLabel(): string
@@ -92,4 +92,4 @@ class AreaResource extends Resource
             'edit' => Pages\EditArea::route('/{record}/edit'),
         ];
     }
-} 
+}

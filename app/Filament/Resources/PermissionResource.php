@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Spatie\Permission\Models\Permission;
 use App\Filament\Resources\PermissionResource\Pages;
-use Illuminate\Database\Eloquent\Model;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Spatie\Permission\Models\Permission;
 
 final class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-key';
+
     protected static ?string $navigationGroup = 'Access Management';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -114,11 +116,11 @@ final class PermissionResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) static::getModel()::count();
+        return (string) self::getModel()::count();
     }
 
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
-} 
+}

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\Area;
-use App\Models\Booking;
+use Domain\Booking\Models\Booking;
+use Domain\Facility\Models\Area;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -31,4 +31,4 @@ class AreaTest extends TestCase
 
         $this->assertTrue($area->bookings->contains($booking));
     }
-} 
+}

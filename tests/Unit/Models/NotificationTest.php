@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\NotificationType;
-use App\Models\Booking;
-use App\Models\Notification;
+use Domain\Booking\Models\Booking;
+use Domain\Shared\Models\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -39,4 +39,4 @@ class NotificationTest extends TestCase
 
         $this->assertInstanceOf(NotificationType::class, $notification->type);
     }
-} 
+}

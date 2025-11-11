@@ -18,4 +18,4 @@ final class EditPermission extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-} 
+}

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
+use App\Services\BookingValidationService;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Area;
-use App\Models\Booking;
-use App\Models\Availability;
+use Domain\Booking\Models\Booking;
+use Domain\Facility\Models\Area;
+use Domain\Facility\Models\Availability;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\BookingValidationService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class BookingValidationServiceTest extends TestCase
 {
@@ -23,7 +23,7 @@ class BookingValidationServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new BookingValidationService();
+        $this->service = new BookingValidationService;
     }
 
     public function test_area_availability_checks_active_status(): void
@@ -45,7 +45,7 @@ class BookingValidationServiceTest extends TestCase
     {
         $area = Area::factory()->create(['is_active' => true]);
         $date = Carbon::parse('2024-01-01'); // Monday
-        
+
         Availability::factory()->create([
             'area_id' => $area->id,
             'day_of_week' => $date->dayOfWeek,
@@ -113,14 +113,14 @@ class BookingValidationServiceTest extends TestCase
             'start_time' => $date->copy()->setTime(10, 0)->format('H:i:s'),
             'end_time' => $date->copy()->setTime(11, 0)->format('H:i:s'),
         ]);
-        
+
         // Verify the pivot relationship is created
         $area->bookings()->attach($booking->id);
-        
+
         // Verify the data is in the database
         Log::debug('Test Data:', [
             'booking' => $booking->toArray(),
-            'area_booking' => DB::table('area_booking')->where('booking_id', $booking->id)->get()->toArray()
+            'area_booking' => DB::table('area_booking')->where('booking_id', $booking->id)->get()->toArray(),
         ]);
 
         // Test overlapping time
@@ -130,7 +130,7 @@ class BookingValidationServiceTest extends TestCase
             $date->copy()->setTime(10, 30),
             $date->copy()->setTime(11, 30)
         );
-        
+
         $this->assertTrue($result, 'Should detect conflict for booking from 10:30 to 11:30 when existing booking is from 10:00 to 11:00');
     }
 
@@ -248,6 +248,4 @@ class BookingValidationServiceTest extends TestCase
             );
         }
     }
-
-   
 }

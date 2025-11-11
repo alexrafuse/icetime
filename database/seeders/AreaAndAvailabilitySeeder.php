@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Area;
-use App\Models\Availability;
 use Carbon\Carbon;
+use Domain\Facility\Models\Area;
+use Domain\Facility\Models\Availability;
 use Illuminate\Database\Seeder;
 
 class AreaAndAvailabilitySeeder extends Seeder
@@ -43,7 +43,7 @@ class AreaAndAvailabilitySeeder extends Seeder
                 'name' => $sheetName,
                 'description' => "Ice sheet {$sheetName}",
                 'is_active' => true,
-                'base_price' => 20
+                'base_price' => 20,
             ]);
             $this->createAvailabilities($area);
         }
@@ -85,4 +85,4 @@ class AreaAndAvailabilitySeeder extends Seeder
             ]);
         }
     }
-} 
+}

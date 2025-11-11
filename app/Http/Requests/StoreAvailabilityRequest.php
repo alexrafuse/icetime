@@ -6,7 +6,6 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreAvailabilityRequest extends FormRequest
 {
@@ -30,7 +29,7 @@ class StoreAvailabilityRequest extends FormRequest
     public function withValidator($validator): void
     {
         $validator->after(function ($validator) {
-            if (!$this->validateUniqueAvailability()) {
+            if (! $this->validateUniqueAvailability()) {
                 $validator->errors()->add(
                     'availability',
                     'An availability for this area and time period already exists.'
@@ -41,17 +40,18 @@ class StoreAvailabilityRequest extends FormRequest
 
     public function validateUniqueAvailability(): bool
     {
-        $query = \App\Models\Availability::where('area_id', $this->area_id);
+        $query = \Domain\Facility\Models\Availability::where('area_id', $this->area_id);
 
         if ($this->day_of_week !== null) {
             // Weekly availability - check for duplicate day_of_week
-            return !$query->where('day_of_week', $this->day_of_week)->exists();
+            return ! $query->where('day_of_week', $this->day_of_week)->exists();
         } else {
             // Specific date availability - check for same date
             $date = Carbon::parse($this->start_time)->format('Y-m-d');
-            return !$query->whereNull('day_of_week')
+
+            return ! $query->whereNull('day_of_week')
                 ->whereDate('start_time', $date)
                 ->exists();
         }
     }
-} 
+}

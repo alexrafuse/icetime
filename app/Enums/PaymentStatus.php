@@ -12,10 +12,10 @@ enum PaymentStatus: string
 
     public function getColor(): string
     {
-        return match($this) {
+        return match ($this) {
             self::PAID => 'success',
             self::UNPAID => 'danger',
             self::PENDING => 'warning',
         };
     }
-} 
+}

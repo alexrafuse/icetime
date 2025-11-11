@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Models\User;
-use App\Models\SpareAvailability;
+use Domain\Facility\Models\SpareAvailability;
+use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -49,7 +49,7 @@ class SpareAvailabilityTest extends TestCase
             'monday' => false,
             'tuesday' => true,
         ]);
-        
+
         $mondaySpare = SpareAvailability::factory()->create([
             'monday' => true,
             'tuesday' => false,
@@ -60,4 +60,4 @@ class SpareAvailabilityTest extends TestCase
         $this->assertCount(1, $mondaySpares);
         $this->assertTrue($mondaySpares->first()->is($mondaySpare));
     }
-} 
+}

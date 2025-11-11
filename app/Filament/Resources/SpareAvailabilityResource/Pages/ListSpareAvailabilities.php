@@ -18,4 +18,4 @@ class ListSpareAvailabilities extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-} 
+}

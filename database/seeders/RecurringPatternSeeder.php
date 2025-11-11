@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\RecurringPattern;
-use App\Models\User;
 use App\Enums\FrequencyType;
 use Carbon\Carbon;
+use Domain\Booking\Models\RecurringPattern;
 use Illuminate\Database\Seeder;
 
 class RecurringPatternSeeder extends Seeder
 {
     public function run(): void
     {
-     
+
         // $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
         // collect($daysOfWeek)->each(function ($day) {

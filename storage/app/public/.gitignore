@@ -1,2 +1,6 @@
 *
+!draws/
+!draws/2025/
+!draws/*/*
 !.gitignore
+

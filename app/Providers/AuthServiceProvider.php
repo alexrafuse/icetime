@@ -2,21 +2,21 @@
 
 namespace App\Providers;
 
-use App\Models\Area;
-use App\Models\Availability;
-use App\Models\Booking;
-use App\Models\DrawDocument;
-use App\Models\RecurringPattern;
 use App\Policies\AreaPolicy;
 use App\Policies\AvailabilityPolicy;
 use App\Policies\BookingPolicy;
 use App\Policies\DrawDocumentPolicy;
-use App\Policies\RecurringPatternPolicy;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Policies\RolePolicy;
 use App\Policies\PermissionPolicy;
+use App\Policies\RecurringPatternPolicy;
+use App\Policies\RolePolicy;
+use Domain\Booking\Models\Booking;
+use Domain\Booking\Models\RecurringPattern;
+use Domain\Facility\Models\Area;
+use Domain\Facility\Models\Availability;
+use Domain\Shared\Models\DrawDocument;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -42,4 +42,4 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
     }
-} 
+}

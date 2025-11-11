@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Area;
+use Domain\Facility\Models\Area;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AreaFactory extends Factory
@@ -17,4 +17,4 @@ class AreaFactory extends Factory
             'is_active' => true,
         ];
     }
-} 
+}

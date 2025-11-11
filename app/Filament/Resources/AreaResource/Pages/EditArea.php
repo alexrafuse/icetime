@@ -18,4 +18,4 @@ class EditArea extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-} 
+}

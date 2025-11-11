@@ -6,21 +6,18 @@ namespace App\Filament\Resources\BookingResource\Pages;
 
 use App\Filament\Resources\BookingResource;
 use App\Services\RecurringBookingService;
-use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
 final class CreateBooking extends CreateRecord
 {
     protected static string $resource = BookingResource::class;
 
-   
-
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
-    
 
     protected function afterFill(): void
     {
@@ -30,22 +27,21 @@ final class CreateBooking extends CreateRecord
             'areas' => array_filter(explode(',', request()->query('areas', ''))),
             'date' => request()->query('date'),
             'start_time' => request()->query('start_time'),
-            'end_time' => request()->query('end_time'), 
+            'end_time' => request()->query('end_time'),
         ]);
         // Runs after the form fields are populated with their default values.
-                
 
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        if (!isset($data['user_id'])) {
+        if (! isset($data['user_id'])) {
             $data['user_id'] = auth()->id();
         }
+
         return $data;
     }
 
-  
     protected function handleRecordCreation(array $data): Model
     {
         // Handle recurring booking
@@ -54,7 +50,7 @@ final class CreateBooking extends CreateRecord
 
             // Remove recurring flag from booking data
             unset($data['is_recurring']);
-            
+
             $bookingData = [
                 'user_id' => $data['user_id'],
                 'start_time' => $data['start_time'],
@@ -81,11 +77,11 @@ final class CreateBooking extends CreateRecord
                 ->title('Recurring bookings created')
                 ->body("Created {$bookings->count()} bookings successfully.")
                 ->send();
-            
+
             return $bookings->first();
         }
 
         // Handle non-recurring booking
-        return static::getModel()::create($data);
+        return self::getModel()::create($data);
     }
-} 
+}

@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\NotificationType;
-use App\Models\Booking;
-use App\Models\Notification;
+use Domain\Booking\Models\Booking;
+use Domain\Shared\Models\Notification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NotificationFactory extends Factory
@@ -20,4 +20,4 @@ class NotificationFactory extends Factory
             'sent_at' => $this->faker->dateTime,
         ];
     }
-} 
+}

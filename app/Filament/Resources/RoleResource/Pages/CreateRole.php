@@ -10,4 +10,4 @@ use Filament\Resources\Pages\CreateRecord;
 final class CreateRole extends CreateRecord
 {
     protected static string $resource = RoleResource::class;
-} 
+}

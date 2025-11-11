@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Area;
-use App\Models\User;
-use App\Models\Booking;
 use App\Enums\EventType;
 use App\Enums\FrequencyType;
 use App\Enums\PaymentStatus;
-use App\Models\RecurringPattern;
-use Carbon\Carbon;
-use Illuminate\Database\Seeder;
 use App\Services\RecurringBookingService;
+use Carbon\Carbon;
+use Domain\Booking\Models\Booking;
+use Domain\Booking\Models\RecurringPattern;
+use Domain\Facility\Models\Area;
+use Domain\User\Models\User;
+use Illuminate\Database\Seeder;
 
 class LeagueSeeder extends Seeder
 {
@@ -49,18 +49,18 @@ class LeagueSeeder extends Seeder
 
         [
             'title' => 'Daytime Drop-In',
-            'days_of_week' => [1, 2, 3, 4, 5,],
+            'days_of_week' => [1, 2, 3, 4, 5],
             'start_time' => '10:00',
             'end_time' => '12:30',
             'sheets' => ['Sheet A', 'Sheet B', 'Sheet C'],
-        ]
+        ],
     ];
 
     public function run(): void
     {
         $systemUser = User::first();
-        
-        if (!$systemUser) {
+
+        if (! $systemUser) {
             throw new \RuntimeException('System user not found');
         }
 
@@ -69,11 +69,10 @@ class LeagueSeeder extends Seeder
         foreach (self::LEAGUES as $leagueData) {
             // Get the areas (sheets) for this league
             $areas = Area::whereIn('name', $leagueData['sheets'])->get();
-            
+
             if ($areas->count() !== count($leagueData['sheets'])) {
                 throw new \RuntimeException("Not all sheets found for {$leagueData['title']}");
             }
-
 
             // Create the primary booking
             $booking = Booking::create([

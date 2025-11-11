@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\RecurringPattern;
 use App\Services\RecurringBookingService;
+use Domain\Booking\Models\RecurringPattern;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
 class GenerateRecurringBookings extends Command
 {
     protected $signature = 'bookings:generate-recurring {--days=30}';
+
     protected $description = 'Generate recurring bookings for the specified number of days ahead';
 
     public function handle(RecurringBookingService $bookingService): int
     {
         $daysAhead = (int) $this->option('days');
         $endDate = Carbon::now()->addDays($daysAhead);
-        
+
         $patterns = RecurringPattern::query()
             ->where('end_date', '>=', Carbon::now())
-            ->with(['booking' => ['areas']])
+            ->with(['primaryBooking' => ['areas']])
             ->get();
 
         $this->info("Found {$patterns->count()} active recurring patterns.");
@@ -29,8 +30,8 @@ class GenerateRecurringBookings extends Command
 
         foreach ($patterns as $pattern) {
             $originalBooking = $pattern->booking;
-            
-            if (!$originalBooking) {
+
+            if (! $originalBooking) {
                 continue;
             }
 
@@ -60,6 +61,7 @@ class GenerateRecurringBookings extends Command
         }
 
         $this->info("Successfully created {$bookingsCreated} recurring bookings.");
+
         return Command::SUCCESS;
     }
-} 
+}

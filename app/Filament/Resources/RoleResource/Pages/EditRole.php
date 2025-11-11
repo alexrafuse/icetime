@@ -18,4 +18,4 @@ final class EditRole extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-} 
+}

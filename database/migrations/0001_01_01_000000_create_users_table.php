@@ -18,6 +18,37 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
+            // Curling.io profile data
+            $table->string('curlingio_profile_id')->nullable()->unique()->index();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('middle_initial', 10)->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('gender', 50)->nullable();
+
+            // Contact information
+            $table->string('phone', 20)->nullable();
+            $table->string('secondary_phone', 20)->nullable();
+            $table->string('secondary_email')->nullable();
+
+            // Address
+            $table->string('street_address')->nullable();
+            $table->string('unit', 50)->nullable();
+            $table->string('city')->nullable();
+            $table->string('province_state')->nullable();
+            $table->string('postal_zip_code', 20)->nullable();
+
+            // Emergency contact
+            $table->string('emergency_contact_name')->nullable();
+            $table->string('emergency_contact_phone', 20)->nullable();
+
+            // Privacy
+            $table->boolean('show_contact_info')->default(false);
+
+            // Membership status
+            $table->string('current_membership_status')->nullable()->index();
+
             $table->timestamps();
         });
 
