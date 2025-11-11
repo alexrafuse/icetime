@@ -46,11 +46,11 @@
                         </div>
 
                         {{-- Bookings --}}
-                        <div class="p-2 space-y-2 min-h-[200px]">
+                        <div class="p-1.5 space-y-1.5 min-h-[180px]">
                             @forelse ($day['bookings'] as $booking)
                                 <div
-                                    class="rounded-lg p-2 border-l-4 transition-all duration-200 hover:shadow-md"
-                                    style="border-left-color: {{ $booking['color'] }}; background-color: {{ $booking['color'] }}15;"
+                                    class="rounded-md p-1.5 border-l-3 transition-all duration-200 hover:shadow-sm"
+                                    style="border-left-color: {{ $booking['color'] }}; background-color: {{ $booking['color'] }}20;"
                                 >
                                     {{-- Time Range --}}
                                     <div class="flex items-center gap-1 text-xs font-semibold text-gray-900 dark:text-gray-100">
@@ -63,17 +63,17 @@
 
                                     {{-- Title --}}
                                     @if ($booking['title'])
-                                        <div class="mt-1 text-xs font-medium text-gray-800 dark:text-gray-200 line-clamp-1">
+                                        <div class="mt-0.5 text-[11px] font-medium text-gray-800 dark:text-gray-200 line-clamp-1">
                                             {{ $booking['title'] }}
                                         </div>
                                     @endif
 
                                     {{-- Areas --}}
                                     @if ($booking['areas'])
-                                        <div class="mt-1 flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                                        <div class="mt-0.5 flex items-center gap-0.5 text-[10px] text-gray-600 dark:text-gray-400">
                                             <x-filament::icon
                                                 icon="heroicon-m-map-pin"
-                                                class="h-3 w-3"
+                                                class="h-2.5 w-2.5"
                                             />
                                             <span class="line-clamp-1">{{ $booking['areas'] }}</span>
                                         </div>
@@ -81,19 +81,19 @@
 
                                     {{-- User Name --}}
                                     @if ($booking['user_name'])
-                                        <div class="mt-1 flex items-center gap-1 text-xs text-gray-600 dark:text-gray-400">
+                                        <div class="mt-0.5 flex items-center gap-0.5 text-[10px] text-gray-600 dark:text-gray-400">
                                             <x-filament::icon
                                                 icon="heroicon-m-user"
-                                                class="h-3 w-3"
+                                                class="h-2.5 w-2.5"
                                             />
                                             <span class="line-clamp-1">{{ $booking['user_name'] }}</span>
                                         </div>
                                     @endif
 
                                     {{-- Event Type Badge --}}
-                                    <div class="mt-1">
+                                    <div class="mt-0.5">
                                         <span
-                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                                            class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium"
                                             style="background-color: {{ $booking['color'] }}; color: white;"
                                         >
                                             {{ $booking['event_type']->getLabel() }}
@@ -101,12 +101,12 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="flex flex-col items-center justify-center h-[180px] text-center">
+                                <div class="flex flex-col items-center justify-center h-[160px] text-center">
                                     <x-filament::icon
                                         icon="heroicon-o-calendar"
-                                        class="h-8 w-8 text-gray-400 dark:text-gray-600 mb-2"
+                                        class="h-6 w-6 text-gray-600 dark:text-gray-600 mb-1.5"
                                     />
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    <p class="text-xs text-gray-500 dark:text-gray-500">
                                         No bookings
                                     </p>
                                 </div>
