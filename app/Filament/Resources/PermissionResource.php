@@ -113,14 +113,4 @@ final class PermissionResource extends Resource
     {
         return 'Permissions 🔒';
     }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) self::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'danger';
-    }
 }

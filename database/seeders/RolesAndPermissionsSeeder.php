@@ -42,6 +42,8 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::VIEW_BOOKINGS,
             Permission::MANAGE_BOOKINGS,
             Permission::VIEW_AREAS,
+            Permission::VIEW_USERS,
+            Permission::MANAGE_USERS,
             Permission::VIEW_MEMBERSHIPS,
             Permission::VIEW_PRODUCTS,
         ]);

@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Compact sidebar styling */
+.fi-sidebar {
+    @apply !text-sm;
+}
+
+.fi-sidebar-nav {
+    @apply !gap-2;
+}
+
+.fi-sidebar-nav-item {
+    @apply !px-2 !py-1.5;
+}
+
+.fi-sidebar-group {
+    @apply !gap-1;
+}
+
+.fi-sidebar-group-label {
+    @apply !px-2 !py-1 !text-xs;
+}
+
+.fi-sidebar-group-items {
+    @apply !gap-0.5;
+}

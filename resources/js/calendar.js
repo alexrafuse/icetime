@@ -4,22 +4,34 @@ import dayGrid from '@fullcalendar/daygrid';
 import timeGrid from '@fullcalendar/timegrid';
 import interaction from '@fullcalendar/interaction';
 
-function initializeCalendar(bookings, areas) {
+function initializeCalendar(bookings, areas, viewMode = 'area') {
     const calendarEl = document.getElementById('calendar');
-    
-    console.log('Initializing calendar with:', { bookings, areas });
-    
-    const calendar = new Calendar(calendarEl, {
+
+    console.log('Initializing calendar with:', { bookings, areas, viewMode });
+
+    // Determine initial view and configuration based on viewMode
+    const isAreaView = viewMode === 'area';
+    const initialView = isAreaView ? 'resourceTimeGridWeek' : 'timeGridWeek';
+
+    // Base configuration shared by both views
+    const baseConfig = {
         plugins: [resourceTimeGrid, dayGrid, timeGrid, interaction],
-        initialView: 'resourceTimeGridWeek',
+        initialView: initialView,
         events: bookings,
-        resources: areas,
         slotMinTime: '08:00:00',
         slotMaxTime: '23:00:00',
+        slotDuration: '00:30:00',
+        slotLabelInterval: '01:00:00',
+        expandRows: false,
+        contentHeight: 'auto',
+        height: 'auto',
+        allDaySlot: false,
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'resourceTimeGridDay,resourceTimeGridWeek,dayGridMonth'
+            right: isAreaView
+                ? 'resourceTimeGridDay,resourceTimeGridWeek,dayGridMonth'
+                : 'timeGridDay,timeGridWeek,dayGridMonth'
         },
         selectable: true,
         selectMirror: true,
@@ -33,7 +45,7 @@ function initializeCalendar(bookings, areas) {
             const bookingButton = document.getElementById('create-booking-button');
             if (bookingButton) {
                 // Get the resource ID from the selection
-                const resourceId = info.resource ? info.resource.id : 
+                const resourceId = info.resource ? info.resource.id :
                                   (info.resources && info.resources.length > 0 ? info.resources[0].id : '');
 
                 // Update the button's data attributes
@@ -45,7 +57,7 @@ function initializeCalendar(bookings, areas) {
                 // Only show the button if we have a resource selected
                 if (resourceId) {
                     bookingButton.classList.remove('hidden');
-                    
+
                     // Update to use the Filament admin route
                     bookingButton.addEventListener('click', () => {
                         const params = new URLSearchParams({
@@ -54,8 +66,8 @@ function initializeCalendar(bookings, areas) {
                             end_time: bookingButton.dataset.endTime,
                             areas: bookingButton.dataset.resourceId
                         });
-                        
-                        window.location.href = `/admin/bookings/create?${params.toString()}`;
+
+                        window.location.href = `/bookings/create?${params.toString()}`;
                     }, { once: true });
                 }
             }
@@ -68,24 +80,16 @@ function initializeCalendar(bookings, areas) {
             }
         },
         selectOverlap: false,
-        resourceAreaWidth: '150px',
-        resourceAreaColumns: [{
-            field: 'title',
-            headerContent: 'Areas'
-        }],
-        datesAboveResources: true,
-        resourceOrder: 'title',
-        resourcesInitiallyExpanded: true,
         eventClick: function(info) {
             // Extract the booking ID from the event
             const bookingId = info.event.id;
             // Navigate to the booking's show page in Filament
-            window.location.href = `/admin/bookings/${bookingId}/edit`;
+            window.location.href = `/bookings/${bookingId}/edit`;
         },
         eventDidMount: function(info) {
             const event = info.event;
             const props = event.extendedProps;
-            
+
             info.el.title = `
                 ${event.title}
                 Type: ${props.event_type}
@@ -94,15 +98,39 @@ function initializeCalendar(bookings, areas) {
                 ${props.setup_instructions ? `Setup: ${props.setup_instructions}` : ''}
             `.trim();
         },
-    });
+        viewDidMount: function(info) {
+            // Add "Booking Calendar: " prefix to the title
+            const titleElement = document.querySelector('.fc-toolbar-title');
+            if (titleElement && !titleElement.textContent.startsWith('Booking Calendar:')) {
+                titleElement.textContent = 'Booking Calendar: ' + titleElement.textContent;
+            }
+        },
+        datesSet: function(info) {
+            // Update title when dates change (navigation)
+            const titleElement = document.querySelector('.fc-toolbar-title');
+            if (titleElement && !titleElement.textContent.startsWith('Booking Calendar:')) {
+                titleElement.textContent = 'Booking Calendar: ' + titleElement.textContent;
+            }
+        },
+    };
 
-    // // Add click handler for debugging
-    // calendarEl.addEventListener('mousedown', (e) => {
-    //     console.log('Mouse down on calendar:', e);
-    // });
+    // Add resource-specific configuration only for Area View
+    if (isAreaView) {
+        baseConfig.resources = areas;
+        baseConfig.resourceAreaWidth = '100px';
+        baseConfig.resourceAreaColumns = [{
+            field: 'title',
+            headerContent: 'Areas'
+        }];
+        baseConfig.datesAboveResources = true;
+        baseConfig.resourceOrder = 'title';
+        baseConfig.resourcesInitiallyExpanded = true;
+    }
+
+    const calendar = new Calendar(calendarEl, baseConfig);
 
     calendar.render();
     return calendar;
 }
 
-window.initializeCalendar = initializeCalendar; 
+window.initializeCalendar = initializeCalendar;

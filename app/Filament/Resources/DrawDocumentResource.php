@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 final class DrawDocumentResource extends Resource
@@ -23,24 +24,16 @@ final class DrawDocumentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Manage';
+    protected static ?string $navigationGroup = 'Members Area';
 
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
     {
-        return 'Draw Documents 🔒';
+        return 'Draw Schedules';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) self::getModel()::count();
-    }
 
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'danger';
-    }
 
     public static function form(Form $form): Form
     {
@@ -120,9 +113,9 @@ final class DrawDocumentResource extends Resource
                     ->url(fn (DrawDocument $record): string => $record->getFileUrl())
                     ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make()
-                    ->visible(fn () => auth()->user()->hasAnyRole(['admin', 'staff'])),
+                    ->visible(fn () => Auth::user()->hasAnyRole(['admin', 'staff'])),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn () => auth()->user()->hasAnyRole(['admin', 'staff']))
+                    ->visible(fn () => Auth::user()->hasAnyRole(['admin', 'staff']))
                     ->before(function (DrawDocument $record) {
                         Storage::disk('public')->delete($record->file_path);
                     }),
@@ -130,7 +123,7 @@ final class DrawDocumentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn () => auth()->user()->hasAnyRole(['admin', 'staff']))
+                        ->visible(fn () => Auth::user()->hasAnyRole(['admin', 'staff']))
                         ->before(function (Collection $records) {
                             $records->each(function ($record) {
                                 Storage::disk('public')->delete($record->file_path);

@@ -27,16 +27,6 @@ final class RoleResource extends Resource
         return 'Roles 🔒';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) self::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'danger';
-    }
-
     public static function form(Form $form): Form
     {
         return $form

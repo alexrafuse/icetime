@@ -154,11 +154,16 @@ class CalendarImportSeeder extends Seeder
      */
     private function determineAreas($sheets, ?string $sheetCount, string $title): array
     {
+        // If sheet_count is undefined/empty, assign all sheets
+        if (empty($sheetCount)) {
+            return $sheets->all();
+        }
+
         // Parse sheet count from CSV
-        $count = 1; // Default to 1 sheet
-        if (! empty($sheetCount) && is_numeric($sheetCount)) {
+        $count = 1; // Default to 1 sheet if parsing fails
+        if (is_numeric($sheetCount)) {
             $count = (int) $sheetCount;
-        } elseif (! empty($sheetCount) && preg_match('/(\d+)/', $sheetCount, $matches)) {
+        } elseif (preg_match('/(\d+)/', $sheetCount, $matches)) {
             $count = (int) $matches[1];
         }
 

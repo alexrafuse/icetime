@@ -35,16 +35,6 @@ final class RecurringPatternResource extends Resource
         return 'Recurring Patterns 🔒';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) self::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'danger';
-    }
-
     public static function getRelations(): array
     {
         return [];

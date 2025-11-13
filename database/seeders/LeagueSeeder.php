@@ -187,10 +187,11 @@ class LeagueSeeder extends Seeder
             }
 
             // Create the primary booking
+            $startDate = Carbon::parse('2025-10-10');
             $booking = Booking::create([
                 'user_id' => $systemUser->id,
                 'title' => $leagueData['title'],
-                'date' => Carbon::now()->next(collect($leagueData['days_of_week'])->first())->format('Y-m-d'),
+                'date' => $startDate->copy()->next(collect($leagueData['days_of_week'])->first())->format('Y-m-d'),
                 'start_time' => $leagueData['start_time'],
                 'end_time' => $leagueData['end_time'],
                 'event_type' => $leagueData['event_type'],
@@ -205,8 +206,8 @@ class LeagueSeeder extends Seeder
                 'title' => $leagueData['title'],
                 'frequency' => FrequencyType::WEEKLY,
                 'interval' => 1,
-                'start_date' => Carbon::now(),
-                'end_date' => Carbon::now()->addYear(),
+                'start_date' => $startDate,
+                'end_date' => $startDate->copy()->addYear(),
                 'days_of_week' => $leagueData['days_of_week'],
                 'excluded_dates' => [],
                 'primary_booking_id' => $booking->id,

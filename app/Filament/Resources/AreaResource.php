@@ -25,16 +25,6 @@ class AreaResource extends Resource
         return 'Areas 🔒';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'danger';
-    }
-
     public static function table(Table $table): Table
     {
         return $table

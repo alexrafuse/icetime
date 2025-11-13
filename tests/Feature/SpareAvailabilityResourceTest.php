@@ -38,7 +38,32 @@ class SpareAvailabilityResourceTest extends TestCase
         $this->staff->assignRole('staff');
     }
 
-    public function test_member_can_only_see_their_own_availability(): void
+    public function test_member_can_see_active_spares_and_their_own(): void
+    {
+        $this->actingAs($this->member);
+
+        $ownInactiveAvailability = SpareAvailability::factory()->create([
+            'user_id' => $this->member->id,
+            'is_active' => false,
+        ]);
+
+        $otherActiveAvailability = SpareAvailability::factory()->create([
+            'is_active' => true,
+        ]);
+
+        $otherInactiveAvailability = SpareAvailability::factory()->create([
+            'is_active' => false,
+        ]);
+
+        $response = $this->get(route('filament.admin.resources.spare-availabilities.index'));
+
+        $response->assertSuccessful();
+        $response->assertSee($ownInactiveAvailability->user->name);
+        $response->assertSee($otherActiveAvailability->user->name);
+        $response->assertDontSee($otherInactiveAvailability->user->name);
+    }
+
+    public function test_member_can_only_edit_their_own_availability(): void
     {
         $this->actingAs($this->member);
 
@@ -48,11 +73,25 @@ class SpareAvailabilityResourceTest extends TestCase
 
         $otherAvailability = SpareAvailability::factory()->create();
 
-        $response = $this->get(route('filament.admin.resources.spare-availabilities.index'));
+        Livewire::test(SpareAvailabilityResource\Pages\EditSpareAvailability::class, [
+            'record' => $ownAvailability->id,
+        ])
+            ->fillForm([
+                'notes' => 'Updated by member',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
 
-        $response->assertSuccessful();
-        $response->assertSee($ownAvailability->user->name);
-        $response->assertDontSee($otherAvailability->user->name);
+        $this->assertDatabaseHas('spare_availabilities', [
+            'id' => $ownAvailability->id,
+            'notes' => 'Updated by member',
+        ]);
+
+        // Member cannot edit other's availability
+        Livewire::test(SpareAvailabilityResource\Pages\EditSpareAvailability::class, [
+            'record' => $otherAvailability->id,
+        ])
+            ->assertForbidden();
     }
 
     public function test_staff_can_manage_all_availabilities(): void
@@ -75,6 +114,4 @@ class SpareAvailabilityResourceTest extends TestCase
             'notes' => 'Updated by staff',
         ]);
     }
-
-    // ... add more role-based tests
 }

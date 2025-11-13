@@ -13,6 +13,7 @@ use Filament\Pages\Page;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Vite;
 
 final class BookingCalendar extends Page
@@ -33,9 +34,56 @@ final class BookingCalendar extends Page
 
     public function mount(): void
     {
-        $this->bookings = Booking::query()
-            ->with(['areas', 'user'])
+        // Load bookings without area relationship to avoid N+1
+        $bookings = Booking::query()
+            ->with('user:id,name')
+            ->whereBetween('date', [
+                now()->subMonth(),
+                now()->addMonths(3),
+            ])
+            ->select([
+                'id',
+                'title',
+                'date',
+                'start_time',
+                'end_time',
+                'event_type',
+                'payment_status',
+                'setup_instructions',
+                'user_id',
+            ])
             ->get();
+
+        // Load all areas once
+        $allAreas = Area::select('id', 'name')
+            ->where('is_active', true)
+            ->get()
+            ->keyBy('id');
+
+        // Load pivot data separately - this is much more efficient
+        $pivotData = DB::table('area_booking')
+            ->whereIn('booking_id', $bookings->pluck('id'))
+            ->get()
+            ->groupBy('booking_id');
+
+        // Manually attach area data to bookings
+        $this->bookings = $bookings->map(function ($booking) use ($pivotData, $allAreas) {
+            $bookingAreas = $pivotData->get($booking->id, collect());
+            $areaIds = $bookingAreas->pluck('area_id');
+
+            $booking->area_ids = $areaIds->toArray();
+            $booking->area_names = $areaIds
+                ->map(fn ($id) => $allAreas->get($id)?->name)
+                ->filter()
+                ->implode(', ');
+
+            return $booking;
+        });
+    }
+
+    public function getHeading(): string
+    {
+        return '';
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -57,7 +105,12 @@ final class BookingCalendar extends Page
     {
         return [
             'bookings' => FullCalBooking::collection($this->bookings)->resolve(),
-            'areas' => FullCalArea::collection(Area::all())->resolve(),
+            'areas' => FullCalArea::collection(
+                Area::select('id', 'name')
+                    ->where('is_active', true)
+                    ->orderBy('name')
+                    ->get()
+            )->resolve(),
         ];
     }
 

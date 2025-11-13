@@ -19,6 +19,22 @@ class DatabaseSeeder extends Seeder
             'name' => 'Alex Rafuse',
             'email' => 'hello@stacked.dev',
             'password' => bcrypt('123456'),
+            'first_name' => 'Alex',
+            'last_name' => 'Rafuse',
+            'middle_initial' => null,
+            'date_of_birth' => '1990-01-01',
+            'gender' => 'Male',
+            'phone' => '555-123-4567',
+            'secondary_phone' => null,
+            'secondary_email' => null,
+            'street_address' => '123 Main Street',
+            'unit' => null,
+            'city' => 'Halifax',
+            'province_state' => 'NS',
+            'postal_zip_code' => 'B3H 1A1',
+            'emergency_contact_name' => 'Emergency Contact',
+            'emergency_contact_phone' => '555-987-6543',
+            'show_contact_info' => true,
         ]);
 
         $this->call([
@@ -27,11 +43,12 @@ class DatabaseSeeder extends Seeder
             ProductsSeeder::class,
             AreaAndAvailabilitySeeder::class,
             // RecurringPatternSeeder::class,
-            LeagueSeeder::class,
             // BookingSeeder::class,
             MembershipSeeder::class,
             DrawDocumentsSeeder::class,
             CalendarImportSeeder::class,
+            LeagueSeeder::class,
+
         ]);
     }
 }

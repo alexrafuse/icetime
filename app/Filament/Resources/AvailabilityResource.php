@@ -28,16 +28,6 @@ class AvailabilityResource extends Resource
         return 'Availabilities 🔒';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'danger';
-    }
-
     public static function form(Form $form): Form
     {
         return $form

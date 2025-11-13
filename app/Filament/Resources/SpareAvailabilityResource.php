@@ -100,7 +100,10 @@ class SpareAvailabilityResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 if (! auth()->user()->can('manage spares')) {
-                    $query->where('user_id', auth()->id());
+                    $query->where(function ($q) {
+                        $q->where('is_active', true)
+                            ->orWhere('user_id', auth()->id());
+                    });
                 }
             })
             ->columns([
@@ -146,9 +149,10 @@ class SpareAvailabilityResource extends Resource
                     ->label('Active Status'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn (SpareAvailability $record) => auth()->user()->can('update', $record)),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(fn () => auth()->user()->can('manage spares')),
+                    ->visible(fn (SpareAvailability $record) => auth()->user()->can('delete', $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
