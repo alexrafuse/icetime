@@ -7,6 +7,7 @@ namespace App\Domain\Membership\Actions;
 use App\Domain\Membership\Data\ProfileData;
 use App\Domain\Membership\Services\BulkImportBuffer;
 use App\Domain\Membership\Services\ImportDataCache;
+use App\Enums\RoleEnum;
 use Domain\User\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -47,6 +48,7 @@ final class CreateUserFromProfileAction
 
         if ($existingUser) {
             $this->updateUserProfile($existingUser, $profile);
+            $this->ensureUserHasRole($existingUser);
 
             return $existingUser;
         }
@@ -82,6 +84,7 @@ final class CreateUserFromProfileAction
 
         if ($existingUser) {
             $this->updateUserProfile($existingUser, $profile);
+            $this->ensureUserHasRole($existingUser);
 
             return $existingUser;
         }
@@ -92,7 +95,7 @@ final class CreateUserFromProfileAction
 
     private function createNewUser(ProfileData $profile): User
     {
-        return User::query()->create([
+        $user = User::query()->create([
             'name' => $profile->full_name,
             'email' => $profile->email,
             'password' => Hash::make(Str::random(32)),
@@ -115,6 +118,11 @@ final class CreateUserFromProfileAction
             'emergency_contact_phone' => $profile->emergency_phone,
             'show_contact_info' => $profile->show_contact_info,
         ]);
+
+        // Assign member role to new users so they can access spares and manage their own bookings
+        $user->assignRole(RoleEnum::MEMBER->value);
+
+        return $user;
     }
 
     /**
@@ -182,6 +190,16 @@ final class CreateUserFromProfileAction
         } else {
             // Fallback to immediate update for non-import usage
             $user->update($updates);
+        }
+    }
+
+    /**
+     * Ensure user has the member role assigned (for existing users without roles)
+     */
+    private function ensureUserHasRole(User $user): void
+    {
+        if ($user->roles()->count() === 0) {
+            $user->assignRole(RoleEnum::MEMBER->value);
         }
     }
 }
