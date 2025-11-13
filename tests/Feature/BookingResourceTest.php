@@ -170,34 +170,14 @@ class BookingResourceTest extends TestCase
         ]);
     }
 
-    public function test_member_can_list_bookings(): void
+    public function test_member_cannot_list_bookings(): void
     {
         $this->actingAs($this->member);
 
-        $ownBooking = Booking::factory()->create([
-            'user_id' => $this->member->id,
-            'title' => 'My Booking',
-            'date' => now()->addDays(1)->format('Y-m-d'),
-            'start_time' => now()->setTime(10, 0, 0),
-            'end_time' => now()->setTime(12, 0, 0),
-            'event_type' => EventType::PRIVATE,
-            'payment_status' => PaymentStatus::PENDING,
-        ]);
-
-        $otherBooking = Booking::factory()->create([
-            'user_id' => $this->admin->id,
-            'title' => 'Admin Booking',
-            'date' => now()->addDays(1)->format('Y-m-d'),
-            'start_time' => now()->setTime(14, 0, 0),
-            'end_time' => now()->setTime(16, 0, 0),
-            'event_type' => EventType::LEAGUE,
-            'payment_status' => PaymentStatus::PAID,
-        ]);
-
         $response = $this->get(route('filament.admin.resources.bookings.index'));
 
-        $response->assertSuccessful();
-        // Members should only see their own bookings based on policy
+        $response->assertForbidden();
+        // Members cannot access the bookings resource at all
     }
 
     // ========================

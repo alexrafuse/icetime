@@ -8,13 +8,15 @@ use App\Domain\Membership\Enums\MembershipStatus;
 use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use App\Domain\Membership\Models\UserProduct;
+use App\Domain\Membership\Services\BulkImportBuffer;
 use Carbon\Carbon;
 use Domain\User\Models\User;
 
 final class AssignProductToUserAction
 {
     public function __construct(
-        private readonly RecalculateMembershipStatusAction $recalculateStatus
+        private readonly ?RecalculateMembershipStatusAction $recalculateStatus = null,
+        private readonly ?BulkImportBuffer $buffer = null,
     ) {}
 
     public function execute(
@@ -40,8 +42,21 @@ final class AssignProductToUserAction
             'metadata' => $metadata,
         ]);
 
-        if ($product->isMembership() && $status === MembershipStatus::ACTIVE) {
+        // Track affected user for bulk status recalculation at end of import
+        // Note: We don't buffer membership creation - it's already created above
+        // We only track the user ID for later status recalculation
+        if ($this->buffer) {
+            $this->buffer->trackAffectedUser($user->id);
+        }
+
+        // Skip expensive status recalculation during bulk import (will be done at end)
+        if (! $this->buffer && $product->isMembership() && $status === MembershipStatus::ACTIVE && $this->recalculateStatus) {
             $this->recalculateStatus->execute($user, $season);
+        }
+
+        // Skip expensive fresh() query during bulk import
+        if ($this->buffer) {
+            return $userProduct;
         }
 
         return $userProduct->fresh(['product', 'season']);

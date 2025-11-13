@@ -12,10 +12,17 @@ class EditSpareAvailability extends EditRecord
 {
     protected static string $resource = SpareAvailabilityResource::class;
 
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+            ->label('Save Preferences');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn () => auth()->user()->can('manage spares')),
         ];
     }
 }

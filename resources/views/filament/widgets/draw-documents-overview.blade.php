@@ -1,15 +1,15 @@
 <x-filament-widgets::widget>
     <x-filament::section>
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-bold tracking-tight">
-                Current Draw Documents
+            <h2 class="text-2xl font-bold tracking-tight mb-2">
+                Draw Schedules
             </h2>
             <a href="{{ route('filament.admin.resources.draw-documents.index') }}" class="text-primary-600 hover:text-primary-500">
                 Manage Draws →
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid gap-4" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
             @foreach ($days as $dayNumber => $dayName)
                 <div class="relative group">
                     <div @class([
@@ -20,7 +20,7 @@
                             <h3 class="text-base font-semibold leading-6">
                                 {{ $dayName }}
                             </h3>
-                            
+
                             @if (isset($currentDraws[$dayNumber]))
                                 <div class="flex items-center gap-1">
                                     <div class="h-2 w-2 rounded-full bg-success-500"></div>
@@ -37,14 +37,14 @@
                         @if (isset($currentDraws[$dayNumber]))
                             @foreach ($currentDraws[$dayNumber] as $draw)
                                 <div class="mt-3">
-                                    <a 
-                                        href="{{ $draw->getFileUrl() }}" 
+                                    <a
+                                        href="{{ $draw->getFileUrl() }}"
                                         target="_blank"
-                                        class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-500 transition-colors duration-200"
+                                        class="inline-flex items-center gap-1 text-md text-primary-600 hover:text-primary-500 transition-colors duration-200"
                                     >
                                         <x-filament::icon
                                             icon="heroicon-m-document-text"
-                                            class="h-4 w-4"
+                                            class="h-6 w-6"
                                         />
                                         <span>{{ $draw->title }}</span>
                                     </a>
@@ -62,4 +62,4 @@
             @endforeach
         </div>
     </x-filament::section>
-</x-filament-widgets::widget> 
+</x-filament-widgets::widget>

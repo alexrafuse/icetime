@@ -12,7 +12,7 @@ final class DrawDocumentsOverview extends Widget
 {
     protected static string $view = 'filament.widgets.draw-documents-overview';
 
-    protected static ?int $sort = 3;
+    protected int|string|array $columnSpan = 'full';
 
     protected function getViewData(): array
     {

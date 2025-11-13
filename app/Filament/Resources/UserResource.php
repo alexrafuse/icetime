@@ -9,6 +9,7 @@ use App\Domain\Membership\Enums\MembershipStatus;
 use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use App\Enums\Permission;
+use App\Enums\RoleEnum;
 use App\Filament\Resources\UserResource\Pages;
 use Domain\User\Models\User;
 use Filament\Forms;
@@ -20,6 +21,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
 final class UserResource extends Resource
 {
@@ -194,12 +197,15 @@ final class UserResource extends Resource
                     ->label('Membership Status')
                     ->options(MembershipStatus::class)
                     ->native(false)
-                    ->visible(fn () => auth()->user()->can(Permission::VIEW_MEMBERSHIPS->value)),
+                    ->visible(fn () => Auth::user()->can(Permission::VIEW_MEMBERSHIPS->value)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Impersonate::make()
+                    ->redirectTo(route('filament.admin.pages.dashboard'))
+                    ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

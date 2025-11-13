@@ -19,14 +19,14 @@ class AreaAndAvailabilitySeeder extends Seeder
             'Sheet D',
         ],
         'Other Areas' => [
-            'Front Hall',
-            'Front Kitchen',
-            'Back Kitchen',
+            'Lounge',
+            'Kitchen',
+
         ],
     ];
 
     private const WEEKDAY_HOURS = [
-        'start' => '10:00',
+        'start' => '09:00',
         'end' => '22:00',
     ];
 

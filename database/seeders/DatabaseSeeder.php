@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             // BookingSeeder::class,
             MembershipSeeder::class,
             DrawDocumentsSeeder::class,
+            CalendarImportSeeder::class,
         ]);
     }
 }

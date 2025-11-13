@@ -246,32 +246,34 @@ class BookingFlowIntegrationTest extends TestCase
 
     public function test_validation_service_allows_booking_within_availability(): void
     {
-        $bookingData = [
-            'area_id' => $this->area->id,
-            'date' => now()->next('Monday')->format('Y-m-d'),
-            'start_time' => now()->setTime(10, 0, 0),
-            'end_time' => now()->setTime(12, 0, 0),
-        ];
+        $date = now()->next('Monday');
+        $startTime = now()->setTime(10, 0, 0);
+        $endTime = now()->setTime(12, 0, 0);
 
-        $result = $this->validationService->validateBooking($bookingData);
+        $result = $this->validationService->validateBooking(
+            collect([$this->area]),
+            $date,
+            $startTime,
+            $endTime
+        );
 
-        $this->assertTrue($result['success']);
-        $this->assertEmpty($result['errors']);
+        $this->assertTrue($result);
     }
 
     public function test_validation_service_rejects_booking_outside_availability(): void
     {
-        $bookingData = [
-            'area_id' => $this->area->id,
-            'date' => now()->next('Monday')->format('Y-m-d'),
-            'start_time' => now()->setTime(23, 0, 0), // Outside availability (8-22)
-            'end_time' => now()->setTime(23, 30, 0),
-        ];
+        $date = now()->next('Monday');
+        $startTime = now()->setTime(23, 0, 0); // Outside availability (9-22)
+        $endTime = now()->setTime(23, 30, 0);
 
-        $result = $this->validationService->validateBooking($bookingData);
+        $result = $this->validationService->validateBooking(
+            collect([$this->area]),
+            $date,
+            $startTime,
+            $endTime
+        );
 
-        $this->assertFalse($result['success']);
-        $this->assertNotEmpty($result['errors']);
+        $this->assertFalse($result);
     }
 
     public function test_validation_service_detects_conflicts(): void
@@ -288,17 +290,18 @@ class BookingFlowIntegrationTest extends TestCase
         $existingBooking->areas()->attach($this->area->id);
 
         // Try to book overlapping time
-        $conflictingData = [
-            'area_id' => $this->area->id,
-            'date' => now()->next('Monday')->format('Y-m-d'),
-            'start_time' => now()->setTime(11, 0, 0), // Overlaps with 10-12
-            'end_time' => now()->setTime(13, 0, 0),
-        ];
+        $date = now()->next('Monday');
+        $startTime = now()->setTime(11, 0, 0); // Overlaps with 10-12
+        $endTime = now()->setTime(13, 0, 0);
 
-        $result = $this->validationService->validateBooking($conflictingData);
+        $result = $this->validationService->validateBooking(
+            collect([$this->area]),
+            $date,
+            $startTime,
+            $endTime
+        );
 
-        $this->assertFalse($result['success']);
-        $this->assertStringContainsString('conflict', strtolower(implode(' ', $result['errors'])));
+        $this->assertFalse($result);
     }
 
     public function test_validation_service_allows_adjacent_bookings(): void
@@ -315,17 +318,18 @@ class BookingFlowIntegrationTest extends TestCase
         $existingBooking->areas()->attach($this->area->id);
 
         // Book immediately after (no overlap)
-        $adjacentData = [
-            'area_id' => $this->area->id,
-            'date' => now()->next('Monday')->format('Y-m-d'),
-            'start_time' => now()->setTime(12, 0, 0), // Starts exactly when previous ends
-            'end_time' => now()->setTime(14, 0, 0),
-        ];
+        $date = now()->next('Monday');
+        $startTime = now()->setTime(12, 0, 0); // Starts exactly when previous ends
+        $endTime = now()->setTime(14, 0, 0);
 
-        $result = $this->validationService->validateBooking($adjacentData);
+        $result = $this->validationService->validateBooking(
+            collect([$this->area]),
+            $date,
+            $startTime,
+            $endTime
+        );
 
-        $this->assertTrue($result['success']);
-        $this->assertEmpty($result['errors']);
+        $this->assertTrue($result);
     }
 
     public function test_validation_excludes_current_booking_when_editing(): void
@@ -342,35 +346,37 @@ class BookingFlowIntegrationTest extends TestCase
         $booking->areas()->attach($this->area->id);
 
         // Try to update the same booking (should not conflict with itself)
-        $updateData = [
-            'area_id' => $this->area->id,
-            'date' => now()->next('Monday')->format('Y-m-d'),
-            'start_time' => now()->setTime(10, 0, 0),
-            'end_time' => now()->setTime(12, 30, 0), // Extended end time
-            'exclude_booking_id' => $booking->id,
-        ];
+        $date = now()->next('Monday');
+        $startTime = now()->setTime(10, 0, 0);
+        $endTime = now()->setTime(12, 30, 0); // Extended end time
 
-        $result = $this->validationService->validateBooking($updateData);
+        $result = $this->validationService->validateBooking(
+            collect([$this->area]),
+            $date,
+            $startTime,
+            $endTime,
+            $booking->id // Exclude current booking
+        );
 
-        $this->assertTrue($result['success']);
-        $this->assertEmpty($result['errors']);
+        $this->assertTrue($result);
     }
 
     public function test_validation_checks_area_is_active(): void
     {
         $inactiveArea = Area::factory()->create(['is_active' => false]);
 
-        $bookingData = [
-            'area_id' => $inactiveArea->id,
-            'date' => now()->next('Monday')->format('Y-m-d'),
-            'start_time' => now()->setTime(10, 0, 0),
-            'end_time' => now()->setTime(12, 0, 0),
-        ];
+        $date = now()->next('Monday');
+        $startTime = now()->setTime(10, 0, 0);
+        $endTime = now()->setTime(12, 0, 0);
 
-        $result = $this->validationService->validateBooking($bookingData);
+        $result = $this->validationService->validateBooking(
+            collect([$inactiveArea]),
+            $date,
+            $startTime,
+            $endTime
+        );
 
-        $this->assertFalse($result['success']);
-        $this->assertStringContainsString('inactive', strtolower(implode(' ', $result['errors'])));
+        $this->assertFalse($result);
     }
 
     // ========================

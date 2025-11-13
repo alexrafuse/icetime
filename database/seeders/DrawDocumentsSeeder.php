@@ -13,28 +13,28 @@ class DrawDocumentsSeeder extends Seeder
     {
         $drawDocuments = [
             [
-                'title' => 'Tuesday League Draw 2025-2026',
+                'title' => 'Tuesday - Oct-Dec 2025',
                 'day_of_week' => 2,
                 'file_path' => 'draws/2025/tuesday.pdf',
                 'valid_from' => '2025-10-01',
                 'valid_until' => '2026-03-31',
             ],
             [
-                'title' => 'Wednesday League Draw 2025-2026',
+                'title' => 'Wednesday - Oct-Dec 2025',
                 'day_of_week' => 3,
                 'file_path' => 'draws/2025/wednesday.pdf',
                 'valid_from' => '2025-10-01',
                 'valid_until' => '2026-03-31',
             ],
             [
-                'title' => 'Thursday League Draw 2025-2026',
+                'title' => 'Thursday - Oct-Dec 2025',
                 'day_of_week' => 4,
                 'file_path' => 'draws/2025/thursday.pdf',
                 'valid_from' => '2025-10-01',
                 'valid_until' => '2026-03-31',
             ],
             [
-                'title' => 'Friday League Draw 2025-2026',
+                'title' => 'Friday - Oct-Dec 2025',
                 'day_of_week' => 5,
                 'file_path' => 'draws/2025/friday.pdf',
                 'valid_from' => '2025-10-01',

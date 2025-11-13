@@ -11,14 +11,12 @@ class ProductPolicy extends BasePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $this->hasPermission($user, Permission::VIEW_PRODUCTS->value)
-            || $this->isAdminOrStaff($user);
+        return $this->isAdminOrStaff($user);
     }
 
     public function view(User $user, mixed $model): bool
     {
-        return $this->hasPermission($user, Permission::VIEW_PRODUCTS->value)
-            || $this->isAdminOrStaff($user);
+        return $this->isAdminOrStaff($user);
     }
 
     public function create(User $user): bool

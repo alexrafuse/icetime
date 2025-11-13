@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Domain\Booking\Models\Booking;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 
 final class WeekCalendarOverview extends Widget
 {
@@ -18,16 +20,35 @@ final class WeekCalendarOverview extends Widget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected function getViewData(): array
+    #[Locked]
+    public int $weekOffset = 0;
+
+    public function nextWeek(): void
     {
-        $startOfWeek = now()->startOfWeek();
-        $endOfWeek = now()->endOfWeek();
+        $this->weekOffset++;
+    }
+
+    public function previousWeek(): void
+    {
+        $this->weekOffset--;
+    }
+
+    public function goToCurrentWeek(): void
+    {
+        $this->weekOffset = 0;
+    }
+
+    #[Computed]
+    public function weekDays(): array
+    {
+        $startOfWeek = now()->addWeeks($this->weekOffset)->startOfWeek();
+        $endOfWeek = now()->addWeeks($this->weekOffset)->endOfWeek();
 
         $bookings = Booking::query()
             ->with(['areas', 'user'])
             ->whereBetween('date', [$startOfWeek, $endOfWeek])
-            ->orderBy('date')
-            ->orderBy('start_time')
+            ->orderBy('date', 'asc')
+            ->orderBy('start_time', 'asc')
             ->get();
 
         // Group bookings by day
@@ -51,9 +72,16 @@ final class WeekCalendarOverview extends Widget
             ];
         }
 
-        return [
-            'weekDays' => $weekDays,
-        ];
+        return $weekDays;
+    }
+
+    #[Computed]
+    public function weekDateRange(): string
+    {
+        $startOfWeek = now()->addWeeks($this->weekOffset)->startOfWeek();
+        $endOfWeek = now()->addWeeks($this->weekOffset)->endOfWeek();
+
+        return $startOfWeek->format('M j').' - '.$endOfWeek->format('M j, Y');
     }
 
     private function formatBookings(Collection $bookings): array
@@ -78,6 +106,7 @@ final class WeekCalendarOverview extends Widget
             EventType::PRIVATE => '#4ade80',
             EventType::LEAGUE => '#3b82f6',
             EventType::TOURNAMENT => '#f97316',
+            EventType::DROP_IN => '#06b6d4',
         };
     }
 }

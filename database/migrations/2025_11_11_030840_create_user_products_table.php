@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('status');
             $table->string('purchase_reference')->nullable();
             $table->json('metadata')->nullable();
+            $table->integer('refund_amount_cents')->nullable();
+            $table->text('refund_reason')->nullable();
+            $table->timestamp('refunded_at')->nullable();
             $table->timestamps();
 
             $table->index(['user_id', 'season_id']);

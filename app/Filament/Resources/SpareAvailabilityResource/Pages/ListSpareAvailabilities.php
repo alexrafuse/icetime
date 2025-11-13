@@ -14,8 +14,16 @@ class ListSpareAvailabilities extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        $userSpareAvailability = auth()->user()->spareAvailability;
+
         return [
-            Actions\CreateAction::make(),
+            Actions\Action::make('editMyPreferences')
+                ->label('Edit My Preferences')
+                ->icon('heroicon-o-pencil')
+                ->url(fn () => SpareAvailabilityResource::getUrl('edit', ['record' => $userSpareAvailability]))
+                ->visible(fn () => $userSpareAvailability !== null),
+            Actions\CreateAction::make()
+                ->visible(fn () => $userSpareAvailability === null),
         ];
     }
 }

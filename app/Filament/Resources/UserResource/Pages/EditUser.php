@@ -7,6 +7,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use STS\FilamentImpersonate\Pages\Actions\Impersonate;
 
 final class EditUser extends EditRecord
 {
@@ -16,6 +17,7 @@ final class EditUser extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Impersonate::make()->record($this->getRecord()),
         ];
     }
 }

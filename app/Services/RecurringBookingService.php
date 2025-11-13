@@ -179,8 +179,10 @@ final class RecurringBookingService
             return false;
         }
 
-        $startDate = Carbon::parse($pattern['start_date']);
-        $weeksSinceStart = $date->diffInWeeks($startDate);
+        // Use start of week to ensure all days in the same calendar week are treated consistently
+        $startDate = Carbon::parse($pattern['start_date'])->startOfWeek();
+        $currentWeekStart = $date->copy()->startOfWeek();
+        $weeksSinceStart = $currentWeekStart->diffInWeeks($startDate);
 
         return $weeksSinceStart % ($pattern['interval'] ?? 1) === 0 &&
                in_array($date->dayOfWeek, $pattern['days_of_week']);

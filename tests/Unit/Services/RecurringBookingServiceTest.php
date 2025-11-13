@@ -12,6 +12,7 @@ use App\Services\RecurringBookingService;
 use Domain\Booking\Models\Booking;
 use Domain\Facility\Models\Area;
 use Domain\Facility\Models\Availability;
+use Domain\Shared\ValueObjects\DayOfWeek;
 use Domain\User\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
@@ -56,7 +57,11 @@ class RecurringBookingServiceTest extends TestCase
             'interval' => 1,
             'start_date' => '2024-04-01', // Monday
             'end_date' => '2024-04-30',
-            'days_of_week' => [1, 3, 5], // Mon, Wed, Fri
+            'days_of_week' => [
+                DayOfWeek::MONDAY->value,
+                DayOfWeek::WEDNESDAY->value,
+                DayOfWeek::FRIDAY->value,
+            ],
             'excluded_dates' => [],
         ];
 
@@ -64,7 +69,11 @@ class RecurringBookingServiceTest extends TestCase
 
         $this->assertCount(13, $dates); // 13 occurrences of Mon/Wed/Fri in April 2024
         foreach ($dates as $date) {
-            $this->assertTrue(in_array($date->dayOfWeek, [1, 3, 5]));
+            $this->assertTrue(in_array($date->dayOfWeek, [
+                DayOfWeek::MONDAY->value,
+                DayOfWeek::WEDNESDAY->value,
+                DayOfWeek::FRIDAY->value,
+            ]));
         }
     }
 
@@ -98,7 +107,7 @@ class RecurringBookingServiceTest extends TestCase
             'interval' => 1,
             'start_date' => '2024-04-01', // Monday
             'end_date' => '2024-04-15',
-            'days_of_week' => [1], // Mondays only
+            'days_of_week' => [DayOfWeek::MONDAY->value],
             'excluded_dates' => [],
         ];
 

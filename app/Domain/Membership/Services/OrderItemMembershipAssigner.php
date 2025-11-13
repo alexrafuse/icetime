@@ -13,7 +13,6 @@ use App\Domain\Membership\Enums\MembershipStatus;
 use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use App\Domain\Membership\Models\UserProduct;
-use Illuminate\Support\Facades\DB;
 
 final class OrderItemMembershipAssigner
 {
@@ -22,6 +21,7 @@ final class OrderItemMembershipAssigner
         private readonly AssignProductToUserAction $assignProductToUser,
         private readonly CreateCoupleFromOrderItemAction $createCoupleFromOrderItem,
         private readonly ?ImportDataCache $cache = null,
+        private readonly ?BulkImportBuffer $buffer = null,
     ) {}
 
     public function assign(
@@ -48,24 +48,22 @@ final class OrderItemMembershipAssigner
         $stats->incrementCoupleMemberships();
         $logger->logCoupleMembership();
 
-        DB::transaction(function () use ($orderItem, $product, $season, $stats, $logger) {
-            $this->createCoupleFromOrderItem->execute($orderItem, $product, $season);
+        $this->createCoupleFromOrderItem->execute($orderItem, $product, $season);
 
-            $stats->incrementImportedUsers(2);
-            $stats->incrementImportedMemberships(2);
+        $stats->incrementImportedUsers(2);
+        $stats->incrementImportedMemberships(2);
 
-            $logger->logPrimaryMember(
-                $orderItem->profile->first_name,
-                $orderItem->profile->last_name,
-                $orderItem->profile->email
-            );
+        $logger->logPrimaryMember(
+            $orderItem->profile->first_name,
+            $orderItem->profile->last_name,
+            $orderItem->profile->email
+        );
 
-            $logger->logPartnerMember(
-                $orderItem->second_member_profile->first_name,
-                $orderItem->second_member_profile->last_name,
-                $orderItem->second_member_profile->email
-            );
-        });
+        $logger->logPartnerMember(
+            $orderItem->second_member_profile->first_name,
+            $orderItem->second_member_profile->last_name,
+            $orderItem->second_member_profile->email
+        );
     }
 
     private function assignSingleMembership(
@@ -77,29 +75,27 @@ final class OrderItemMembershipAssigner
     ): void {
         $logger->logIndividualMembership();
 
-        DB::transaction(function () use ($orderItem, $product, $season, $stats, $logger) {
-            $user = $this->createUserFromProfile->execute($orderItem->profile);
+        $user = $this->createUserFromProfile->execute($orderItem->profile);
 
-            // Check cache first if available, otherwise query database
-            $existing = $this->cache
-                ? $this->cache->findExistingMembership($user->id, $product->id, $season->id)
-                : UserProduct::query()
-                    ->where('user_id', $user->id)
-                    ->where('product_id', $product->id)
-                    ->where('season_id', $season->id)
-                    ->first();
+        // Check cache first if available, otherwise query database
+        $existing = $this->cache
+            ? $this->cache->findExistingMembership($user->id, $product->id, $season->id)
+            : UserProduct::query()
+                ->where('user_id', $user->id)
+                ->where('product_id', $product->id)
+                ->where('season_id', $season->id)
+                ->first();
 
-            if ($existing) {
-                $this->updateExistingMembership($existing, $orderItem, $stats, $logger);
-            } else {
-                $membership = $this->createNewMembership($user, $product, $season, $orderItem, $stats, $logger);
+        if ($existing) {
+            $this->updateExistingMembership($existing, $orderItem, $stats, $logger);
+        } else {
+            $membership = $this->createNewMembership($user, $product, $season, $orderItem, $stats, $logger);
 
-                // Add to cache for future lookups
-                if ($this->cache && $membership) {
-                    $this->cache->addMembership($membership);
-                }
+            // Add to cache for future lookups
+            if ($this->cache && $membership) {
+                $this->cache->addMembership($membership);
             }
-        });
+        }
     }
 
     private function updateExistingMembership(
@@ -108,7 +104,7 @@ final class OrderItemMembershipAssigner
         ImportStats $stats,
         ImportLogger $logger
     ): void {
-        $existing->update([
+        $updates = [
             'status' => MembershipStatus::ACTIVE,
             'assigned_at' => $orderItem->created_at,
             'purchase_reference' => $orderItem->getPurchaseReference(),
@@ -118,7 +114,15 @@ final class OrderItemMembershipAssigner
                 'item_name' => $orderItem->item_name,
                 'updated_at' => now()->toDateTimeString(),
             ]),
-        ]);
+        ];
+
+        // Use bulk buffer if available for better performance during imports
+        if ($this->buffer) {
+            $this->buffer->addMembershipForUpdate($existing->id, $updates);
+        } else {
+            // Fallback to immediate update for non-import usage
+            $existing->update($updates);
+        }
 
         $stats->incrementUpdatedMemberships();
         $logger->logUserUpdated(

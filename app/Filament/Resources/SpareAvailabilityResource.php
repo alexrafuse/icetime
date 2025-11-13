@@ -38,38 +38,60 @@ class SpareAvailabilityResource extends Resource
                     ->preload()
                     ->default(fn () => auth()->id())
                     ->visible(fn () => auth()->user()->can('manage spares')),
-                Forms\Components\Grid::make(5)
+                Forms\Components\Section::make('Availability')
                     ->schema([
-                        Forms\Components\Toggle::make('monday')
-                            ->inline(false),
-                        Forms\Components\Toggle::make('tuesday')
-                            ->inline(false),
-                        Forms\Components\Toggle::make('wednesday')
-                            ->inline(false),
-                        Forms\Components\Toggle::make('thursday')
-                            ->inline(false),
-                        Forms\Components\Toggle::make('friday')
-                            ->inline(false),
+                        Forms\Components\Toggle::make('is_active')
+                            ->label('I am available to spare')
+                            ->default(true)
+                            ->inline(false)
+                            ->live(),
+                        Forms\Components\Grid::make(4)
+                            ->schema([
+                                Forms\Components\Toggle::make('monday')
+                                    ->label('Monday Night')
+                                    ->inline(false)
+                                    ->visible(false),
+                                Forms\Components\Toggle::make('tuesday')
+                                    ->label('Tuesday Night')
+                                    ->inline(false),
+                                Forms\Components\Toggle::make('wednesday')
+                                    ->label('Wednesday Night')
+                                    ->inline(false),
+                                Forms\Components\Toggle::make('thursday')
+                                    ->label('Thursday Night')
+                                    ->inline(false),
+                                Forms\Components\Toggle::make('friday')
+                                    ->label('Friday Night')
+                                    ->inline(false),
+                            ])
+                            ->visible(fn (Forms\Get $get) => $get('is_active')),
                     ]),
-                Forms\Components\TextInput::make('phone_number')
-                    ->tel()
-                    ->nullable(),
-                Forms\Components\Grid::make(2)
+                Forms\Components\Section::make('Contact Preference')
                     ->schema([
-                        Forms\Components\Toggle::make('sms_enabled')
-                            ->label('Available via SMS')
-                            ->inline(false),
-                        Forms\Components\Toggle::make('call_enabled')
-                            ->label('Available via Phone Call')
-                            ->inline(false),
+                        Forms\Components\TextInput::make('phone_number')
+                            ->tel()
+                            ->nullable(),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Toggle::make('sms_enabled')
+                                    ->label('Available via SMS')
+                                    ->inline(false),
+                                Forms\Components\Toggle::make('call_enabled')
+                                    ->label('Available via Phone Call')
+                                    ->inline(false),
+                            ]),
                     ]),
-                Forms\Components\Textarea::make('notes')
-                    ->nullable()
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Active')
-                    ->default(true)
-                    ->inline(false),
+                Forms\Components\Section::make('Additional Information')
+                    ->description('Share any relevant details that will help teams find the right spare.')
+                    ->schema([
+                        Forms\Components\Textarea::make('notes')
+                            ->label('Notes')
+                            ->placeholder('e.g., Preferred position (Lead, Second, Third, Skip), curling experience, availability constraints, etc.')
+                            ->helperText('Include your preferred position, years of experience, skill level, or any scheduling constraints.')
+                            ->rows(4)
+                            ->nullable()
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 
@@ -125,7 +147,8 @@ class SpareAvailabilityResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn () => auth()->user()->can('manage spares')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

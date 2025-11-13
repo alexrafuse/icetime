@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Membership\Actions;
 
 use App\Domain\Membership\Data\ProfileData;
+use App\Domain\Membership\Services\BulkImportBuffer;
 use App\Domain\Membership\Services\ImportDataCache;
 use Domain\User\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,7 @@ final class CreateUserFromProfileAction
 {
     public function __construct(
         private readonly ?ImportDataCache $cache = null,
+        private readonly ?BulkImportBuffer $buffer = null,
     ) {}
 
     public function execute(ProfileData $profile): User
@@ -174,6 +176,12 @@ final class CreateUserFromProfileAction
 
         $updates['show_contact_info'] = $profile->show_contact_info;
 
-        $user->update($updates);
+        // Use bulk buffer if available for better performance during imports
+        if ($this->buffer) {
+            $this->buffer->addUserForUpdate($user, $updates);
+        } else {
+            // Fallback to immediate update for non-import usage
+            $user->update($updates);
+        }
     }
 }

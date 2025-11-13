@@ -49,6 +49,7 @@ final class BookingCalendar extends Page
             EventType::PRIVATE => '#4ade80',
             EventType::LEAGUE => '#3b82f6',
             EventType::TOURNAMENT => '#f97316',
+            EventType::DROP_IN => '#06b6d4',
         };
     }
 

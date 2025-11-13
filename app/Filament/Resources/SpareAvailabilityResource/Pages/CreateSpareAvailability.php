@@ -11,6 +11,20 @@ class CreateSpareAvailability extends CreateRecord
 {
     protected static string $resource = SpareAvailabilityResource::class;
 
+    protected ?string $heading = 'Set your spare availability';
+
+    protected function getCreateFormAction(): \Filament\Actions\Action
+    {
+        return parent::getCreateFormAction()
+            ->label('Save Preferences');
+    }
+
+    protected function getCreateAnotherFormAction(): \Filament\Actions\Action
+    {
+        return parent::getCreateAnotherFormAction()
+            ->hidden();
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Set the user_id if not already set (for users without 'manage spares' permission)

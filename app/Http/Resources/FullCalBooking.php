@@ -36,11 +36,13 @@ final class FullCalBooking extends JsonResource
                 EventType::PRIVATE => '#4ade80',
                 EventType::LEAGUE => '#3b82f6',
                 EventType::TOURNAMENT => '#f97316',
+                EventType::DROP_IN => '#06b6d4',
             },
             'borderColor' => match ($this->event_type) {
                 EventType::PRIVATE => '#4ade80',
                 EventType::LEAGUE => '#3b82f6',
                 EventType::TOURNAMENT => '#f97316',
+                EventType::DROP_IN => '#06b6d4',
             },
             'resourceIds' => $this->areas->pluck('id'),
             'extendedProps' => [

@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Enums\FrequencyType;
 use Domain\Booking\Models\Booking;
 use Domain\Booking\Models\RecurringPattern;
+use Domain\Shared\ValueObjects\DayOfWeek;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -25,7 +26,11 @@ class RecurringPatternFactory extends Factory
             'interval' => fake()->numberBetween(1, 3),
             'start_date' => $startDate,
             'end_date' => $startDate->copy()->addMonths(3),
-            'days_of_week' => [1, 3, 5], // Mon, Wed, Fri
+            'days_of_week' => [
+                DayOfWeek::MONDAY->value,
+                DayOfWeek::WEDNESDAY->value,
+                DayOfWeek::FRIDAY->value,
+            ],
             'excluded_dates' => [],
         ];
     }

@@ -12,47 +12,158 @@ use Carbon\Carbon;
 use Domain\Booking\Models\Booking;
 use Domain\Booking\Models\RecurringPattern;
 use Domain\Facility\Models\Area;
+use Domain\Shared\ValueObjects\DayOfWeek;
 use Domain\User\Models\User;
 use Illuminate\Database\Seeder;
 
 class LeagueSeeder extends Seeder
 {
+    private const AREA_GROUPS = [
+        'Ice Sheets' => [
+            'Sheet A',
+            'Sheet B',
+            'Sheet C',
+            'Sheet D',
+        ],
+        'Other Areas' => [
+            'Lounge',
+            'Kitchen',
+        ],
+    ];
+
+    private const ALL_AREAS = [
+        'Sheet A',
+        'Sheet B',
+        'Sheet C',
+        'Sheet D',
+        'Lounge',
+        'Kitchen',
+    ];
+
     private const LEAGUES = [
+        // Daytime Drop-In
         [
-            'title' => 'Tuesday Night Competitive',
-            'days_of_week' => [2], // Tuesday
-            'start_time' => '18:30',
-            'end_time' => '20:30',
-            'sheets' => ['Sheet A', 'Sheet B', 'Sheet C', 'Sheet D'],
-        ],
-        [
-            'title' => 'Wednesday Night Social',
-            'days_of_week' => [3], // Wednesday
-            'start_time' => '18:00',
-            'end_time' => '21:00',
-            'sheets' => ['Sheet A', 'Sheet B', 'Sheet C', 'Sheet D'],
-        ],
-        [
-            'title' => 'Thursday Night Competitive',
-            'days_of_week' => [4], // Thursday
-            'start_time' => '18:30',
-            'end_time' => '20:30',
-            'sheets' => ['Sheet A', 'Sheet B', 'Sheet C', 'Sheet D'],
-        ],
-        [
-            'title' => 'Friday Night Social',
-            'days_of_week' => [5], // Friday
-            'start_time' => '18:00',
-            'end_time' => '21:00',
-            'sheets' => ['Sheet A', 'Sheet B', 'Sheet C', 'Sheet D'],
+            'title' => 'Mixed Drop-In',
+            'days_of_week' => [
+                DayOfWeek::MONDAY->value,
+                DayOfWeek::TUESDAY->value,
+                DayOfWeek::WEDNESDAY->value,
+                DayOfWeek::THURSDAY->value,
+            ],
+            'start_time' => '09:30',
+            'end_time' => '11:30',
+            'areas' => 'all',
+            'event_type' => EventType::DROP_IN,
         ],
 
+        // Evening leagues
         [
-            'title' => 'Daytime Drop-In',
-            'days_of_week' => [1, 2, 3, 4, 5],
-            'start_time' => '10:00',
-            'end_time' => '12:30',
-            'sheets' => ['Sheet A', 'Sheet B', 'Sheet C'],
+            'title' => 'Monday Drop-In Curling',
+            'days_of_week' => [DayOfWeek::MONDAY->value],
+            'start_time' => '18:30',
+            'end_time' => '20:00',
+            'areas' => 'all',
+            'event_type' => EventType::DROP_IN,
+        ],
+        [
+            'title' => 'Tuesday Night Competitive',
+            'days_of_week' => [DayOfWeek::TUESDAY->value],
+            'start_time' => '18:30',
+            'end_time' => '20:30',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Wednesday Night Social - Early',
+            'days_of_week' => [DayOfWeek::WEDNESDAY->value],
+            'start_time' => '18:30',
+            'end_time' => '20:00',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Wednesday Night Social - Late',
+            'days_of_week' => [DayOfWeek::WEDNESDAY->value],
+            'start_time' => '20:15',
+            'end_time' => '21:45',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Thursday Night Competitive - Early',
+            'days_of_week' => [DayOfWeek::THURSDAY->value],
+            'start_time' => '18:30',
+            'end_time' => '20:30',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Thursday Night Competitive - Late',
+            'days_of_week' => [DayOfWeek::THURSDAY->value],
+            'start_time' => '20:30',
+            'end_time' => '22:30',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Friday Night Social - Early',
+            'days_of_week' => [DayOfWeek::FRIDAY->value],
+            'start_time' => '18:30',
+            'end_time' => '20:00',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Friday Night Social - Late',
+            'days_of_week' => [DayOfWeek::FRIDAY->value],
+            'start_time' => '20:15',
+            'end_time' => '21:45',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+
+        // Stick curling leagues
+        [
+            'title' => 'Monday Stick Team/League',
+            'days_of_week' => [DayOfWeek::MONDAY->value],
+            'start_time' => '13:00',
+            'end_time' => '15:30',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Wednesday Stick Team/League',
+            'days_of_week' => [DayOfWeek::WEDNESDAY->value],
+            'start_time' => '13:00',
+            'end_time' => '15:30',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+        [
+            'title' => 'Thursday Stick Social/Sign Up',
+            'days_of_week' => [DayOfWeek::THURSDAY->value],
+            'start_time' => '13:00',
+            'end_time' => '15:30',
+            'areas' => 'all',
+            'event_type' => EventType::DROP_IN,
+        ],
+        [
+            'title' => 'Friday Stick Team/League',
+            'days_of_week' => [DayOfWeek::FRIDAY->value],
+            'start_time' => '13:00',
+            'end_time' => '15:30',
+            'areas' => 'all',
+            'event_type' => EventType::LEAGUE,
+        ],
+
+        // Green League
+        [
+            'title' => 'Green League Drop-in',
+            'days_of_week' => [DayOfWeek::MONDAY->value],
+            'start_time' => '19:35',
+            'end_time' => '21:00',
+            'areas' => 'all',
+            'event_type' => EventType::DROP_IN,
         ],
     ];
 
@@ -67,11 +178,12 @@ class LeagueSeeder extends Seeder
         $service = app(RecurringBookingService::class);
 
         foreach (self::LEAGUES as $leagueData) {
-            // Get the areas (sheets) for this league
-            $areas = Area::whereIn('name', $leagueData['sheets'])->get();
+            // Get the areas for this league
+            $areaNames = $leagueData['areas'] === 'all' ? self::ALL_AREAS : $leagueData['areas'];
+            $areas = Area::whereIn('name', $areaNames)->get();
 
-            if ($areas->count() !== count($leagueData['sheets'])) {
-                throw new \RuntimeException("Not all sheets found for {$leagueData['title']}");
+            if ($areas->count() !== count($areaNames)) {
+                throw new \RuntimeException("Not all areas found for {$leagueData['title']}");
             }
 
             // Create the primary booking
@@ -81,7 +193,7 @@ class LeagueSeeder extends Seeder
                 'date' => Carbon::now()->next(collect($leagueData['days_of_week'])->first())->format('Y-m-d'),
                 'start_time' => $leagueData['start_time'],
                 'end_time' => $leagueData['end_time'],
-                'event_type' => EventType::LEAGUE,
+                'event_type' => $leagueData['event_type'],
                 'payment_status' => PaymentStatus::PAID,
             ]);
 

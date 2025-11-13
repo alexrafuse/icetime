@@ -7,10 +7,12 @@ namespace App\Domain\Membership\Actions;
 use App\Domain\Membership\Data\ImportStats;
 use App\Domain\Membership\Data\OrderItemImportData;
 use App\Domain\Membership\Models\Season;
+use App\Domain\Membership\Services\BulkImportBuffer;
 use App\Domain\Membership\Services\ImportDataCache;
 use App\Domain\Membership\Services\ImportLogger;
 use App\Domain\Membership\Services\OrderItemMembershipAssigner;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 final class ImportCurlingIoOrderItemsAction
@@ -23,6 +25,8 @@ final class ImportCurlingIoOrderItemsAction
 
     private ?ImportDataCache $cache = null;
 
+    private ?BulkImportBuffer $buffer = null;
+
     public function execute(string $csvFilePath): array
     {
         $season = $this->getCurrentSeason();
@@ -30,9 +34,12 @@ final class ImportCurlingIoOrderItemsAction
         // Create cache to load all data into memory
         $this->cache = new ImportDataCache($season);
 
-        // Manually construct actions with cache
-        $createUserAction = new CreateUserFromProfileAction($this->cache);
-        $assignProductAction = app(AssignProductToUserAction::class);
+        // Create bulk import buffer for batch operations
+        $this->buffer = new BulkImportBuffer;
+
+        // Manually construct actions with cache and buffer
+        $createUserAction = new CreateUserFromProfileAction($this->cache, $this->buffer);
+        $assignProductAction = new AssignProductToUserAction(null, $this->buffer);
 
         $this->matchProduct = new MatchProductFromOrderItemAction($this->cache);
         $this->processAdjustment = new ProcessAdjustmentAction;
@@ -43,7 +50,8 @@ final class ImportCurlingIoOrderItemsAction
                 createUserAction: $createUserAction,
                 assignProductAction: $assignProductAction
             ),
-            cache: $this->cache
+            cache: $this->cache,
+            buffer: $this->buffer
         );
 
         $logger = $this->createLogger($csvFilePath);
@@ -52,7 +60,19 @@ final class ImportCurlingIoOrderItemsAction
         $logger->writeHeader($csvFilePath, $season->name, $season->id);
 
         $rows = $this->readCsvFile($csvFilePath);
-        $this->processRows($rows, $season, $stats, $logger);
+
+        // Wrap all processing in a single transaction for performance
+        DB::transaction(function () use ($rows, $season, $stats, $logger) {
+            $this->processRows($rows, $season, $stats, $logger);
+
+            // Flush all bulk operations before transaction commits
+            $bulkStats = $this->buffer->flush();
+
+            Log::info('Bulk import buffer flushed', $bulkStats);
+        });
+
+        // Recalculate membership statuses for all affected users after import completes
+        $this->recalculateMembershipStatuses($stats, $logger);
 
         $logger->writeSummary($stats->toArray());
         $logger->close();
@@ -213,5 +233,28 @@ final class ImportCurlingIoOrderItemsAction
             'line_number' => $lineNumber,
             'data' => $data,
         ]);
+    }
+
+    private function recalculateMembershipStatuses(ImportStats $stats, ImportLogger $logger): void
+    {
+        $affectedUserIds = $this->buffer->getAffectedUserIds();
+
+        if ($affectedUserIds->isEmpty()) {
+            return;
+        }
+
+        Log::info("Recalculating membership statuses for {$affectedUserIds->count()} affected users...");
+
+        $recalculateAction = app(RecalculateMembershipStatusAction::class);
+        $season = $this->getCurrentSeason();
+
+        $affectedUserIds->each(function ($userId) use ($recalculateAction, $season) {
+            $user = \Domain\User\Models\User::find($userId);
+            if ($user) {
+                $recalculateAction->execute($user, $season);
+            }
+        });
+
+        Log::info('Membership status recalculation completed.');
     }
 }

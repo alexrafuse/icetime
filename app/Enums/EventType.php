@@ -9,6 +9,7 @@ enum EventType: string
     case PRIVATE = 'private';
     case LEAGUE = 'league';
     case TOURNAMENT = 'tournament';
+    case DROP_IN = 'drop_in';
 
     public function getColor(): string
     {
@@ -16,6 +17,7 @@ enum EventType: string
             self::PRIVATE => 'gray',
             self::LEAGUE => 'success',
             self::TOURNAMENT => 'warning',
+            self::DROP_IN => 'info',
         };
     }
 
@@ -25,6 +27,7 @@ enum EventType: string
             self::PRIVATE => 'Private',
             self::LEAGUE => 'League',
             self::TOURNAMENT => 'Tournament',
+            self::DROP_IN => 'Drop-In',
         };
     }
 }

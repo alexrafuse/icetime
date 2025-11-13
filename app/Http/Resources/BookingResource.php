@@ -30,11 +30,13 @@ class BookingResource extends JsonResource
                 EventType::PRIVATE => '#4ade80',
                 EventType::LEAGUE => '#3b82f6',
                 EventType::TOURNAMENT => '#f97316',
+                EventType::DROP_IN => '#06b6d4',
             },
             'borderColor' => match ($this->event_type) {
                 EventType::PRIVATE => '#4ade80',
                 EventType::LEAGUE => '#3b82f6',
                 EventType::TOURNAMENT => '#f97316',
+                EventType::DROP_IN => '#06b6d4',
             },
             'areas' => $this->whenLoaded('areas', function () {
                 return $this->areas->map(function ($area) {
