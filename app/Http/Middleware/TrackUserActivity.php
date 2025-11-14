@@ -1,24 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\UserActivity;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
-class TrackUserActivity
+final class TrackUserActivity
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Track activity after the response is sent
-        if (Auth::check()) {
+        return $next($request);
+    }
+
+    /**
+     * Handle tasks after the response has been sent to the browser.
+     */
+    public function terminate(Request $request, Response $response): void
+    {
+        if (! Auth::check()) {
+            return;
+        }
+
+        try {
             // Round to nearest hour for activity tracking
             $activeAt = now()->startOfHour();
 
@@ -27,8 +40,13 @@ class TrackUserActivity
                 'user_id' => Auth::id(),
                 'active_at' => $activeAt,
             ]);
+        } catch (Throwable $e) {
+            // Log the error but don't throw - tracking failures shouldn't affect user experience
+            Log::error('Failed to track user activity', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
         }
-
-        return $next($request);
     }
 }

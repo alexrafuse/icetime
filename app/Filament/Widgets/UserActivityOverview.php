@@ -8,18 +8,18 @@ use App\Enums\Permission;
 use App\UserActivity;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\Auth;
 
 final class UserActivityOverview extends BaseWidget
 {
     protected static ?int $sort = 10;
 
+    public static function canView(): bool
+    {
+        return auth()->user()?->can(Permission::VIEW_MEMBERSHIPS->value) ?? false;
+    }
+
     protected function getStats(): array
     {
-        if (! Auth::user()->can(Permission::VIEW_MEMBERSHIPS->value)) {
-            return [];
-        }
-
         $activeToday = UserActivity::query()
             ->whereDate('active_at', '>=', now()->startOfDay())
             ->distinct('user_id')
