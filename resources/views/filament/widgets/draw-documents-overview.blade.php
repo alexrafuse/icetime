@@ -1,3 +1,4 @@
+
 <x-filament-widgets::widget>
     <x-filament::section>
         <div class="flex items-center justify-between mb-4">
@@ -9,7 +10,7 @@
             </a>
         </div>
 
-        <div class="grid gap-4" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             @foreach ($days as $dayNumber => $dayName)
                 <div class="relative group">
                     <div @class([

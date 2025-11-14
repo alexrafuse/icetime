@@ -13,7 +13,7 @@ Set Up Password
 
 ## Important Information
 
-- This link will expire on **{{ $data->expires_at->format('F j, Y') }}** (24 hours)
+- This link will expire on **{{ $data->expires_at->format('F j, Y') }}** (7 days)
 - For security reasons, please do not share this link with anyone
 - If you did not request this link, you can safely ignore this email
 

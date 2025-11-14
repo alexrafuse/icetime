@@ -106,7 +106,7 @@ final class WeekCalendarOverview extends Widget
             EventType::PRIVATE => '#4ade80',
             EventType::LEAGUE => '#3b82f6',
             EventType::TOURNAMENT => '#f97316',
-            EventType::DROP_IN => '#06b6d4',
+            EventType::DROP_IN => '#a855f7',
         };
     }
 }
