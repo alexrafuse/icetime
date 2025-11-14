@@ -24,8 +24,8 @@ final class SendPasswordSetupLinkAction
         // Generate secure random token (64 characters)
         $token = Str::random(64);
 
-        // Set expiration to 24 hours from now
-        $expiresAt = Carbon::now()->addHours(24);
+        // Set expiration to 7 days from now
+        $expiresAt = Carbon::now()->addDays(7);
 
         // Hash and store token
         $user->update([
