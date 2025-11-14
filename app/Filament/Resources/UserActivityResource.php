@@ -1,34 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
+use App\Enums\Permission;
 use App\Filament\Resources\UserActivityResource\Pages;
-use App\Filament\Resources\UserActivityResource\RelationManagers;
 use App\UserActivity;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserActivityResource extends Resource
+final class UserActivityResource extends Resource
 {
     protected static ?string $model = UserActivity::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clock';
 
-    public static function form(Form $form): Form
+    protected static ?string $navigationGroup = 'User Management';
+
+    protected static ?string $navigationLabel = 'User Activity';
+
+    protected static ?string $modelLabel = 'User Activity';
+
+    protected static ?string $pluralModelLabel = 'User Activities';
+
+    public static function canViewAny(): bool
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('active_at')
-                    ->required(),
-            ]);
+        return auth()->user()->can(Permission::VIEW_MEMBERSHIPS->value);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit($record): bool
+    {
+        return false;
+    }
+
+    public static function canDelete($record): bool
+    {
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
     }
 
     public static function table(Table $table): Table
@@ -36,30 +56,50 @@ class UserActivityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
+                    ->label('User')
+                    ->searchable(['name', 'first_name', 'last_name', 'email'])
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('user.email')
+                    ->label('Email')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('active_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Last Active')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                    ->description(fn (UserActivity $record): string => $record->active_at->diffForHumans()),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Recorded At')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('active_at', 'desc')
             ->filters([
-                //
+                Tables\Filters\Filter::make('today')
+                    ->label('Today')
+                    ->query(fn (Builder $query): Builder => $query->whereDate('active_at', '>=', now()->startOfDay())),
+
+                Tables\Filters\Filter::make('this_week')
+                    ->label('This Week')
+                    ->query(fn (Builder $query): Builder => $query->whereDate('active_at', '>=', now()->startOfWeek())),
+
+                Tables\Filters\Filter::make('this_month')
+                    ->label('This Month')
+                    ->query(fn (Builder $query): Builder => $query->whereDate('active_at', '>=', now()->startOfMonth())),
+
+                Tables\Filters\Filter::make('last_30_days')
+                    ->label('Last 30 Days')
+                    ->query(fn (Builder $query): Builder => $query->whereDate('active_at', '>=', now()->subDays(30))),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // No bulk actions for read-only resource
             ]);
     }
 
@@ -74,8 +114,6 @@ class UserActivityResource extends Resource
     {
         return [
             'index' => Pages\ListUserActivities::route('/'),
-            'create' => Pages\CreateUserActivity::route('/create'),
-            'edit' => Pages\EditUserActivity::route('/{record}/edit'),
         ];
     }
 }

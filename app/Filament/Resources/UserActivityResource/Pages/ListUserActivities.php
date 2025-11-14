@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\UserActivityResource\Pages;
 
 use App\Filament\Resources\UserActivityResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListUserActivities extends ListRecords
+final class ListUserActivities extends ListRecords
 {
     protected static string $resource = UserActivityResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            // No actions - this is a read-only resource
         ];
     }
 }
