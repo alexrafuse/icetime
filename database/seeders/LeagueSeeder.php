@@ -58,10 +58,18 @@ class LeagueSeeder extends Seeder
 
         // Evening leagues
         [
-            'title' => 'Monday Drop-In Curling',
+            'title' => 'Adult Learn-to-Curl',
             'days_of_week' => [DayOfWeek::MONDAY->value],
-            'start_time' => '18:30',
-            'end_time' => '20:00',
+            'start_time' => '18:00',
+            'end_time' => '19:45',
+            'areas' => 'all',
+            'event_type' => EventType::PRIVATE,
+        ],
+        [
+            'title' => 'Monday Night Drop-In Curling',
+            'days_of_week' => [DayOfWeek::MONDAY->value],
+            'start_time' => '20:00',
+            'end_time' => '21:30',
             'areas' => 'all',
             'event_type' => EventType::DROP_IN,
         ],
@@ -90,21 +98,21 @@ class LeagueSeeder extends Seeder
             'event_type' => EventType::LEAGUE,
         ],
         [
-            'title' => 'Thursday Night Competitive - Early',
+            'title' => 'Thursday Night Competitive',
             'days_of_week' => [DayOfWeek::THURSDAY->value],
             'start_time' => '18:30',
             'end_time' => '20:30',
             'areas' => 'all',
             'event_type' => EventType::LEAGUE,
         ],
-        [
-            'title' => 'Thursday Night Competitive - Late',
-            'days_of_week' => [DayOfWeek::THURSDAY->value],
-            'start_time' => '20:30',
-            'end_time' => '22:30',
-            'areas' => 'all',
-            'event_type' => EventType::LEAGUE,
-        ],
+        // [
+        //     'title' => 'Thursday Night Competitive - Late',
+        //     'days_of_week' => [DayOfWeek::THURSDAY->value],
+        //     'start_time' => '20:30',
+        //     'end_time' => '22:30',
+        //     'areas' => 'all',
+        //     'event_type' => EventType::LEAGUE,
+        // ],
         [
             'title' => 'Friday Night Social - Early',
             'days_of_week' => [DayOfWeek::FRIDAY->value],
@@ -124,7 +132,7 @@ class LeagueSeeder extends Seeder
 
         // Stick curling leagues
         [
-            'title' => 'Monday Stick Team/League',
+            'title' => 'Monday Stick Team - League',
             'days_of_week' => [DayOfWeek::MONDAY->value],
             'start_time' => '13:00',
             'end_time' => '15:30',
@@ -132,7 +140,7 @@ class LeagueSeeder extends Seeder
             'event_type' => EventType::LEAGUE,
         ],
         [
-            'title' => 'Wednesday Stick Team/League',
+            'title' => 'Wednesday Stick Team - League',
             'days_of_week' => [DayOfWeek::WEDNESDAY->value],
             'start_time' => '13:00',
             'end_time' => '15:30',
@@ -140,7 +148,7 @@ class LeagueSeeder extends Seeder
             'event_type' => EventType::LEAGUE,
         ],
         [
-            'title' => 'Thursday Stick Social/Sign Up',
+            'title' => 'Thursday Stick - Drop-In',
             'days_of_week' => [DayOfWeek::THURSDAY->value],
             'start_time' => '13:00',
             'end_time' => '15:30',
@@ -148,7 +156,7 @@ class LeagueSeeder extends Seeder
             'event_type' => EventType::DROP_IN,
         ],
         [
-            'title' => 'Friday Stick Team/League',
+            'title' => 'Friday Stick Team - League',
             'days_of_week' => [DayOfWeek::FRIDAY->value],
             'start_time' => '13:00',
             'end_time' => '15:30',
@@ -156,15 +164,15 @@ class LeagueSeeder extends Seeder
             'event_type' => EventType::LEAGUE,
         ],
 
-        // Green League
-        [
-            'title' => 'Green League Drop-in',
-            'days_of_week' => [DayOfWeek::MONDAY->value],
-            'start_time' => '19:35',
-            'end_time' => '21:00',
-            'areas' => 'all',
-            'event_type' => EventType::DROP_IN,
-        ],
+        // // Green League
+        // [
+        //     'title' => 'Green League Drop-in',
+        //     'days_of_week' => [DayOfWeek::MONDAY->value],
+        //     'start_time' => '19:35',
+        //     'end_time' => '21:00',
+        //     'areas' => 'all',
+        //     'event_type' => EventType::DROP_IN,
+        // ],
     ];
 
     public function run(): void
