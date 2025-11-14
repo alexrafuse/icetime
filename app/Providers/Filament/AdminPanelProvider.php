@@ -41,9 +41,9 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarWidth('14rem')
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
-                fn (): string => app()->environment('production')
-                    ? '<script defer src="https://analytics.stacked.dev/umami.js" data-website-id="eb5dcc68-4b36-4cfd-b66d-d72a9f75635b"></script>'
-                    : ''
+                fn (): string => config('services.umami.website_id')
+                    ? '<script defer src="https://analytics.stacked.dev/umami.js" data-website-id="'.config('services.umami.website_id').'"></script>'
+                    : '<script src="//error"/>'
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

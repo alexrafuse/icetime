@@ -1,0 +1,1204 @@
+{
+  "source_file": "Book2.xlsx",
+  "original_generated_at": "2025-11-07T02:27:29.054518Z",
+  "filtered_at": "2025-11-08T03:02:24.966Z",
+  "filter_criteria": {
+    "min_year": 2025,
+    "require_entries": true
+  },
+  "original_days_count": 732,
+  "filtered_days_count": 73,
+  "days": [
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 3,
+      "date": "2025-01-03",
+      "entries": [
+        "Densmore Pracice"
+      ],
+      "comments": [
+        "User:\n5-7PM"
+      ],
+      "header_cell": "D2",
+      "entry_cells": [
+        "D3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 4,
+      "date": "2025-01-04",
+      "entries": [
+        "Bruce Densmore"
+      ],
+      "comments": [
+        "User:\nStick Leauge competition\n"
+      ],
+      "header_cell": "E2",
+      "entry_cells": [
+        "E3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 5,
+      "date": "2025-01-05",
+      "entries": [
+        "Bruce Densmore"
+      ],
+      "comments": [
+        "User:\nStick Leauge competition\n"
+      ],
+      "header_cell": "F2",
+      "entry_cells": [
+        "F3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 6,
+      "date": "2025-01-06",
+      "entries": [
+        "SO Practice"
+      ],
+      "comments": [
+        "User:\n6:30-8:00PM - 1 Sheet"
+      ],
+      "header_cell": "G2",
+      "entry_cells": [
+        "G3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 12,
+      "date": "2025-01-12",
+      "entries": [
+        "Elsa Tokunaga"
+      ],
+      "comments": [
+        "User:\nShed - 8 people, 2-4PM"
+      ],
+      "header_cell": "M2",
+      "entry_cells": [
+        "M3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 13,
+      "date": "2025-01-13",
+      "entries": [
+        "SO Practice"
+      ],
+      "comments": [
+        "User:\n6:30-8:00PM - 1 Sheet"
+      ],
+      "header_cell": "N2",
+      "entry_cells": [
+        "N3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 17,
+      "date": "2025-01-17",
+      "entries": [
+        "Mixed Prov Stick"
+      ],
+      "comments": null,
+      "header_cell": "R2",
+      "entry_cells": [
+        "R3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 18,
+      "date": "2025-01-18",
+      "entries": [
+        "Mixed Prov Stick"
+      ],
+      "comments": null,
+      "header_cell": "S2",
+      "entry_cells": [
+        "S3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 19,
+      "date": "2025-01-19",
+      "entries": [
+        "Mixed Prov Stick"
+      ],
+      "comments": null,
+      "header_cell": "T2",
+      "entry_cells": [
+        "T3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 20,
+      "date": "2025-01-20",
+      "entries": [
+        "SO Practice"
+      ],
+      "comments": [
+        "User:\n6:30-8:00PM - 1 Sheet"
+      ],
+      "header_cell": "U2",
+      "entry_cells": [
+        "U3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 25,
+      "date": "2025-01-25",
+      "entries": [
+        "Junior Practice"
+      ],
+      "comments": null,
+      "header_cell": "Z2",
+      "entry_cells": [
+        "Z3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 30,
+      "date": "2025-01-30",
+      "entries": [
+        "Firefighters"
+      ],
+      "comments": [
+        "User:\nAll Day Event"
+      ],
+      "header_cell": "AE2",
+      "entry_cells": [
+        "AE3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 31,
+      "date": "2025-01-31",
+      "entries": [
+        "Firefighters"
+      ],
+      "comments": [
+        "User:\nAll Day Event"
+      ],
+      "header_cell": "AF2",
+      "entry_cells": [
+        "AF3"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 1,
+      "date": "2025-02-01",
+      "entries": [
+        "Firefighters"
+      ],
+      "comments": [
+        "User:\nAll Day Event"
+      ],
+      "header_cell": "B8",
+      "entry_cells": [
+        "B9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 2,
+      "date": "2025-02-02",
+      "entries": [
+        "Firefighters",
+        "SO Practice"
+      ],
+      "comments": [
+        "User:\nAll Day Event",
+        "User:\n6:30-8:00PM - 1 Sheet"
+      ],
+      "header_cell": "C8",
+      "entry_cells": [
+        "C9",
+        "C10"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 8,
+      "date": "2025-02-08",
+      "entries": [
+        "Formal Dinner"
+      ],
+      "comments": [
+        "User:\nnot comfirmed"
+      ],
+      "header_cell": "I8",
+      "entry_cells": [
+        "I9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 15,
+      "date": "2025-02-15",
+      "entries": [
+        "U-13"
+      ],
+      "comments": null,
+      "header_cell": "P8",
+      "entry_cells": [
+        "P9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 16,
+      "date": "2025-02-16",
+      "entries": [
+        "U-13"
+      ],
+      "comments": null,
+      "header_cell": "Q8",
+      "entry_cells": [
+        "Q9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 17,
+      "date": "2025-02-17",
+      "entries": [
+        "U-13"
+      ],
+      "comments": null,
+      "header_cell": "R8",
+      "entry_cells": [
+        "R9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 22,
+      "date": "2025-02-22",
+      "entries": [
+        "HS Regionals"
+      ],
+      "comments": [
+        "User:\nAll Day Event"
+      ],
+      "header_cell": "W8",
+      "entry_cells": [
+        "W9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 23,
+      "date": "2025-02-23",
+      "entries": [
+        "HS Regionals"
+      ],
+      "comments": [
+        "User:\nAll Day Event"
+      ],
+      "header_cell": "X8",
+      "entry_cells": [
+        "X9"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 1,
+      "date": "2025-03-01",
+      "entries": [
+        "Junior Workshop"
+      ],
+      "comments": null,
+      "header_cell": "B14",
+      "entry_cells": [
+        "B15"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 2,
+      "date": "2025-03-02",
+      "entries": [
+        "Junior Workshop"
+      ],
+      "comments": null,
+      "header_cell": "C14",
+      "entry_cells": [
+        "C15"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 15,
+      "date": "2025-03-15",
+      "entries": [
+        "Mason's"
+      ],
+      "comments": [
+        "User:\n8AM to 4PM, Bar Service. Confirmed"
+      ],
+      "header_cell": "P14",
+      "entry_cells": [
+        "P15"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 28,
+      "date": "2025-03-28",
+      "entries": [
+        "Sleepwalker"
+      ],
+      "comments": null,
+      "header_cell": "AC14",
+      "entry_cells": [
+        "AC15"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 29,
+      "date": "2025-03-29",
+      "entries": [
+        "Sleepwalker"
+      ],
+      "comments": null,
+      "header_cell": "AD14",
+      "entry_cells": [
+        "AD15"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 4,
+      "date": "2025-06-04",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "E32",
+      "entry_cells": [
+        "E33"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 11,
+      "date": "2025-06-11",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "L32",
+      "entry_cells": [
+        "L33"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 18,
+      "date": "2025-06-18",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "S32",
+      "entry_cells": [
+        "S33"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 21,
+      "date": "2025-06-21",
+      "entries": [
+        "Martin"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    2-5 pm, no bar service"
+      ],
+      "header_cell": "V32",
+      "entry_cells": [
+        "V33"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 25,
+      "date": "2025-06-25",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "Z32",
+      "entry_cells": [
+        "Z33"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 2,
+      "date": "2025-07-02",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "C38",
+      "entry_cells": [
+        "C39"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 9,
+      "date": "2025-07-09",
+      "entries": [
+        "Shuffleboard",
+        "NS Power 10-7pm"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm",
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    2-5 pm, no bar service"
+      ],
+      "header_cell": "J38",
+      "entry_cells": [
+        "J39",
+        "J40"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 16,
+      "date": "2025-07-16",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "Q38",
+      "entry_cells": [
+        "Q39"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 23,
+      "date": "2025-07-23",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "X38",
+      "entry_cells": [
+        "X39"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 30,
+      "date": "2025-07-30",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "AE38",
+      "entry_cells": [
+        "AE39"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "August",
+      "year": 2025,
+      "day": 6,
+      "date": "2025-08-06",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "G44",
+      "entry_cells": [
+        "G45"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "August",
+      "year": 2025,
+      "day": 13,
+      "date": "2025-08-13",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "N44",
+      "entry_cells": [
+        "N45"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "August",
+      "year": 2025,
+      "day": 20,
+      "date": "2025-08-20",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "U44",
+      "entry_cells": [
+        "U45"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "August",
+      "year": 2025,
+      "day": 27,
+      "date": "2025-08-27",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "AB44",
+      "entry_cells": [
+        "AB45"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 1,
+      "date": "2025-09-01",
+      "entries": [
+        "Ice Install in progress"
+      ],
+      "comments": null,
+      "header_cell": "B50",
+      "entry_cells": [
+        "B51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 19,
+      "date": "2025-09-19",
+      "entries": [
+        "New Rocks Celebration"
+      ],
+      "comments": null,
+      "header_cell": "T50",
+      "entry_cells": [
+        "T51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 20,
+      "date": "2025-09-20",
+      "entries": [
+        "55+Games"
+      ],
+      "comments": null,
+      "header_cell": "U50",
+      "entry_cells": [
+        "U51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 21,
+      "date": "2025-09-21",
+      "entries": [
+        "55+Games"
+      ],
+      "comments": null,
+      "header_cell": "V50",
+      "entry_cells": [
+        "V51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 22,
+      "date": "2025-09-22",
+      "entries": [
+        "55+Games"
+      ],
+      "comments": null,
+      "header_cell": "W50",
+      "entry_cells": [
+        "W51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 23,
+      "date": "2025-09-23",
+      "entries": [
+        "55+Games"
+      ],
+      "comments": null,
+      "header_cell": "X50",
+      "entry_cells": [
+        "X51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 24,
+      "date": "2025-09-24",
+      "entries": [
+        "55+Games"
+      ],
+      "comments": null,
+      "header_cell": "Y50",
+      "entry_cells": [
+        "Y51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 26,
+      "date": "2025-09-26",
+      "entries": [
+        "NSCA Umpire Course"
+      ],
+      "comments": null,
+      "header_cell": "AA50",
+      "entry_cells": [
+        "AA51"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "October",
+      "year": 2025,
+      "day": 4,
+      "date": "2025-10-04",
+      "entries": [
+        "Beginner Stick Clinic PM"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    10am - 3pm"
+      ],
+      "header_cell": "E56",
+      "entry_cells": [
+        "E57"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "October",
+      "year": 2025,
+      "day": 5,
+      "date": "2025-10-05",
+      "entries": [
+        "Stick Clinic PM"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    10am - 1pm"
+      ],
+      "header_cell": "F56",
+      "entry_cells": [
+        "F57"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "October",
+      "year": 2025,
+      "day": 25,
+      "date": "2025-10-25",
+      "entries": [
+        "International Auction rental"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    8:00 am - 430pm - Hall only."
+      ],
+      "header_cell": "Z56",
+      "entry_cells": [
+        "Z57"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "October",
+      "year": 2025,
+      "day": 31,
+      "date": "2025-10-31",
+      "entries": [
+        "U18 Junior Cash Spiel"
+      ],
+      "comments": null,
+      "header_cell": "AF56",
+      "entry_cells": [
+        "AF57"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "November",
+      "year": 2025,
+      "day": 1,
+      "date": "2025-11-01",
+      "entries": [
+        "U18 Junior Cash spiel"
+      ],
+      "comments": null,
+      "header_cell": "B62",
+      "entry_cells": [
+        "B63"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "November",
+      "year": 2025,
+      "day": 15,
+      "date": "2025-11-15",
+      "entries": [
+        "Turkey spiel"
+      ],
+      "comments": null,
+      "header_cell": "P62",
+      "entry_cells": [
+        "P63"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "December",
+      "year": 2025,
+      "day": 6,
+      "date": "2025-12-06",
+      "entries": [
+        "Red Cross Xmas party"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    Red Cross Christmas party - Hall only - 430-730pm"
+      ],
+      "header_cell": "G68",
+      "entry_cells": [
+        "G69"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "December",
+      "year": 2025,
+      "day": 9,
+      "date": "2025-12-09",
+      "entries": [
+        "Inter-league Stick"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    1:00 - 3:30pm"
+      ],
+      "header_cell": "J68",
+      "entry_cells": [
+        "J69"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "December",
+      "year": 2025,
+      "day": 13,
+      "date": "2025-12-13",
+      "entries": [
+        "To Be Confirmed -CKBW Xmas party"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    6pm - 1130pm"
+      ],
+      "header_cell": "N68",
+      "entry_cells": [
+        "N69"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "December",
+      "year": 2025,
+      "day": 26,
+      "date": "2025-12-26",
+      "entries": [
+        "Lobster Spiel"
+      ],
+      "comments": null,
+      "header_cell": "AA68",
+      "entry_cells": [
+        "AA69"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 2,
+      "date": "2025-01-02",
+      "entries": [
+        "Mixed Stick Tournament - Densmore"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    Fri, Sat  - 9am-6pm, Sun 9am-2pm"
+      ],
+      "header_cell": "C78",
+      "entry_cells": [
+        "C79"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 6,
+      "date": "2025-01-06",
+      "entries": [
+        "Inter-league Stick"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    1:00 - 3:30pm"
+      ],
+      "header_cell": "G78",
+      "entry_cells": [
+        "G79"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 13,
+      "date": "2025-01-13",
+      "entries": [
+        "Inter-league Stick"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    1:00 - 3:30pm"
+      ],
+      "header_cell": "N78",
+      "entry_cells": [
+        "N79"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 23,
+      "date": "2025-01-23",
+      "entries": [
+        "Mixed Stick Provincials"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    Ends Mon at 4pm"
+      ],
+      "header_cell": "X78",
+      "entry_cells": [
+        "X79"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "January",
+      "year": 2025,
+      "day": 29,
+      "date": "2025-01-29",
+      "entries": [
+        "U15 Junior Provincials"
+      ],
+      "comments": null,
+      "header_cell": "AD78",
+      "entry_cells": [
+        "AD79"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "February",
+      "year": 2025,
+      "day": 1,
+      "date": "2025-02-01",
+      "entries": [
+        "U15 Provincials"
+      ],
+      "comments": null,
+      "header_cell": "B84",
+      "entry_cells": [
+        "B85"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 27,
+      "date": "2025-03-27",
+      "entries": [
+        "Sleepwalkers"
+      ],
+      "comments": null,
+      "header_cell": "AB90",
+      "entry_cells": [
+        "AB91"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "March",
+      "year": 2025,
+      "day": 28,
+      "date": "2025-03-28",
+      "entries": [
+        "Sleepwalkers"
+      ],
+      "comments": null,
+      "header_cell": "AC90",
+      "entry_cells": [
+        "AC91"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 4,
+      "date": "2025-06-04",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "E108",
+      "entry_cells": [
+        "E109"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "June",
+      "year": 2025,
+      "day": 11,
+      "date": "2025-06-11",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "L108",
+      "entry_cells": [
+        "L109"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 2,
+      "date": "2025-07-02",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "C114",
+      "entry_cells": [
+        "C115"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "July",
+      "year": 2025,
+      "day": 9,
+      "date": "2025-07-09",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "J114",
+      "entry_cells": [
+        "J115"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "August",
+      "year": 2025,
+      "day": 6,
+      "date": "2025-08-06",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "G120",
+      "entry_cells": [
+        "G121"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "August",
+      "year": 2025,
+      "day": 13,
+      "date": "2025-08-13",
+      "entries": [
+        "Shuffleboard"
+      ],
+      "comments": [
+        "[Threaded comment]\n\nYour version of Excel allows you to read this threaded comment; however, any edits to it will get removed if the file is opened in a newer version of Excel. Learn more: https://go.microsoft.com/fwlink/?linkid=870924\n\nComment:\n    9am-12pm"
+      ],
+      "header_cell": "N120",
+      "entry_cells": [
+        "N121"
+      ]
+    },
+    {
+      "sheet": "Sheet1",
+      "month": "September",
+      "year": 2025,
+      "day": 1,
+      "date": "2025-09-01",
+      "entries": [
+        "Ice Install in progress"
+      ],
+      "comments": null,
+      "header_cell": "B126",
+      "entry_cells": [
+        "B127"
+      ]
+    }
+  ]
+}

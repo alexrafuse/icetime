@@ -1,0 +1,2331 @@
+Order Items Import started at 2025-11-14 03:06:29
+CSV file: curling.io/orders.csv
+Season: 2025-2026 (ID: 1)
+================================================================================
+
+[SUCCESS] Order 2609887
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Anthony Sampson (sampsonanthony@gmail.com)
+
+[SUCCESS] Order 2607325
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: MacKenzie Nauss (mackenzienauss5@gmail.com)
+
+[SUCCESS] Order 2606973
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Mike Davis (mpd0819@gmail.com)
+
+[SUCCESS] Order 2606759
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ben Richardson (benandkate@hotmail.com)
+
+[SUCCESS] Order 2606759
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created:   ()
+
+[SUCCESS] Order 2606022
+  Item: 2025-2026 Membership:  Social
+  Product: 2025-2026 Membership: Social (ID: 15)
+  Price: $60.00
+  Status: active
+  Type: Individual Membership
+    - Created: Charmaine Wilson (charmaine@wilsonelectronic.ca)
+
+[SUCCESS] Order 2606019
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2591902
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Michael Wilson (mike@wilsonelectronic.ca)
+
+[SUCCESS] Order 2602373
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Greg Townsend (gregtown7089@gmail.com)
+    - Partner: Dawn Huskins-Townsend (dawntown62@icloud.com)
+
+[SUCCESS] Order 2601835
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2601835
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Celeste Stoddart (celeste.stoddart@gmail.com)
+
+[SUCCESS] Order 2601834
+  Item: 2025-2026 Membership:  Social
+  Product: 2025-2026 Membership: Social (ID: 15)
+  Price: $60.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tim LeGay (legay@eastlink.ca)
+
+[SUCCESS] Order 2601065
+  Item: 2025-2026 Membership:  Social
+  Product: 2025-2026 Membership: Social (ID: 15)
+  Price: $60.00
+  Status: active
+  Type: Individual Membership
+    - Created: Corinne Himmelman (corinne123@eastlink.ca)
+
+[SUCCESS] Order 2600721
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Devyn Kaizer (kaizerdevyn@gmail.com)
+
+[SUCCESS] Order 2600559
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Created:   ()
+
+[SUCCESS] Order 2600557
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2599615
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Juliette Joudrey (jjoudrey@hotmail.com)
+
+[SUCCESS] Order 2599612
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kirk Goulding (gouldingkirk@gmail.com)
+
+[SUCCESS] Order 2599590
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2598833
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Thatcher Arenburg (t.arenburg@hotmail.com)
+
+[SUCCESS] Order 2598776
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Victoria Scully (victoria.scully42@gmail.com)
+
+[SUCCESS] Order 2598773
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Updated: Victoria Scully (victoria.scully42@gmail.com)
+
+[SUCCESS] Order 2595685
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Phil Noseworthy (phil_noseworthy@hotmail.com)
+
+[SUCCESS] Order 2597377
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Paul Hilchey (pi.hilchey@eastlink.ca)
+
+[ADJUSTMENT-FAILED] Order 2570869: green league not offered
+  Amount: $-160.00
+  User: Anja Kleimann (anjakleimann@gmail.com)
+  Reason: Could not find matching product to refund
+
+[SUCCESS] Order 2596993
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Anja Kleimann (anjakleimann@gmail.com)
+
+[SUCCESS] Order 2596171
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tom Rogers (tom.rogers57@gmail.com)
+
+[SUCCESS] Order 2596118
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: peter jardine (peterjardine531@gmail.com)
+
+[SUCCESS] Order 2593309
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Claudia Bonfield (bonfieldclaudia@gmail.com)
+
+[SUCCESS] Order 2592204
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Aldine Koster (meta_anne@hotmail.com)
+
+[SUCCESS] Order 2592133
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Judy Lawrence (judylawr54@gmail.com)
+
+[SUCCESS] Order 2592127
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tayte McRae (tayte.mcrae@gmail.com)
+
+[SUCCESS] Order 2592096
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kim Whitman Mansfield (kwhitman@eastlink.ca)
+
+[SUCCESS] Order 2591862
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: James Meers (djtubajames@gmail.com)
+
+[SUCCESS] Order 2591461
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2591461
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Pam Adams (dandpadams@gmail.com)
+
+[SUCCESS] Order 2591366
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2587620
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Blaine Hubley (sartyroad@hotmail.com)
+
+[SUCCESS] Order 2590991
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Elizabeth Hamilton (bethhamilton72@gmail.com)
+
+[SUCCESS] Order 2590450
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Valerie Caswell (valerie.caswell@outlook.com)
+
+[SUCCESS] Order 2590119
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Leah Fancey (leah.squarey@gmail.com)
+
+[SUCCESS] Order 2589598
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Pamela Ritcey (pameladawn999@gmail.com)
+
+[SUCCESS] Order 2588858
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2588858
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2588858
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Updated: John Lawrence (judylawr54@gmail.com)
+
+[SUCCESS] Order 2589457
+  Item: 2025-2026 Membership:  New Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Created: Wren Boudreau (w_cruikshank@hotmail.com)
+
+[SUCCESS] Order 2560916
+  Item: 2025-2026 Membership:  Social
+  Product: 2025-2026 Membership: Social (ID: 15)
+  Price: $60.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tony Croft (jillian.tony@hotmail.com)
+
+[SUCCESS] Order 2589193
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tiffany Murray (che_bella@live.ca)
+
+[SUCCESS] Order 2589177
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jeffery Pelkey (pelkey1323@gmail.com)
+
+[SUCCESS] Order 2589165
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Fred Jeffers (fjeffers@live.com)
+
+[SUCCESS] Order 2589079
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Leah Rhodenizer (leahrhodenizer@gmail.com)
+
+[SUCCESS] Order 2561521
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2587808
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Adrienne O'Neil (a.oneil@live.ca)
+
+[SUCCESS] Order 2587808
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Dylan Day (d.day@live.ca)
+
+[SUCCESS] Order 2587808
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Dylan Day (d.day@live.ca)
+
+[SUCCESS] Order 2587650
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ryan Sperry (sperryryan@hotmail.com)
+
+[SUCCESS] Order 2587327
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Carolyn Evans (mailforcarolyn@gmail.com)
+
+[SUCCESS] Order 2587175
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Dan Logan (dan.logan85@gmail.com)
+
+[SUCCESS] Order 2566774
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: KEVIN HAYWARD (michellehayward@bellaliant.net)
+    - Partner: Michelle HAYWARD (michellehayward@bellaliant.net)
+
+[SUCCESS] Order 2586712
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Paul Sampson (sampsonpw53@gmail.com)
+
+[SUCCESS] Order 2585288
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Davor Mihalji (davor.mihalji@gmail.com)
+
+[SUCCESS] Order 2584606
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Melanie Smith (66meljs@gmail.com)
+
+[SUCCESS] Order 2584573
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Dwayne Bush (dwaynebush@hotmail.com)
+
+[SUCCESS] Order 2584574
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Yolanda King (yking31.yk@gmail.com)
+
+[SUCCESS] Order 2584572
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Megan MacNeil (megloumac@hotmail.com)
+
+[SUCCESS] Order 2584211
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Marilyn Neily (marilynneily@gmail.com)
+
+[SUCCESS] Order 2565496
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Karen Underwood (karenunderwood52@gmail.com)
+
+[SUCCESS] Order 2584089
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ross Lee (ivalee@ns.sympatico.ca)
+
+[SUCCESS] Order 2584022
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Joel Nowlan (joelnowlan69@gmail.com)
+
+[SUCCESS] Order 2583167
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Caleb Barry (caleb.barry.10@gmail.com)
+
+[SUCCESS] Order 2582951
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Wade Oickle (dcwoickle@gmail.com)
+
+[SUCCESS] Order 2568905
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Douglas Ferguson (douglasferguson172@gmail.com)
+
+[SUCCESS] Order 2582866
+  Item: 2025-2026 Membership:  Half Year - Active
+  Product: 2025-2026 Membership: Half Year - Active (ID: 6)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: James Kenney (jefflapierre66@gmail.com)
+
+[SUCCESS] Order 2582794
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lora Church (lorachurch@hotmail.com)
+
+[SUCCESS] Order 2582007
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Whitney Cruikshank (w_cruikshank@hotmail.com)
+
+[SUCCESS] Order 2581961
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581961
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Bob Martin (rcmartin2021@gmail.com)
+
+[SUCCESS] Order 2581944
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Gregory Flinn (gregoryflinn22@gmail.com)
+
+[SUCCESS] Order 2581927
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jason van Vonderen (jasonvanvonderen@hotmail.com)
+
+[SUCCESS] Order 2581909
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Wade Langille (wadelangille@ns.sympatico.ca)
+
+[SUCCESS] Order 2581909
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581921
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Nicholas Deagle (nickdeagle@hotmail.com)
+
+[SUCCESS] Order 2581921
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581901
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Michelle Veinotte (veinotml@gmail.com)
+
+[SUCCESS] Order 2581908
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581897
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tammy Gannon (gannond33@gmail.com)
+
+[SUCCESS] Order 2581894
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jeremy Keans (jerkeans@hotmail.com)
+
+[SUCCESS] Order 2581884
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Updated: Darren Gannon (gannond33@gmail.com)
+
+[SUCCESS] Order 2581886
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Zachary Veinotte (zachary.veinotte@gmail.com)
+
+[SUCCESS] Order 2581872
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Linda Boore (lk.boore@gmail.com)
+
+[SUCCESS] Order 2581872
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581870
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581870
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Allison Weagle (eaweagle@eastlink.ca)
+
+[SUCCESS] Order 2581863
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Michael Nauss (nauss_michael@hotmail.com)
+
+[SUCCESS] Order 2581863
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581849
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581849
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ward Beck (wardbeckdoc@gmail.com)
+
+[SUCCESS] Order 2581852
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Eileen Samson (eileensamson07@gmail.com)
+
+[SUCCESS] Order 2581852
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2581840
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Patty Sleep (pattysleep@hotmail.com)
+
+[SUCCESS] Order 2542607
+  Item: 2025-2026 Membership:  Half Year - Active
+  Product: 2025-2026 Membership: Half Year - Active (ID: 6)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Paige Stewart (stewartdrane@outlook.com)
+
+[SUCCESS] Order 2581313
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: MEG GALLAGHER (ememgallagher@hotmail.com)
+
+[SUCCESS] Order 2581253
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Karen Anthony (anthonykaren70@gmail.com)
+
+[SUCCESS] Order 2581242
+  Item: 2025-2026 Membership: New Members - Active 2 Adults (same address)
+  Product: 2025-2026 Membership: New Members - Active 2 Adults (same address) (ID: 9)
+  Price: $810.00
+  Status: active
+  Type: Couple Membership
+    - Primary: David Maloney (retireddaveingreenbay@gmail.com)
+    - Partner: Mary Maloney (marymaloneyns@gmail.com)
+
+[SUCCESS] Order 2580941
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Yang Chen (yangdotchen@gmail.com)
+
+[SUCCESS] Order 2580672
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Darryl Williams (dwill49965@outlook.com)
+    - Partner: Shannon Donnelly (shannond49965@outlook.com)
+
+[SUCCESS] Order 2566136
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Matthew van Bommel (matthew.vbommel@gmail.com)
+
+[SUCCESS] Order 2570869
+  Item: 2025-2026 Green League First Half Oct-Dec 2025
+  Product: 2025-2026 Green League First Half Oct-Dec 2025 (ID: 2)
+  Price: $160.00
+  Status: active
+  Type: Individual Membership
+    - Created: Anja Kleimann (anjakleimann@gmail.com)
+
+[SUCCESS] Order 2580311
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: norma Frank (nkfrank@hotmail.com)
+
+[SUCCESS] Order 2580252
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Sheri Stoodley (sheristoodley@hotmail.com)
+
+[SUCCESS] Order 2580209
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lynn Roberts (lynnroberts01@hotmail.com)
+
+[SUCCESS] Order 2580209
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2579924
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jennifer Creaser (jlcreaser@hotmail.com)
+
+[SUCCESS] Order 2579464
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Shirley Oickle (shirley@shirleyoickle.com)
+
+[SUCCESS] Order 2579394
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Davis Wiscombe (davis.wiscombe@gmail.com)
+
+[SUCCESS] Order 2579350
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Bob Forbes (raforbes@ns.sympatico.ca)
+
+[SUCCESS] Order 2579350
+  Item: 2025-2026 Membership:  Social
+  Product: 2025-2026 Membership: Social (ID: 15)
+  Price: $60.00
+  Status: active
+  Type: Individual Membership
+    - Created: Bob Forbes (raforbes@ns.sympatico.ca)
+
+[SUCCESS] Order 2579350
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2579327
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Wayne Burke (burkewaycon@gmail.com)
+
+[SUCCESS] Order 2579320
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Gary Lewis (lewispg70@gmail.com)
+
+[SUCCESS] Order 2579293
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Rick Smith (rickjsmith399@gmail.com)
+
+[SUCCESS] Order 2573689
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Rodney Corkum (rodneycorkum21@gmail.com)
+
+[SUCCESS] Order 2573689
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Rodney Corkum (rodneycorkum21@gmail.com)
+
+[SUCCESS] Order 2579166
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2579166
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2579166
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Tom Francis (thomasfrancis@bellaliant.net)
+    - Partner: Heather Francis (francishj@bellaliant.net)
+
+[SUCCESS] Order 2579166
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tom Francis (thomasfrancis@bellaliant.net)
+
+[SUCCESS] Order 2569583
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Peggy Lewis (lewispg70@hotmail.com)
+
+[SUCCESS] Order 2579067
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2579067
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Brit Flinn (flinn.brit@gmail.com)
+
+[SUCCESS] Order 2578806
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2578806
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: David Macaulay (macaulay902@gmail.com)
+
+[SUCCESS] Order 2578754
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Andrew McQueen (amcqueenx@gmail.com)
+
+[SUCCESS] Order 2576994
+  Item: 2025-2026 Membership:  Stick Curling One League
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Warren Webber (thesailor382002@yahoo.com)
+
+[SUCCESS] Order 2532484
+  Item: 2025-2026 Membership:  Half Year - Active
+  Product: 2025-2026 Membership: Half Year - Active (ID: 6)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Deanna Zinck (dzinck18@hotmail.com)
+
+[SUCCESS] Order 2577920
+  Item: 2025-2026 Membership:  New Member Half Year - Active
+  Product: 2025-2026 Membership: New Member Half Year - Active (ID: 10)
+  Price: $300.00
+  Status: active
+  Type: Individual Membership
+    - Created: Sylvia Mouzar (sylviamouzar@gmail.com)
+
+[SUCCESS] Order 2577918
+  Item: 2025-2026 Membership:  New Member Half Year - Active
+  Product: 2025-2026 Membership: New Member Half Year - Active (ID: 10)
+  Price: $300.00
+  Status: active
+  Type: Individual Membership
+    - Updated: Sylvia Mouzar (sylviamouzar@gmail.com)
+
+[SUCCESS] Order 2577914
+  Item: 2025-2026 Membership:  New Member Half Year - Active
+  Product: 2025-2026 Membership: New Member Half Year - Active (ID: 10)
+  Price: $300.00
+  Status: active
+  Type: Individual Membership
+    - Updated: Sylvia Mouzar (sylviamouzar@gmail.com)
+
+[SUCCESS] Order 2577331
+  Item: 2025-2026 Membership:  New Member - Active
+  Product: 2025-2026 Membership: New Member - Active (ID: 8)
+  Price: $455.00
+  Status: active
+  Type: Individual Membership
+    - Created: peter jardine (peterjardine531@gmail.com)
+
+[SUCCESS] Order 2576996
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2576628
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kimberley Palmeter (kdpalmeter@gmail.com)
+
+[SUCCESS] Order 2571593
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Alex Rafuse (hey@alexrafuse.com)
+
+[SUCCESS] Order 2571593
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2573764
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Liam Finney (liambrucegeorge@gmail.com)
+
+[SUCCESS] Order 2573762
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: clinton nichol (clinton.nichol@gmail.com)
+
+[SUCCESS] Order 2573759
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Amanda Confiant (amandaconfiant8@hotmail.ca)
+
+[SUCCESS] Order 2573758
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Robert Phillips (robertwphillips@live.com)
+
+[SUCCESS] Order 2573754
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Tara LeGay (taralegay@hotmail.com)
+
+[SUCCESS] Order 2573694
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ronald Schipper (econronnieschipper@gmail.com)
+
+[SUCCESS] Order 2573694
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2573460
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Susan Oickle (sloickle@gmail.com)
+
+[SUCCESS] Order 2573276
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2573276
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Jeff Crouse (jeffshelleycrouse@gmail.com)
+    - Partner: Shelley Crouse (jeffshelleycrouse@gmail.com)
+
+[SUCCESS] Order 2573276
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2572647
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jessica Carter (jessecarter313@hotmail.com)
+
+[SUCCESS] Order 2572647
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Sayer Patterson (oltomsayer@gmail.com)
+
+[SUCCESS] Order 2572637
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Maggie Wood (maggiewood@bellaliant.net)
+
+[SUCCESS] Order 2572555
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2572555
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2572555
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Barry Kemp (bakemp1@outlook.com)
+    - Partner: Beverley Kemp (bkemp1230@icloud.com)
+
+[SUCCESS] Order 2571424
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Terry Nowe (office@nelexcavation.ca)
+
+[SUCCESS] Order 2571424
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2572454
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2572454
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Brian Carver (carverloggie@gmail.com)
+
+[SUCCESS] Order 2572451
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Conrad Plante (conradfplante@gmail.com)
+
+[SUCCESS] Order 2571676
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2571676
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Pamela Grandy (grandypk@gmail.com)
+
+[SUCCESS] Order 2571562
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Hunter Parks (hparks@bellaliant.net)
+
+[SUCCESS] Order 2571451
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2571433
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2571433
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Susan Prince (susanprince54@gmail.com)
+
+[SUCCESS] Order 2571434
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Michael Croft (mdcroft@ns.sympatico.ca)
+
+[SUCCESS] Order 2568850
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568850
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Gordie Moulton (mgmoul93@gmail.com)
+
+[SUCCESS] Order 2568850
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Individual Membership
+    - Created: Gordie Moulton (mgmoul93@gmail.com)
+
+[SUCCESS] Order 2568850
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2571215
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2571215
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jim Smith (jamsmith3@eastlink.ca)
+
+[SUCCESS] Order 2571215
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jim Smith (jamsmith3@eastlink.ca)
+
+[SUCCESS] Order 2571178
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Allen Whynot (alkimwhynot@hotmail.com)
+
+[SUCCESS] Order 2571129
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Dianne Lapierre (dianne.lapierre60@gmail.com)
+
+[SUCCESS] Order 2570902
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lynn Olsheskie (lynnmarieolsheskie@gmail.com)
+
+[SUCCESS] Order 2570853
+  Item: 2025-2026 Membership:  Half Year - Active
+  Product: 2025-2026 Membership: Half Year - Active (ID: 6)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Katherine Dubreuil (pkdubreuil@unisave.com)
+
+[SUCCESS] Order 2570853
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2570823
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Sherman Creaser (s.creaser@bellaliant.net)
+
+[SUCCESS] Order 2570823
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2570809
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Dawn Tancock (mantra52@hotmaill.com)
+    - Partner: Lloyd Charles Tancock (stampguy48@hotmail.com)
+
+[SUCCESS] Order 2570264
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Emily Garratt (emily.garratt@hotmail.com)
+
+[SUCCESS] Order 2570022
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Donna Shears (donna.shears75@gmail.com)
+    - Partner: Scott Shears (donna.shears75@gmail.com)
+
+[SUCCESS] Order 2569929
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2569929
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lynn Evans Phillips (lynnevansphillips@gmail.com)
+
+[SUCCESS] Order 2569886
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: David Rose (davidrose@ns.sympatico.ca)
+
+[SUCCESS] Order 2569886
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568940
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568940
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Vincent Gendron (v.gendron4@gmail.com)
+
+[SUCCESS] Order 2569629
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Glenn Josephson (g.josephson@eastlink.ca)
+
+[SUCCESS] Order 2569626
+  Item: 2025-2026 Membership:  Half Year - Active
+  Product: 2025-2026 Membership: Half Year - Active (ID: 6)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Bob Smith (suebobsmith@hotmail.com)
+
+[SUCCESS] Order 2569615
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2569615
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Barry Smith (mbsmithw85@gmail.com)
+
+[SUCCESS] Order 2569615
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Barry Smith (mbsmithw85@gmail.com)
+
+[SUCCESS] Order 2569606
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: hans boot (hans.boot@eastlink.ca)
+
+[SUCCESS] Order 2569601
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2569601
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Dave White (davewbookmobile56@gmail.com)
+
+[SUCCESS] Order 2569577
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lacy Barry (lacybarry@hotmail.ca)
+
+[SUCCESS] Order 2569575
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Amy McDormand (amymcdormand@hotmail.com)
+
+[SUCCESS] Order 2569563
+  Item: 2025-2026 Membership: New Members - Active 2 Adults (same address)
+  Product: 2025-2026 Membership: New Members - Active 2 Adults (same address) (ID: 9)
+  Price: $810.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Peter Bancroft (pbbancroft@hotmail.com)
+    - Partner: Barbara  (pbbancroft@hotmail.com)
+
+[SUCCESS] Order 2569553
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Byron Tanner (betanner12@gmail.com)
+
+[SUCCESS] Order 2569553
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2569544
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2569544
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: David Wilkie (david.wilkie@exitinterlake.com)
+
+[SUCCESS] Order 2564732
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Pamela Grandy (grandypk@gmail.com)
+
+[SUCCESS] Order 2568255
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568137
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Charmane Hebb (charmane_hebb@hotmail.com)
+
+[SUCCESS] Order 2568137
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568137
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Joseph Hebb (j_ahebb@hotmail.com)
+
+[SUCCESS] Order 2568137
+  Item: 2025-2026 Membership:  Student Curling in Evening League
+  Product: 2025-2026 Membership: New Student Curling in Evening League (ID: 14)
+  Price: $250.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568090
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2568090
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Nancy McConnery (nancy.mcconnery@gmail.com)
+    - Partner: Peter McConnery (Peter.mcconnery@gmail.com)
+
+[SUCCESS] Order 2567657
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ron Nickerson (rnickerson01@gmail.com)
+
+[SUCCESS] Order 2544018
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Robert Stevenson (robertnickolasstevenson@gmail.com)
+
+[SUCCESS] Order 2544018
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Robert Stevenson (robertnickolasstevenson@gmail.com)
+
+[SUCCESS] Order 2544031
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kevin Crouse (ketrcrouse@gmail.com)
+
+[SUCCESS] Order 2544031
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2566316
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2566316
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Heather Jeffers (hjeffers902@gmail.com)
+
+[SUCCESS] Order 2566328
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2566327
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2566323
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Mary Wagner (marylwagner@outlook.com)
+
+[SUCCESS] Order 2566322
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Arden Wagner (ardenwagnet@outlook.com)
+
+[SUCCESS] Order 2547693
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2547693
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Baxter Noel (baxtertnoel@hotmail.com)
+
+[SUCCESS] Order 2564401
+  Item: 2025-2026 Membership:  Social
+  Product: 2025-2026 Membership: Social (ID: 15)
+  Price: $60.00
+  Status: active
+  Type: Individual Membership
+    - Created: Heather Davenport (heatherdavenport6@icloud.com)
+
+[SUCCESS] Order 2541445
+  Item: 2025-2026 Green League First Half Oct-Dec 2025
+  Product: 2025-2026 Green League First Half Oct-Dec 2025 (ID: 2)
+  Price: $160.00
+  Status: active
+  Type: Individual Membership
+    - Created: Simon Davenport (l7shd71@gmail.com)
+
+[SUCCESS] Order 2563931
+  Item: 2025-2026 Membership:  New Member - Active
+  Product: 2025-2026 Membership: New Member - Active (ID: 8)
+  Price: $455.00
+  Status: active
+  Type: Individual Membership
+    - Created: Philip Walsh (pjm67walsh@outlook.com)
+
+[SUCCESS] Order 2563878
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2563878
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Cathy Holmes (ceholmes2@hotmail.com)
+
+[SUCCESS] Order 2562861
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2562857
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Nicholas Enslow (nenslow@yahoo.com)
+
+[SUCCESS] Order 2562719
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jane Foster (janezack@gmail.com)
+
+[SUCCESS] Order 2561466
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Ross Reynolds (ssorreynolds@gmail.com)
+
+[SUCCESS] Order 2560977
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2560977
+  Item: 2025-2026 Membership:  Active 2 Adults (same address)
+  Product: 2025-2026 Membership: Active 2 Adults (same address) (ID: 5)
+  Price: $1,010.00
+  Status: active
+  Type: Couple Membership
+    - Primary: Sandra Porter-Lowe (portlowe@gmail.com)
+    - Partner: Greg Lowe (Greglowe@eastlink.ca)
+
+[SUCCESS] Order 2560977
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Updated:   ()
+
+[SUCCESS] Order 2558673
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lesly Reynolds (leslyandreareynolds@gmail.com)
+
+[SUCCESS] Order 2558263
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Donald Stewart (donaldwstewart@eastlink.ca)
+
+[SUCCESS] Order 2557839
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: David Adams (dandpadams@gmail.com)
+
+[SUCCESS] Order 2557839
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Updated: David Adams (dandpadams@gmail.com)
+
+[SUCCESS] Order 2545676
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Maggie Roy (mj09161996@gmail.com)
+
+[SUCCESS] Order 2554368
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Katrina Laidlaw (katrinalaidlaw@yahoo.ca)
+
+[SUCCESS] Order 2554295
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jessica Roache (j.roache@live.ca)
+
+[SUCCESS] Order 2553312
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Rachel Crouse (racheljcrouse@gmail.com)
+
+[SUCCESS] Order 2553312
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Rachel Crouse (racheljcrouse@gmail.com)
+
+[SUCCESS] Order 2553184
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jeff Lapierre (jefflapierre66@gmail.com)
+
+[SUCCESS] Order 2553180
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jeff Lapierre (jefflapierre66@gmail.com)
+
+[SUCCESS] Order 2552534
+  Item: 2025-2026 Membership:  Half Year - Active
+  Product: 2025-2026 Membership: Half Year - Active (ID: 6)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Cathy Rafuse (cathyarafuse@gmail.com)
+
+[SUCCESS] Order 2552534
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Cathy Rafuse (cathyarafuse@gmail.com)
+
+[SUCCESS] Order 2549784
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Roger Guillet (taifun5000@gmail.com)
+
+[SUCCESS] Order 2549797
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Aisha Guillet (aishamg14@gmail.com)
+
+[SUCCESS] Order 2549766
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jillian Croft (jillian.tony@hotmail.com)
+
+[SUCCESS] Order 2549766
+  Item: 2025-2026 Key Fob
+  Product: 2025-2026 Key Fob (ID: 17)
+  Price: $20.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jillian Croft (jillian.tony@hotmail.com)
+
+[SUCCESS] Order 2549766
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jillian Croft (jillian.tony@hotmail.com)
+
+[SUCCESS] Order 2548809
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Derek ZWICKER (zwicker895@gmail.com)
+
+[SUCCESS] Order 2531366
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jennifer Chase (jen.f.chase@gmail.com)
+
+[SUCCESS] Order 2531366
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jennifer Chase (jen.f.chase@gmail.com)
+
+[SUCCESS] Order 2548614
+  Item: 2025 Adult Learn to Curl Program:  Oct 20-Dec 15
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jessica Mossman (jessmossman@gmail.com)
+
+[SUCCESS] Order 2548239
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Danny White (danieljwhite32@gmail.com)
+
+[SUCCESS] Order 2548170
+  Item: 2025-2026 Membership:  New Member One Evening League Only
+  Product: 2025-2026 Membership: New Member One Evening League Only (ID: 11)
+  Price: $355.00
+  Status: active
+  Type: Individual Membership
+    - Created: Mike ONeill (squarepegwoodworkz@gmail.com)
+
+[SUCCESS] Order 2546288
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Peggy Smith (peggylsmith60@gmail.com)
+
+[SUCCESS] Order 2546236
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Hayes Richards (hayes.richards@gmail.com)
+
+[SUCCESS] Order 2544666
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Donald Stewart (donaldwstewart@eastlink.ca)
+
+[SUCCESS] Order 2545363
+  Item: 2025-2026 Locker Rental
+  Product: 2025-2026 Locker Rental (ID: 16)
+  Price: $25.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kirby Gendron (kirby-nicole@hotmail.com)
+
+[SUCCESS] Order 2545326
+  Item: 2025-2026 Membership:  Active
+  Product: 2025-2026 Membership: Active (ID: 4)
+  Price: $550.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kirby Gendron (kirby-nicole@hotmail.com)
+
+[SUCCESS] Order 2544483
+  Item: 2025-2026 Membership:  One Evening League Only
+  Product: 2025-2026 Membership: One Evening League Only (ID: 7)
+  Price: $400.00
+  Status: active
+  Type: Individual Membership
+    - Created: Gail Sinclair (gailasinclair@gmail.com)
+
+[SUCCESS] Order 2535793
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Russell Barrier (russellbarrier@gmail.com)
+
+[SUCCESS] Order 2535148
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Laura Richards (daleandlaura2000@gmail.com)
+
+[SUCCESS] Order 2532999
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Jennifer Meister (jennifermeist@gmail.com)
+
+[SUCCESS] Order 2532592
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Lisa Purcell (lisaawade@outlook.com)
+
+[SUCCESS] Order 2532300
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Natasha Freeman (nfreeman1975@gmail.com)
+
+[SUCCESS] Order 2532299
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: shannon Oickle (swoickle@gmail.com)
+
+[SUCCESS] Order 2531678
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Angela Kinder (angelarkinder@gmail.com)
+
+[SUCCESS] Order 2531465
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Charlene Hancock (charlenehancock83@gmail.com)
+
+[SUCCESS] Order 2529155
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Nicole Ley (nicolemley@gmail.com)
+
+[SUCCESS] Order 2529611
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Eric Jardine (ejards75@gmail.com)
+
+[SUCCESS] Order 2528940
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Kerry Oickle (kdoickle@eastlink.ca)
+
+[SUCCESS] Order 2528451
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: James Dobbin (jmdobbin@gmail.com)
+
+[SUCCESS] Order 2520713
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Andrew MacWha (andrew@willtoheal.com)
+
+[SUCCESS] Order 2519413
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Terri Jones (jonesterri003@gmail.com)
+
+[SUCCESS] Order 2519263
+  Item: Learn to Curl Program Beginning Oct 21st- Dec 16th,2024
+  Product: 2025 Adult Learn to Curl Program: Oct 20-Dec 15 (ID: 1)
+  Price: $80.00
+  Status: active
+  Type: Individual Membership
+    - Created: Madeline Mclaughlin (mclaughlin.madeline.1@gmail.com)
+
+
+================================================================================
+IMPORT SUMMARY
+================================================================================
+Total Order Items: 288
+Skipped (Adjustments): 1
+Skipped (No Product Match): 0
+Users Created/Found: 232
+Memberships Imported: 232
+Memberships Updated: 67
+Couple Memberships: 12
+
+Completed at 2025-11-14 03:07:26
