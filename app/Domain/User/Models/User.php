@@ -69,6 +69,7 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'current_membership_status' => MembershipStatus::class,
+            'temporary_password_expires_at' => 'datetime',
         ];
     }
 

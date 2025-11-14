@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Permission;
+use App\Filament\Pages\Auth\SetPassword;
 use App\Services\BookingValidationService;
 use Domain\Booking\Models\Booking;
 use Domain\Facility\Models\Area;
@@ -24,3 +25,6 @@ use Illuminate\Support\Facades\Route;
 //     // return response()->json($validationService->validateBooking($areas, $date, $startTime, $endTime, 1));
 
 // });
+
+// Password setup route (magic link)
+Route::get('/admin/set-password', SetPassword::class)->name('filament.admin.pages.set-password');

@@ -4,25 +4,72 @@
 
 /* Compact sidebar styling */
 .fi-sidebar {
-    @apply !text-sm;
+    @apply !text-xs;
+}
+
+.fi-sidebar-header {
+    @apply !px-3 !py-3;
 }
 
 .fi-sidebar-nav {
-    @apply !gap-2;
+    @apply !gap-1 !px-2;
 }
 
 .fi-sidebar-nav-item {
-    @apply !px-2 !py-1.5;
+    @apply !px-2 !py-1.5 !text-xs !min-h-[2rem];
+}
+
+.fi-sidebar-nav-item-icon {
+    @apply !w-4 !h-4;
 }
 
 .fi-sidebar-group {
-    @apply !gap-1;
+    @apply !gap-0.5 !mb-3;
 }
 
 .fi-sidebar-group-label {
-    @apply !px-2 !py-1 !text-xs;
+    @apply !px-2 !py-1 !text-[0.65rem] !font-semibold !tracking-wide;
 }
 
 .fi-sidebar-group-items {
     @apply !gap-0.5;
+}
+
+.fi-sidebar-group-button {
+    @apply !px-2 !py-1.5 !text-xs;
+}
+
+/* Make user menu more compact */
+.fi-user-menu-button {
+    @apply !px-2 !py-2 !text-xs;
+}
+
+/* Reduce main content margins */
+.fi-main-ctn {
+    @apply !px-0 !py-3;
+}
+
+/* Reduce page padding */
+.fi-page {
+    @apply !px-3 !py-3;
+}
+
+/* Reduce page content wrapper padding */
+.fi-page-content-wrapper {
+    @apply !px-0;
+}
+
+/* Reduce container max width constraints */
+.fi-container {
+    @apply !max-w-none !px-0;
+}
+
+/* Reduce topbar padding */
+.fi-topbar {
+    @apply !px-3;
+}
+
+/* Reduce main content wrapper */
+.fi-main > .fi-container {
+    @apply !px-0;
 }

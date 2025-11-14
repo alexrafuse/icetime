@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class ImportCurlingIoOrdersCommand extends Command
 {
-    protected $signature = 'membership:import-curlingio-orders
+    protected $signature = 'io:import
                             {file : Path to the CSV export file from curling.io}';
 
     protected $description = 'Import curling.io order items to create members and assign products';
