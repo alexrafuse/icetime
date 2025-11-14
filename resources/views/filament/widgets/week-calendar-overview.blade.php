@@ -59,8 +59,8 @@
             </div>
         </div>
 
-        {{-- Calendar Grid --}}
-        <div class="grid grid-cols-7 gap-2 data-loading:opacity-60 transition-opacity">
+        {{-- Desktop Calendar Grid (hidden on mobile) --}}
+        <div class="hidden lg:grid grid-cols-7 gap-2 data-loading:opacity-60 transition-opacity">
             @foreach ($this->weekDays as $day)
                 <div class="relative group">
                     <div @class([
@@ -122,6 +122,117 @@
                                 </div>
                             @empty
                                 <div class="flex flex-col items-center justify-center py-8 text-center">
+                                    <x-filament::icon
+                                        icon="heroicon-o-calendar"
+                                        class="h-8 w-8 text-gray-300 dark:text-gray-600 mb-2"
+                                    />
+                                    <p class="text-sm text-gray-400 dark:text-gray-500">
+                                        No bookings
+                                    </p>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- Mobile Accordion View (visible on mobile only) --}}
+        <div class="lg:hidden space-y-2 data-loading:opacity-60 transition-opacity" x-data="{ openDay: {{ $this->weekDays[0]['isToday'] ? 0 : 'null' }} }">
+            @foreach ($this->weekDays as $index => $day)
+                <div @class([
+                    'rounded-xl bg-white dark:bg-gray-900/50 overflow-hidden transition-all duration-300',
+                    'ring-2 ring-primary-500 dark:ring-primary-500 shadow-lg shadow-primary-500/20' => $day['isToday'],
+                    'ring-1 ring-gray-200 dark:ring-gray-700 shadow-sm' => ! $day['isToday'],
+                ])>
+                    {{-- Accordion Header --}}
+                    <button
+                        @click="openDay = openDay === {{ $index }} ? null : {{ $index }}"
+                        type="button"
+                        class="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    >
+                        <div class="flex items-center gap-3">
+                            {{-- Day Number Badge --}}
+                            <div @class([
+                                'flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center',
+                                'bg-primary-100 dark:bg-primary-900/30' => $day['isToday'],
+                                'bg-gray-100 dark:bg-gray-800' => ! $day['isToday'],
+                            ])>
+                                <span @class([
+                                    'text-lg font-bold',
+                                    'text-primary-600 dark:text-primary-400' => $day['isToday'],
+                                    'text-gray-900 dark:text-gray-100' => ! $day['isToday'],
+                                ])>
+                                    {{ $day['dayNumber'] }}
+                                </span>
+                            </div>
+
+                            {{-- Day Name and Month --}}
+                            <div class="text-left">
+                                <div @class([
+                                    'text-base font-semibold',
+                                    'text-primary-600 dark:text-primary-400' => $day['isToday'],
+                                    'text-gray-900 dark:text-white' => ! $day['isToday'],
+                                ])>
+                                    {{ $day['dayName'] }}
+                                </div>
+                                <div @class([
+                                    'text-xs font-medium',
+                                    'text-primary-600 dark:text-primary-400' => $day['isToday'],
+                                    'text-gray-500 dark:text-gray-400' => ! $day['isToday'],
+                                ])>
+                                    {{ $day['monthName'] }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Booking Count & Arrow --}}
+                        <div class="flex items-center gap-3">
+                            @if (count($day['bookings']) > 0)
+                                <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                                    {{ count($day['bookings']) }}
+                                </span>
+                            @endif
+                            <svg
+                                class="w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform duration-200"
+                                :class="{ 'rotate-180': openDay === {{ $index }} }"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </button>
+
+                    {{-- Accordion Content --}}
+                    <div
+                        x-show="openDay === {{ $index }}"
+                        x-collapse
+                        class="border-t border-gray-200 dark:border-gray-700"
+                    >
+                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @forelse ($day['bookings'] as $booking)
+                                <div class="py-3 px-4">
+                                    {{-- Title --}}
+                                    @if ($booking['title'])
+                                        <div class="text-sm font-semibold text-gray-900 dark:text-white mb-2 leading-tight">
+                                            {{ $booking['title'] }}
+                                        </div>
+                                    @endif
+
+                                    {{-- Time Range --}}
+                                    <div class="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                                        {{ $booking['start_time'] }} - {{ $booking['end_time'] }}
+                                    </div>
+
+                                    {{-- Event Type Dot --}}
+                                    <div class="flex justify-end">
+                                        <span class="inline-block w-2 h-2 rounded-full" style="background-color: {{ $booking['color'] }};"></span>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="flex flex-col items-center justify-center py-6 text-center">
                                     <x-filament::icon
                                         icon="heroicon-o-calendar"
                                         class="h-8 w-8 text-gray-300 dark:text-gray-600 mb-2"
