@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\DrawDocumentsOverview;
 use App\Filament\Widgets\SpareAvailabilityPrompt;
+use App\Filament\Widgets\UserActivityOverview;
 use App\Filament\Widgets\WeekCalendarOverview;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -13,6 +14,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -27,7 +29,6 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
 
-
         return $panel
             ->default()
             ->id('admin')
@@ -38,6 +39,12 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Blue,
             ])
             ->sidebarWidth('14rem')
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => app()->environment('production')
+                    ? '<script defer src="https://analytics.stacked.dev/umami.js" data-website-id="eb5dcc68-4b36-4cfd-b66d-d72a9f75635b"></script>'
+                    : ''
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -49,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
                 DrawDocumentsOverview::class,
 
                 WeekCalendarOverview::class,
+                UserActivityOverview::class,
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
