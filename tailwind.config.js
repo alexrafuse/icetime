@@ -8,6 +8,7 @@ export default {
         './app/Filament/**/*.php',
         './storage/framework/views/*.php',
         './resources/**/*.blade.php',
+        './resources/views/**/*.blade.php',
         './resources/**/*.js',
         './resources/**/*.vue',
         './resources/views/filament/widgets/*.blade.php'
