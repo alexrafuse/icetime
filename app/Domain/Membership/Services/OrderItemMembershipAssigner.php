@@ -29,7 +29,7 @@ final class OrderItemMembershipAssigner
         Product $product,
         Season $season,
         ImportStats $stats,
-        ImportLogger $logger
+        ?ImportLogger $logger
     ): void {
         if ($orderItem->hasSecondMember()) {
             $this->assignCoupleMembership($orderItem, $product, $season, $stats, $logger);
@@ -43,23 +43,23 @@ final class OrderItemMembershipAssigner
         Product $product,
         Season $season,
         ImportStats $stats,
-        ImportLogger $logger
+        ?ImportLogger $logger
     ): void {
         $stats->incrementCoupleMemberships();
-        $logger->logCoupleMembership();
+        $logger?->logCoupleMembership();
 
         $this->createCoupleFromOrderItem->execute($orderItem, $product, $season);
 
         $stats->incrementImportedUsers(2);
         $stats->incrementImportedMemberships(2);
 
-        $logger->logPrimaryMember(
+        $logger?->logPrimaryMember(
             $orderItem->profile->first_name,
             $orderItem->profile->last_name,
             $orderItem->profile->email
         );
 
-        $logger->logPartnerMember(
+        $logger?->logPartnerMember(
             $orderItem->second_member_profile->first_name,
             $orderItem->second_member_profile->last_name,
             $orderItem->second_member_profile->email
@@ -71,9 +71,9 @@ final class OrderItemMembershipAssigner
         Product $product,
         Season $season,
         ImportStats $stats,
-        ImportLogger $logger
+        ?ImportLogger $logger
     ): void {
-        $logger->logIndividualMembership();
+        $logger?->logIndividualMembership();
 
         $user = $this->createUserFromProfile->execute($orderItem->profile);
 
@@ -102,7 +102,7 @@ final class OrderItemMembershipAssigner
         UserProduct $existing,
         OrderItemImportData $orderItem,
         ImportStats $stats,
-        ImportLogger $logger
+        ?ImportLogger $logger
     ): void {
         $updates = [
             'status' => MembershipStatus::ACTIVE,
@@ -125,7 +125,7 @@ final class OrderItemMembershipAssigner
         }
 
         $stats->incrementUpdatedMemberships();
-        $logger->logUserUpdated(
+        $logger?->logUserUpdated(
             $orderItem->profile->first_name,
             $orderItem->profile->last_name,
             $orderItem->profile->email
@@ -138,7 +138,7 @@ final class OrderItemMembershipAssigner
         Season $season,
         OrderItemImportData $orderItem,
         ImportStats $stats,
-        ImportLogger $logger
+        ?ImportLogger $logger
     ): ?UserProduct {
         $membership = $this->assignProductToUser->execute(
             user: $user,
@@ -159,7 +159,7 @@ final class OrderItemMembershipAssigner
 
         $stats->incrementImportedUsers();
         $stats->incrementImportedMemberships();
-        $logger->logUserCreated(
+        $logger?->logUserCreated(
             $orderItem->profile->first_name,
             $orderItem->profile->last_name,
             $orderItem->profile->email

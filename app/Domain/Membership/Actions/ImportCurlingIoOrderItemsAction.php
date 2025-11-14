@@ -27,7 +27,7 @@ final class ImportCurlingIoOrderItemsAction
 
     private ?BulkImportBuffer $buffer = null;
 
-    public function execute(string $csvFilePath): array
+    public function execute(string $csvFilePath, bool $enableLogging = false): array
     {
         $season = $this->getCurrentSeason();
 
@@ -54,10 +54,10 @@ final class ImportCurlingIoOrderItemsAction
             buffer: $this->buffer
         );
 
-        $logger = $this->createLogger($csvFilePath);
-        $stats = new ImportStats(log_file_path: $logger->getPath());
+        $logger = $enableLogging ? $this->createLogger($csvFilePath) : null;
+        $stats = new ImportStats(log_file_path: $logger?->getPath());
 
-        $logger->writeHeader($csvFilePath, $season->name, $season->id);
+        $logger?->writeHeader($csvFilePath, $season->name, $season->id);
 
         $rows = $this->readCsvFile($csvFilePath);
 
@@ -74,8 +74,8 @@ final class ImportCurlingIoOrderItemsAction
         // Recalculate membership statuses for all affected users after import completes
         $this->recalculateMembershipStatuses($stats, $logger);
 
-        $logger->writeSummary($stats->toArray());
-        $logger->close();
+        $logger?->writeSummary($stats->toArray());
+        $logger?->close();
 
         return $stats->toArray();
     }
@@ -117,7 +117,7 @@ final class ImportCurlingIoOrderItemsAction
         return $rows;
     }
 
-    private function processRows(Collection $rows, Season $season, ImportStats $stats, ImportLogger $logger): void
+    private function processRows(Collection $rows, Season $season, ImportStats $stats, ?ImportLogger $logger): void
     {
         $rows
             ->filter(fn ($item) => ! empty(array_filter($item['row']))) // Skip empty rows
@@ -137,7 +137,7 @@ final class ImportCurlingIoOrderItemsAction
         return ['header' => $header, 'row' => $row];
     }
 
-    private function processRow(array $item, int $index, Season $season, ImportStats $stats, ImportLogger $logger): void
+    private function processRow(array $item, int $index, Season $season, ImportStats $stats, ?ImportLogger $logger): void
     {
         $lineNumber = $index + 2; // +2 because: 0-indexed + header row
         $header = $item['header'];
@@ -158,12 +158,12 @@ final class ImportCurlingIoOrderItemsAction
         }
     }
 
-    private function validateRow(array $row, array $header, int $lineNumber, ImportStats $stats, ImportLogger $logger): bool
+    private function validateRow(array $row, array $header, int $lineNumber, ImportStats $stats, ?ImportLogger $logger): bool
     {
         if (count($row) !== count($header)) {
             $warning = "Line {$lineNumber}: Column count mismatch (expected ".count($header).', got '.count($row).')';
             $stats->addWarning($warning);
-            $logger->logError($warning);
+            $logger?->logError($warning);
 
             return false;
         }
@@ -171,7 +171,7 @@ final class ImportCurlingIoOrderItemsAction
         return true;
     }
 
-    private function processOrderItem(OrderItemImportData $orderItem, Season $season, ImportStats $stats, ImportLogger $logger): void
+    private function processOrderItem(OrderItemImportData $orderItem, Season $season, ImportStats $stats, ?ImportLogger $logger): void
     {
         if ($orderItem->isAdjustment()) {
             $this->handleAdjustment($orderItem, $season, $stats, $logger);
@@ -190,43 +190,43 @@ final class ImportCurlingIoOrderItemsAction
         $this->assignMembership($orderItem, $product, $season, $stats, $logger);
     }
 
-    private function handleAdjustment(OrderItemImportData $orderItem, Season $season, ImportStats $stats, ImportLogger $logger): void
+    private function handleAdjustment(OrderItemImportData $orderItem, Season $season, ImportStats $stats, ?ImportLogger $logger): void
     {
         $stats->incrementSkippedAdjustments(); // Keep stats name for backward compat, but we're processing now
 
         $userProduct = $this->processAdjustment->execute($orderItem, $season);
 
         if ($userProduct) {
-            $logger->logAdjustmentApplied($orderItem, $userProduct);
+            $logger?->logAdjustmentApplied($orderItem, $userProduct);
         } else {
-            $logger->logAdjustmentFailed($orderItem);
+            $logger?->logAdjustmentFailed($orderItem);
             $stats->addWarning("Order {$orderItem->order_id}: Could not find product to apply adjustment '{$orderItem->item_name}'");
         }
     }
 
-    private function handleUnmatchedProduct(OrderItemImportData $orderItem, ImportStats $stats, ImportLogger $logger): void
+    private function handleUnmatchedProduct(OrderItemImportData $orderItem, ImportStats $stats, ?ImportLogger $logger): void
     {
         $stats->incrementSkippedNoProductMatch();
         $stats->addUnmatchedProduct($orderItem);
         $stats->addWarning("Order {$orderItem->order_id}: No product match for '{$orderItem->item_name}' (\$".number_format($orderItem->total_cents / 100, 2).')');
 
-        $logger->logSkippedNoProduct($orderItem);
+        $logger?->logSkippedNoProduct($orderItem);
     }
 
-    private function assignMembership(OrderItemImportData $orderItem, $product, Season $season, ImportStats $stats, ImportLogger $logger): void
+    private function assignMembership(OrderItemImportData $orderItem, $product, Season $season, ImportStats $stats, ?ImportLogger $logger): void
     {
-        $logger->logSuccessHeader($orderItem, $product, 'active');
+        $logger?->logSuccessHeader($orderItem, $product, 'active');
 
         $this->membershipAssigner->assign($orderItem, $product, $season, $stats, $logger);
 
-        $logger->writeBlankLine(); // Empty line after each order
+        $logger?->writeBlankLine(); // Empty line after each order
     }
 
-    private function handleProcessingError(\Exception $e, int $lineNumber, ?array $data, ImportStats $stats, ImportLogger $logger): void
+    private function handleProcessingError(\Exception $e, int $lineNumber, ?array $data, ImportStats $stats, ?ImportLogger $logger): void
     {
         $warning = "Line {$lineNumber}: {$e->getMessage()}";
         $stats->addWarning($warning);
-        $logger->logError($warning);
+        $logger?->logError($warning);
 
         Log::warning('Failed to import order item', [
             'error' => $e->getMessage(),
@@ -235,7 +235,7 @@ final class ImportCurlingIoOrderItemsAction
         ]);
     }
 
-    private function recalculateMembershipStatuses(ImportStats $stats, ImportLogger $logger): void
+    private function recalculateMembershipStatuses(ImportStats $stats, ?ImportLogger $logger): void
     {
         $affectedUserIds = $this->buffer->getAffectedUserIds();
 

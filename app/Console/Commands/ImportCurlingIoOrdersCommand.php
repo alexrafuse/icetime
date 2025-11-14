@@ -10,7 +10,8 @@ use Illuminate\Console\Command;
 class ImportCurlingIoOrdersCommand extends Command
 {
     protected $signature = 'io:import
-                            {file : Path to the CSV export file from curling.io}';
+                            {file : Path to the CSV export file from curling.io}
+                            {--log : Create a detailed log file of the import process}';
 
     protected $description = 'Import curling.io order items to create members and assign products';
 
@@ -32,7 +33,8 @@ class ImportCurlingIoOrdersCommand extends Command
         $this->newLine();
 
         try {
-            $stats = $importOrderItemsAction->execute($filePath);
+            $enableLogging = $this->option('log');
+            $stats = $importOrderItemsAction->execute($filePath, $enableLogging);
 
             $elapsedTime = microtime(true) - $startTime;
 
@@ -73,7 +75,10 @@ class ImportCurlingIoOrdersCommand extends Command
             $this->newLine();
             $this->info('Import completed successfully!');
             $this->info("Processing time: {$this->formatElapsedTime($elapsedTime)}");
-            $this->info("Log file: {$stats['log_file_path']}");
+
+            if (! empty($stats['log_file_path'])) {
+                $this->info("Log file: {$stats['log_file_path']}");
+            }
 
             return self::SUCCESS;
         } catch (\Exception $e) {
