@@ -33,8 +33,6 @@ final class DrawDocumentResource extends Resource
         return 'Draw Schedules';
     }
 
-
-
     public static function form(Form $form): Form
     {
         return $form

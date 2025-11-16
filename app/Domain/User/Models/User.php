@@ -12,6 +12,7 @@ use App\Domain\Membership\Models\UserProduct;
 use Database\Factories\UserFactory;
 use Domain\Booking\Models\Booking;
 use Domain\Facility\Models\SpareAvailability;
+use Domain\Shared\Models\SurveyResponse;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -94,6 +95,11 @@ class User extends Authenticatable implements FilamentUser
     public function userProducts(): HasMany
     {
         return $this->hasMany(UserProduct::class);
+    }
+
+    public function surveyResponses(): HasMany
+    {
+        return $this->hasMany(SurveyResponse::class);
     }
 
     public function seasons(): BelongsToMany

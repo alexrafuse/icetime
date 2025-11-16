@@ -48,6 +48,8 @@ class DatabaseSeeder extends Seeder
             DrawDocumentsSeeder::class,
             CalendarImportSeeder::class,
             LeagueSeeder::class,
+            SurveysSeeder::class,
+            FormsSeeder::class,
 
         ]);
     }

@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\DrawDocumentsOverview;
 use App\Filament\Widgets\SpareAvailabilityPrompt;
+use App\Filament\Widgets\SurveyPromptWidget;
 use App\Filament\Widgets\UserActivityOverview;
 use App\Filament\Widgets\WeekCalendarOverview;
 use Filament\Http\Middleware\Authenticate;
@@ -50,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                SurveyPromptWidget::class,
                 SpareAvailabilityPrompt::class,
                 DrawDocumentsOverview::class,
 
