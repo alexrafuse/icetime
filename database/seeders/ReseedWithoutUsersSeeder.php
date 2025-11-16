@@ -37,6 +37,8 @@ class ReseedWithoutUsersSeeder extends Seeder
             DrawDocumentsSeeder::class,
             CalendarImportSeeder::class,
             LeagueSeeder::class,
+            SurveysSeeder::class,
+            FormsSeeder::class
         ]);
 
         // Reassign admin role to first user
