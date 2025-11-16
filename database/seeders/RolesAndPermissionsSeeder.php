@@ -33,6 +33,7 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::VIEW_AREAS,
             Permission::VIEW_OWN_MEMBERSHIP,
             Permission::VIEW_PRODUCTS,
+            Permission::VIEW_RESOURCES,
         ]);
 
         $staff = Role::create(['name' => 'staff']);
@@ -46,6 +47,8 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::MANAGE_USERS,
             Permission::VIEW_MEMBERSHIPS,
             Permission::VIEW_PRODUCTS,
+            Permission::VIEW_RESOURCES,
+            Permission::MANAGE_RESOURCES,
         ]);
 
         $admin = Role::create(['name' => 'admin']);

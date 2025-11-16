@@ -36,6 +36,10 @@ enum Permission: string
     // Season Management
     case MANAGE_SEASONS = 'seasons.manage';
 
+    // Resource Management
+    case VIEW_RESOURCES = 'resources.view';
+    case MANAGE_RESOURCES = 'resources.manage';
+
     public static function values(): array
     {
         return array_column(self::cases(), 'value');
@@ -73,6 +77,10 @@ enum Permission: string
 
             // Seasons
             self::MANAGE_SEASONS => 'Manage Seasons',
+
+            // Resources
+            self::VIEW_RESOURCES => 'View Resources',
+            self::MANAGE_RESOURCES => 'Manage Resources',
         };
     }
 
@@ -108,6 +116,10 @@ enum Permission: string
             ],
             'Seasons' => [
                 self::MANAGE_SEASONS,
+            ],
+            'Resources' => [
+                self::VIEW_RESOURCES,
+                self::MANAGE_RESOURCES,
             ],
         ];
     }
