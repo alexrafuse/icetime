@@ -38,16 +38,18 @@ final class RoleResource extends Resource
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
+                        Forms\Components\Select::make('guard_name')
+                            ->options([
+                                'web' => 'Web',
+                            ])
+                            ->default('web')
+                            ->required(),
+
                         Forms\Components\Select::make('permissions')
                             ->relationship('permissions', 'name')
                             ->multiple()
                             ->preload()
                             ->searchable()
-                            ->columnSpanFull(),
-
-                        Forms\Components\Toggle::make('is_admin')
-                            ->label('Administrator Role')
-                            ->helperText('Administrators bypass all permissions')
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
@@ -68,9 +70,9 @@ final class RoleResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_admin')
-                    ->label('Admin')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('guard_name')
+                    ->badge()
+                    ->color('gray'),
 
                 Tables\Columns\TextColumn::make('users_count')
                     ->label('Users')

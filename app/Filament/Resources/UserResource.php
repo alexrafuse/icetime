@@ -123,6 +123,17 @@ final class UserResource extends Resource
                     ])
                     ->columns(2),
 
+                Forms\Components\Section::make('Roles & Permissions')
+                    ->schema([
+                        Forms\Components\Select::make('roles')
+                            ->relationship('roles', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->columnSpanFull(),
+                    ])
+                    ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
+
                 Forms\Components\Section::make('Curling.io Integration')
                     ->schema([
                         Forms\Components\TextInput::make('curlingio_profile_id')
@@ -181,6 +192,14 @@ final class UserResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->badge()
+                    ->color('warning')
+                    ->separator(', ')
+                    ->toggleable()
+                    ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -233,6 +252,12 @@ final class UserResource extends Resource
                             ->label('Curling.io Profile ID')
                             ->placeholder('Not linked')
                             ->copyable(),
+                        Infolists\Components\TextEntry::make('roles.name')
+                            ->label('Roles')
+                            ->badge()
+                            ->color('warning')
+                            ->placeholder('No roles assigned')
+                            ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
                     ])
                     ->columns(2),
 

@@ -3,7 +3,7 @@ ssh ploi@15.235.56.159 << 'EOF'
 cd /home/ploi/members.curlbridgewater.ca
 
 echo "📥 Pulling latest changes..."
-git pull origin main
+git pull origin main --force
 
 echo "📦 Installing PHP deps..."
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
@@ -16,6 +16,7 @@ echo "🧹 Cleaning up Node artifacts..."
 rm -rf node_modules
 npm cache clean --force >/dev/null 2>&1 || true
 rm -rf ~/.npm/_cacache ~/.npm/_logs || true
+rm package-lock.json
 
 echo "⚙️ Optimizing Laravel..."
 php artisan route:cache
