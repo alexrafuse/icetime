@@ -1,6 +1,6 @@
-ssh ploi@15.235.56.159 << 'EOF'
+ssh curlbridgewater@198.50.159.18 << 'EOF'
 
-cd /home/ploi/members.curlbridgewater.ca
+cd /home/curlbridgewater/members.curlbridgewater.ca
 
 echo "📥 Pulling latest changes..."
 git pull origin main --force
@@ -17,6 +17,7 @@ rm -rf node_modules
 npm cache clean --force >/dev/null 2>&1 || true
 rm -rf ~/.npm/_cacache ~/.npm/_logs || true
 rm package-lock.json
+rm public/hot
 
 echo "⚙️ Optimizing Laravel..."
 php artisan route:cache
