@@ -64,10 +64,10 @@ class AssignMemberRoleToUsersCommand extends Command
             $progressBar = $this->output->createProgressBar($usersWithoutRoles->count());
             $progressBar->start();
 
-            foreach ($usersWithoutRoles as $user) {
+            $usersWithoutRoles->each(function (User $user) use ($progressBar) {
                 $user->assignRole(RoleEnum::MEMBER->value);
                 $progressBar->advance();
-            }
+            });
 
             $progressBar->finish();
             $this->newLine(2);

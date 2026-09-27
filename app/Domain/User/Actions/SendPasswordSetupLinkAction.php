@@ -11,6 +11,7 @@ use Domain\User\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 final class SendPasswordSetupLinkAction
 {
@@ -18,7 +19,7 @@ final class SendPasswordSetupLinkAction
     {
         // Check if user already has a valid setup link and force is not set
         if (! $force && $this->hasValidSetupToken($user)) {
-            throw new \RuntimeException("User {$user->email} already has a valid password setup link. Use --force to resend.");
+            throw new RuntimeException("User {$user->email} already has a valid password setup link. Use --force to resend.");
         }
 
         // Generate secure random token (64 characters)

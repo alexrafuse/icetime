@@ -9,6 +9,7 @@ use App\Domain\Membership\Data\OrderItemImportData;
 use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Services\ImportDataCache;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 final class MatchProductFromOrderItemAction
 {
@@ -27,7 +28,7 @@ final class MatchProductFromOrderItemAction
     public function execute(OrderItemImportData $orderItem): ?Product
     {
         if (! $this->cache) {
-            throw new \RuntimeException('ImportDataCache is required for product matching during import');
+            throw new RuntimeException('ImportDataCache is required for product matching during import');
         }
 
         // Strategy 1: Try to get curlingio_id from name mapping and match by that

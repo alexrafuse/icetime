@@ -52,6 +52,7 @@ final class CreateBooking extends CreateRecord
             unset($data['is_recurring']);
 
             $bookingData = [
+                'title' => $data['title'],
                 'user_id' => $data['user_id'],
                 'start_time' => $data['start_time'],
                 'end_time' => $data['end_time'],
@@ -62,6 +63,7 @@ final class CreateBooking extends CreateRecord
             ];
 
             $patternData = [
+                'title' => $data['title'],
                 'frequency' => $data['recurring']['frequency'],
                 'interval' => $data['recurring']['interval'],
                 'start_date' => $data['date'],

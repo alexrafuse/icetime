@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\PermissionResource\Pages;
 
 use App\Filament\Resources\PermissionResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditPermission extends EditRecord
@@ -15,7 +15,7 @@ final class EditPermission extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

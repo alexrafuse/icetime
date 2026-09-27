@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Domain\Membership\Actions\ImportCurlingIoOrderItemsAction;
+use Exception;
 use Illuminate\Console\Command;
 
 class ImportCurlingIoOrdersCommand extends Command
@@ -81,7 +82,7 @@ class ImportCurlingIoOrdersCommand extends Command
             }
 
             return self::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Import failed: {$e->getMessage()}");
             $this->error($e->getTraceAsString());
 

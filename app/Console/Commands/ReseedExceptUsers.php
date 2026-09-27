@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use DB;
+use Exception;
 use Illuminate\Console\Command;
+use Schema;
 
 class ReseedExceptUsers extends Command
 {
@@ -59,7 +62,7 @@ class ReseedExceptUsers extends Command
 
             return self::SUCCESS;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Re-enable foreign key checks even on error
             $this->enableForeignKeyChecks();
 
@@ -96,7 +99,7 @@ class ReseedExceptUsers extends Command
 
         foreach ($tables as $table) {
             $this->line("  - Truncating {$table}");
-            \DB::table($table)->truncate();
+            DB::table($table)->truncate();
         }
     }
 
@@ -116,33 +119,33 @@ class ReseedExceptUsers extends Command
         ];
 
         foreach ($systemTables as $table) {
-            if (\Schema::hasTable($table)) {
+            if (Schema::hasTable($table)) {
                 $this->line("  - Clearing {$table}");
-                \DB::table($table)->truncate();
+                DB::table($table)->truncate();
             }
         }
     }
 
     protected function disableForeignKeyChecks(): void
     {
-        $driver = \DB::getDriverName();
+        $driver = DB::getDriverName();
 
         match ($driver) {
-            'mysql' => \DB::statement('SET FOREIGN_KEY_CHECKS=0'),
-            'sqlite' => \DB::statement('PRAGMA foreign_keys=OFF'),
-            'pgsql' => \DB::statement('SET CONSTRAINTS ALL DEFERRED'),
+            'mysql' => DB::statement('SET FOREIGN_KEY_CHECKS=0'),
+            'sqlite' => DB::statement('PRAGMA foreign_keys=OFF'),
+            'pgsql' => DB::statement('SET CONSTRAINTS ALL DEFERRED'),
             default => null,
         };
     }
 
     protected function enableForeignKeyChecks(): void
     {
-        $driver = \DB::getDriverName();
+        $driver = DB::getDriverName();
 
         match ($driver) {
-            'mysql' => \DB::statement('SET FOREIGN_KEY_CHECKS=1'),
-            'sqlite' => \DB::statement('PRAGMA foreign_keys=ON'),
-            'pgsql' => \DB::statement('SET CONSTRAINTS ALL IMMEDIATE'),
+            'mysql' => DB::statement('SET FOREIGN_KEY_CHECKS=1'),
+            'sqlite' => DB::statement('PRAGMA foreign_keys=ON'),
+            'pgsql' => DB::statement('SET CONSTRAINTS ALL IMMEDIATE'),
             default => null,
         };
     }

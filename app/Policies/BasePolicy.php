@@ -39,6 +39,16 @@ abstract class BasePolicy
         return $user->hasAnyRole([RoleEnum::ADMIN->value, RoleEnum::STAFF->value]);
     }
 
+    protected function isBoardMember(User $user): bool
+    {
+        return $user->hasRole(RoleEnum::BOARD_MEMBER->value);
+    }
+
+    protected function isAdminOrBoardMember(User $user): bool
+    {
+        return $user->hasAnyRole([RoleEnum::ADMIN->value, RoleEnum::BOARD_MEMBER->value]);
+    }
+
     /**
      * Check if user has a specific permission
      */

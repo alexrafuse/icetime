@@ -11,17 +11,17 @@ use Livewire\Attributes\Url;
 
 class MemberForms extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.pages.member-forms';
+    protected string $view = 'filament.pages.member-forms';
 
     protected static ?string $title = 'Forms';
 
     protected static ?string $navigationLabel = 'Forms';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static string|\UnitEnum|null $navigationGroup = 'Members Area';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     #[Url]
     public string $search = '';
@@ -52,18 +52,15 @@ class MemberForms extends Page
             ->get()
             ->groupBy(fn (Form $form) => $form->category->value);
 
-        $categorizedForms = [];
-
-        foreach (FormCategory::cases() as $category) {
-            if (isset($forms[$category->value]) && $forms[$category->value]->isNotEmpty()) {
-                $categorizedForms[$category->value] = [
+        return collect(FormCategory::cases())
+            ->filter(fn (FormCategory $category) => isset($forms[$category->value]) && $forms[$category->value]->isNotEmpty())
+            ->mapWithKeys(fn (FormCategory $category) => [
+                $category->value => [
                     'category' => $category,
                     'forms' => $forms[$category->value],
-                ];
-            }
-        }
-
-        return $categorizedForms;
+                ],
+            ])
+            ->all();
     }
 
     public function updatedSearch(): void

@@ -26,39 +26,36 @@ class GenerateRecurringBookings extends Command
             ->get();
 
         $this->info("Found {$patterns->count()} active recurring patterns.");
-        $bookingsCreated = 0;
 
-        foreach ($patterns as $pattern) {
-            $originalBooking = $pattern->booking;
+        $bookingsCreated = $patterns
+            ->filter(fn (RecurringPattern $pattern) => $pattern->booking !== null)
+            ->sum(function (RecurringPattern $pattern) use ($bookingService, $endDate) {
+                $originalBooking = $pattern->booking;
 
-            if (! $originalBooking) {
-                continue;
-            }
+                $bookingData = [
+                    'user_id' => $originalBooking->user_id,
+                    'start_time' => $originalBooking->start_time,
+                    'end_time' => $originalBooking->end_time,
+                    'event_type' => $originalBooking->event_type,
+                    'payment_status' => $originalBooking->payment_status,
+                    'setup_instructions' => $originalBooking->setup_instructions,
+                    'areas' => $originalBooking->areas->pluck('id')->toArray(),
+                ];
 
-            $bookingData = [
-                'user_id' => $originalBooking->user_id,
-                'start_time' => $originalBooking->start_time,
-                'end_time' => $originalBooking->end_time,
-                'event_type' => $originalBooking->event_type,
-                'payment_status' => $originalBooking->payment_status,
-                'setup_instructions' => $originalBooking->setup_instructions,
-                'areas' => $originalBooking->areas->pluck('id')->toArray(),
-            ];
+                $patternData = [
+                    'frequency' => $pattern->frequency,
+                    'interval' => $pattern->interval,
+                    'start_date' => Carbon::now()->format('Y-m-d'),
+                    'end_date' => $endDate->format('Y-m-d'),
+                    'days_of_week' => $pattern->days_of_week,
+                    'excluded_dates' => $pattern->excluded_dates,
+                ];
 
-            $patternData = [
-                'frequency' => $pattern->frequency,
-                'interval' => $pattern->interval,
-                'start_date' => Carbon::now()->format('Y-m-d'),
-                'end_date' => $endDate->format('Y-m-d'),
-                'days_of_week' => $pattern->days_of_week,
-                'excluded_dates' => $pattern->excluded_dates,
-            ];
+                $newBookings = $bookingService->createRecurringBookings($bookingData, $patternData);
+                $this->info("Generated {$newBookings->count()} bookings for pattern ID {$pattern->id}");
 
-            $newBookings = $bookingService->createRecurringBookings($bookingData, $patternData);
-            $bookingsCreated += $newBookings->count();
-
-            $this->info("Generated {$newBookings->count()} bookings for pattern ID {$pattern->id}");
-        }
+                return $newBookings->count();
+            });
 
         $this->info("Successfully created {$bookingsCreated} recurring bookings.");
 

@@ -8,6 +8,7 @@ use App\Domain\Membership\Enums\MembershipCapacity;
 use App\Domain\Membership\Enums\MembershipTier;
 use App\Domain\Membership\Enums\ProductType;
 use Domain\Shared\ValueObjects\Money;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,7 +65,7 @@ class Product extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(\Domain\User\Models\User::class, 'user_products')
+        return $this->belongsToMany(User::class, 'user_products')
             ->using(UserProduct::class)
             ->withPivot(['assigned_at', 'expires_at', 'status', 'purchase_reference', 'metadata'])
             ->withTimestamps();

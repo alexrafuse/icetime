@@ -6,10 +6,19 @@ namespace App\Filament\Resources\ProductResource\RelationManagers;
 
 use App\Domain\Membership\Enums\MembershipStatus;
 use App\Domain\Membership\Models\Season;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class UserProductsRelationManager extends RelationManager
@@ -18,18 +27,18 @@ class UserProductsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'user.name';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
+        return $schema
+            ->components([
+                Select::make('user_id')
                     ->label('User')
                     ->relationship('user', 'name')
                     ->searchable()
                     ->required()
                     ->preload(),
 
-                Forms\Components\Select::make('season_id')
+                Select::make('season_id')
                     ->label('Season')
                     ->relationship('season', 'name')
                     ->required()
@@ -37,22 +46,22 @@ class UserProductsRelationManager extends RelationManager
                     ->preload()
                     ->default(fn () => Season::query()->where('is_current', true)->first()?->id),
 
-                Forms\Components\Select::make('status')
+                Select::make('status')
                     ->options(MembershipStatus::class)
                     ->required()
                     ->default(MembershipStatus::ACTIVE)
                     ->native(false),
 
-                Forms\Components\DateTimePicker::make('assigned_at')
+                DateTimePicker::make('assigned_at')
                     ->label('Assigned Date')
                     ->default(now())
                     ->required(),
 
-                Forms\Components\DatePicker::make('expires_at')
+                DatePicker::make('expires_at')
                     ->label('Expiration Date')
                     ->helperText('Leave empty for no expiration'),
 
-                Forms\Components\TextInput::make('purchase_reference')
+                TextInput::make('purchase_reference')
                     ->label('Purchase Reference')
                     ->helperText('Optional reference (e.g., invoice number, order ID)'),
             ]);
@@ -62,69 +71,69 @@ class UserProductsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->label('User')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
-                Tables\Columns\TextColumn::make('user.email')
+                TextColumn::make('user.email')
                     ->label('Email')
                     ->searchable()
                     ->copyable(),
 
-                Tables\Columns\TextColumn::make('season.name')
+                TextColumn::make('season.name')
                     ->label('Season')
                     ->badge()
                     ->color('info')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (MembershipStatus $state) => $state->getLabel())
                     ->color(fn (MembershipStatus $state) => $state->getColor())
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('assigned_at')
+                TextColumn::make('assigned_at')
                     ->label('Assigned')
                     ->dateTime()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('expires_at')
+                TextColumn::make('expires_at')
                     ->label('Expires')
                     ->date()
                     ->sortable()
                     ->placeholder('-'),
 
-                Tables\Columns\TextColumn::make('purchase_reference')
+                TextColumn::make('purchase_reference')
                     ->label('Reference')
                     ->limit(20)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('assigned_at', 'desc')
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->options(MembershipStatus::class)
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('season_id')
+                SelectFilter::make('season_id')
                     ->label('Season')
                     ->relationship('season', 'name')
                     ->searchable()
                     ->preload(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->label('Assign to User'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make()
                     ->label('Remove'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->label('Remove Selected'),
                 ]),
             ]);

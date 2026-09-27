@@ -70,18 +70,11 @@
     </div>
 
     @if (empty($categorizedForms))
-        <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-12 text-center shadow-sm">
-            <x-filament::icon
-                icon="heroicon-o-document"
-                class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-600 mb-4"
-            />
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                No forms available
-            </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-                There are currently no forms available. Check back later!
-            </p>
-        </div>
+        <x-empty-state
+            icon="heroicon-o-document"
+            heading="No forms available"
+            description="There are currently no forms available. Check back later!"
+        />
     @else
         <div class="space-y-10">
             @foreach ($categorizedForms as $categoryData)
@@ -134,7 +127,7 @@
                                         href="{{ $form->tally_form_url }}"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-{{ $category->getColor() }}-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-{{ $category->getColor() }}-500 transition-colors duration-200"
+                                        class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-{{ $category->getColor() }}-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-{{ $category->getColor() }}-500 transition-colors duration-200"
                                     >
                                         Open Form
                                         <x-filament::icon

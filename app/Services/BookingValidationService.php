@@ -18,19 +18,9 @@ final class BookingValidationService
         Carbon $endTime,
         ?int $excludeBookingId = null
     ): bool {
-        // Check if each area is available (active and within availability windows)
-        foreach ($areas as $area) {
-            if (! $area->is_active || ! $this->isAreaAvailable($area, $date, $startTime, $endTime)) {
-                return false;
-            }
-
-            // Check if the area has any booking conflicts
-            if ($this->isAreaBooked($area, $date, $startTime, $endTime, $excludeBookingId)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $areas->every(fn (Area $area) => $area->is_active
+            && $this->isAreaAvailable($area, $date, $startTime, $endTime)
+            && ! $this->isAreaBooked($area, $date, $startTime, $endTime, $excludeBookingId));
     }
 
     public function isAreaAvailable(
@@ -39,33 +29,38 @@ final class BookingValidationService
         Carbon $startTime,
         Carbon $endTime
     ): bool {
-        $availability = $area->availabilities()
-            ->where('is_available', true)
-            ->where(function ($query) use ($date) {
-                $query->where(function ($q) use ($date) {
-                    // Specific date availability
-                    $q->whereNull('day_of_week')
-                        ->whereDate('start_time', $date->format('Y-m-d'));
-                })->orWhere(function ($q) use ($date) {
-                    // Weekly availability
-                    $q->whereNotNull('day_of_week')
-                        ->where('day_of_week', $date->dayOfWeek);
-                });
-            })
+        // Check for specific-date override first (takes priority over weekly)
+        $specificDate = $area->availabilities()
+            ->whereNull('day_of_week')
+            ->whereDate('start_time', $date->format('Y-m-d'))
             ->first();
 
-        if (! $availability) {
+        if ($specificDate) {
+            if (! $specificDate->is_available) {
+                return false;
+            }
+
+            return $this->isWithinTimeRange($startTime, $endTime, $specificDate);
+        }
+
+        // Fall back to weekly availability
+        $weekly = $area->availabilities()
+            ->where('is_available', true)
+            ->whereNotNull('day_of_week')
+            ->where('day_of_week', $date->dayOfWeek)
+            ->first();
+
+        if (! $weekly) {
             return false;
         }
 
-        // Compare only the time portions
-        $requestedStartTime = $startTime->format('H:i:s');
-        $requestedEndTime = $endTime->format('H:i:s');
-        $availableStartTime = $availability->start_time->format('H:i:s');
-        $availableEndTime = $availability->end_time->format('H:i:s');
+        return $this->isWithinTimeRange($startTime, $endTime, $weekly);
+    }
 
-        return $requestedStartTime >= $availableStartTime &&
-               $requestedEndTime <= $availableEndTime;
+    private function isWithinTimeRange(Carbon $startTime, Carbon $endTime, mixed $availability): bool
+    {
+        return $startTime->format('H:i:s') >= $availability->start_time->format('H:i:s')
+            && $endTime->format('H:i:s') <= $availability->end_time->format('H:i:s');
     }
 
     public function isAreaBooked(

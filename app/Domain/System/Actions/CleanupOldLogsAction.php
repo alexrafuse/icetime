@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\System\Actions;
 
+use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
@@ -98,7 +99,7 @@ final class CleanupOldLogsAction
                 'bytes_freed' => 0,
                 'error' => "Failed to delete: {$file}",
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::warning('Failed to process log file during cleanup', [
                 'file' => $file,
                 'error' => $e->getMessage(),

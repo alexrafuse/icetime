@@ -4,21 +4,30 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AreaResource\Pages;
+use App\Filament\Resources\AreaResource\Pages\CreateArea;
+use App\Filament\Resources\AreaResource\Pages\EditArea;
+use App\Filament\Resources\AreaResource\Pages\ListAreas;
 use Domain\Facility\Models\Area;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-map';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map';
 
-    protected static ?string $navigationGroup = 'Manage';
+    protected static string|\UnitEnum|null $navigationGroup = 'Bookings';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationLabel(): string
     {
@@ -30,38 +39,38 @@ class AreaResource extends Resource
         return $table
             ->description('Manage your ice sheets and other bookable spaces here. Each area can have its own base price and availability schedule.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('base_price')
+                TextColumn::make('base_price')
                     ->money('USD')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')
+                TernaryFilter::make('is_active')
                     ->label('Active Status')
                     ->placeholder('All Areas')
                     ->trueLabel('Active Areas')
                     ->falseLabel('Inactive Areas'),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('name');
@@ -77,9 +86,9 @@ class AreaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAreas::route('/'),
-            'create' => Pages\CreateArea::route('/create'),
-            'edit' => Pages\EditArea::route('/{record}/edit'),
+            'index' => ListAreas::route('/'),
+            'create' => CreateArea::route('/create'),
+            'edit' => EditArea::route('/{record}/edit'),
         ];
     }
 }

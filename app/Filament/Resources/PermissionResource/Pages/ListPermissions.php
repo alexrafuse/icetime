@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\PermissionResource\Pages;
 
 use App\Filament\Resources\PermissionResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListPermissions extends ListRecords
@@ -15,7 +15,7 @@ final class ListPermissions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

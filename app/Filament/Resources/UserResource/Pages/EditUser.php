@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use STS\FilamentImpersonate\Pages\Actions\Impersonate;
+use STS\FilamentImpersonate\Actions\Impersonate;
 
 final class EditUser extends EditRecord
 {
@@ -16,7 +16,7 @@ final class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
             Impersonate::make()->record($this->getRecord()),
         ];
     }

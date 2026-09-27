@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Domain\Shared\Models;
 
 use App\Domain\Shared\Enums\RecurrencePeriod;
+use Carbon\Carbon;
 use Database\Factories\SurveyFactory;
+use DateTime;
 use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -106,13 +108,13 @@ final class Survey extends Model
         return true;
     }
 
-    private function hasRecurrencePeriodPassed(\DateTime $lastResponseDate): bool
+    private function hasRecurrencePeriodPassed(DateTime $lastResponseDate): bool
     {
         if (! $this->recurrence_period) {
             return false;
         }
 
-        $lastResponse = \Carbon\Carbon::instance($lastResponseDate);
+        $lastResponse = Carbon::instance($lastResponseDate);
 
         return match ($this->recurrence_period) {
             RecurrencePeriod::DAILY => $lastResponse->addDay()->isPast(),
@@ -122,7 +124,7 @@ final class Survey extends Model
         };
     }
 
-    private function hasSeasonChanged(\Carbon\Carbon $lastResponse): bool
+    private function hasSeasonChanged(Carbon $lastResponse): bool
     {
         // Season changes approximately July 1st each year
         $currentSeasonStart = now()->month >= 7

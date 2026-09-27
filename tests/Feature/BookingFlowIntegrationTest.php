@@ -121,6 +121,7 @@ class BookingFlowIntegrationTest extends TestCase
     public function test_recurring_bookings_creation_flow(): void
     {
         $bookingData = [
+            'title' => 'Recurring Booking',
             'user_id' => $this->user->id,
             'start_time' => now()->setTime(10, 0, 0),
             'end_time' => now()->setTime(12, 0, 0),
@@ -131,6 +132,7 @@ class BookingFlowIntegrationTest extends TestCase
         ];
 
         $patternData = [
+            'title' => 'Recurring Booking',
             'frequency' => FrequencyType::WEEKLY->value,
             'interval' => 1,
             'start_date' => now()->next('Monday')->format('Y-m-d'),
@@ -160,6 +162,7 @@ class BookingFlowIntegrationTest extends TestCase
     public function test_recurring_pattern_with_multiple_days_of_week(): void
     {
         $bookingData = [
+            'title' => 'Multi-Day Recurring',
             'user_id' => $this->user->id,
             'start_time' => now()->setTime(10, 0, 0),
             'end_time' => now()->setTime(12, 0, 0),
@@ -178,6 +181,7 @@ class BookingFlowIntegrationTest extends TestCase
         ]);
 
         $patternData = [
+            'title' => 'Multi-Day Recurring',
             'frequency' => FrequencyType::WEEKLY->value,
             'interval' => 1,
             'start_date' => now()->next('Monday')->format('Y-m-d'),
@@ -198,6 +202,7 @@ class BookingFlowIntegrationTest extends TestCase
         $excludedDate = $startDate->copy()->addWeek();
 
         $bookingData = [
+            'title' => 'Excluded Date Booking',
             'user_id' => $this->user->id,
             'start_time' => now()->setTime(10, 0, 0),
             'end_time' => now()->setTime(12, 0, 0),
@@ -207,6 +212,7 @@ class BookingFlowIntegrationTest extends TestCase
         ];
 
         $patternData = [
+            'title' => 'Excluded Date Booking',
             'frequency' => FrequencyType::WEEKLY->value,
             'interval' => 1,
             'start_date' => $startDate->format('Y-m-d'),
@@ -397,7 +403,7 @@ class BookingFlowIntegrationTest extends TestCase
         // Create payment for this booking
         $payment = $booking->payments()->create([
             'amount' => 100.00,
-            'status' => \App\Enums\PaymentStatus::PAID,
+            'status' => PaymentStatus::PAID,
         ]);
 
         $this->assertEquals($booking->id, $payment->booking_id);
@@ -430,15 +436,6 @@ class BookingFlowIntegrationTest extends TestCase
 
     public function test_specific_date_availability_overrides_weekly(): void
     {
-        // Create weekly availability (available)
-        $weeklyAvailability = Availability::factory()->weekly()->create([
-            'area_id' => $this->area->id,
-            'day_of_week' => 1, // Monday
-            'start_time' => now()->setTime(8, 0, 0),
-            'end_time' => now()->setTime(22, 0, 0),
-            'is_available' => true,
-        ]);
-
         $specificDate = now()->next('Monday');
 
         // Create specific date availability (not available)
@@ -451,16 +448,14 @@ class BookingFlowIntegrationTest extends TestCase
         ]);
 
         // Try to book on the specific date
-        $bookingData = [
-            'area_id' => $this->area->id,
-            'date' => $specificDate->format('Y-m-d'),
-            'start_time' => now()->setTime(10, 0, 0),
-            'end_time' => now()->setTime(12, 0, 0),
-        ];
-
-        $result = $this->validationService->validateBooking($bookingData);
+        $result = $this->validationService->validateBooking(
+            collect([$this->area]),
+            $specificDate,
+            now()->setTime(10, 0, 0),
+            now()->setTime(12, 0, 0)
+        );
 
         // Should be blocked by specific date override
-        $this->assertFalse($result['success']);
+        $this->assertFalse($result);
     }
 }

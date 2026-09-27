@@ -7,6 +7,13 @@ namespace App\Filament\Forms;
 use App\Enums\EventType;
 use App\Enums\PaymentStatus;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Group;
 
 /**
  * Form builder for booking forms
@@ -19,15 +26,15 @@ class BookingFormBuilder
     /**
      * Get the standard booking form schema
      *
-     * @return array<Forms\Components\Component>
+     * @return array<Component>
      */
     public static function schema(): array
     {
         return [
-            Forms\Components\TextInput::make('title')
+            TextInput::make('title')
                 ->required(),
 
-            Forms\Components\Select::make('user_id')
+            Select::make('user_id')
                 ->default(fn () => auth()->id())
                 ->relationship('user', 'name')
                 ->required()
@@ -36,36 +43,36 @@ class BookingFormBuilder
                 ->dehydrated()
                 ->live(),
 
-            Forms\Components\DatePicker::make('date')
+            DatePicker::make('date')
                 ->required()
                 ->native(false)
                 ->displayFormat('Y-m-d')
                 ->format('Y-m-d'),
 
-            Forms\Components\TimePicker::make('start_time')
+            TimePicker::make('start_time')
                 ->required()
                 ->seconds(false),
 
-            Forms\Components\TimePicker::make('end_time')
+            TimePicker::make('end_time')
                 ->required()
                 ->seconds(false)
                 ->after('start_time'),
 
-            Forms\Components\Select::make('event_type')
+            Select::make('event_type')
                 ->options(EventType::class)
                 ->required(),
 
-            Forms\Components\Select::make('payment_status')
+            Select::make('payment_status')
                 ->options(PaymentStatus::class)
                 ->required(),
 
-            Forms\Components\Select::make('areas')
+            Select::make('areas')
                 ->relationship('areas', 'name')
                 ->multiple()
                 ->preload()
                 ->required(),
 
-            Forms\Components\Textarea::make('setup_instructions')
+            Textarea::make('setup_instructions')
                 ->nullable()
                 ->columnSpanFull(),
         ];
@@ -76,9 +83,9 @@ class BookingFormBuilder
      *
      * @param  int  $columns  Number of columns
      */
-    public static function groupedSchema(int $columns = 2): Forms\Components\Group
+    public static function groupedSchema(int $columns = 2): Group
     {
-        return Forms\Components\Group::make()
+        return Group::make()
             ->schema(self::schema())
             ->columns($columns);
     }

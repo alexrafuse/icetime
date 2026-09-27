@@ -1,75 +1,88 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --border-width-3: 3px;
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentcolor);
+    }
+}
 
 /* Compact sidebar styling */
 .fi-sidebar {
-    @apply !text-xs;
+    @apply text-xs!;
 }
 
 .fi-sidebar-header {
-    @apply !px-3 !py-3;
+    @apply px-3! py-3!;
 }
 
 .fi-sidebar-nav {
-    @apply !gap-1 !px-2;
+    @apply gap-1! px-2!;
 }
 
 .fi-sidebar-nav-item {
-    @apply !px-2 !py-1.5 !text-xs !min-h-[2rem];
+    @apply px-2! py-1.5! text-xs! min-h-8!;
 }
 
 .fi-sidebar-nav-item-icon {
-    @apply !w-4 !h-4;
+    @apply w-4! h-4!;
 }
 
 .fi-sidebar-group {
-    @apply !gap-0.5 !mb-3;
+    @apply gap-0.5! mb-3!;
 }
 
 .fi-sidebar-group-label {
-    @apply !px-2 !py-1 !text-[0.65rem] !font-semibold !tracking-wide;
+    @apply px-2! py-1! text-[0.65rem]! font-semibold! tracking-wide!;
 }
 
 .fi-sidebar-group-items {
-    @apply !gap-0.5;
+    @apply gap-0.5!;
 }
 
 .fi-sidebar-group-button {
-    @apply !px-2 !py-1.5 !text-xs;
+    @apply px-2! py-1.5! text-xs!;
 }
 
 /* Make user menu more compact */
 .fi-user-menu-button {
-    @apply !px-2 !py-2 !text-xs;
+    @apply px-2! py-2! text-xs!;
 }
 
 /* Reduce main content margins */
 .fi-main-ctn {
-    @apply !px-0 !py-3;
+    @apply px-0! py-3!;
 }
 
 /* Reduce page padding */
 .fi-page {
-    @apply !px-3 !py-3;
+    @apply px-3! py-3!;
 }
 
 /* Reduce page content wrapper padding */
 .fi-page-content-wrapper {
-    @apply !px-0;
+    @apply px-0!;
 }
 
 /* Reduce container max width constraints */
 .fi-container {
-    @apply !max-w-none !px-0;
+    @apply max-w-none! px-0!;
 }
 
 /* Reduce topbar padding */
 .fi-topbar {
-    @apply !px-3;
+    @apply px-3!;
 }
 
 /* Reduce main content wrapper */
 .fi-main > .fi-container {
-    @apply !px-0;
+    @apply px-0!;
 }

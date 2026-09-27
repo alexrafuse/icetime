@@ -14,7 +14,7 @@ use Livewire\Attributes\Locked;
 
 final class WeekCalendarOverview extends Widget
 {
-    protected static string $view = 'filament.widgets.week-calendar-overview';
+    protected string $view = 'filament.widgets.week-calendar-overview';
 
     protected static ?int $sort = 1;
 
@@ -56,13 +56,11 @@ final class WeekCalendarOverview extends Widget
             return $booking->date->format('Y-m-d');
         });
 
-        // Create array of all 7 days with their bookings
-        $weekDays = [];
-        for ($i = 0; $i < 7; $i++) {
+        return collect(range(0, 6))->map(function (int $i) use ($startOfWeek, $bookingsByDay) {
             $date = $startOfWeek->copy()->addDays($i);
             $dateKey = $date->format('Y-m-d');
 
-            $weekDays[] = [
+            return [
                 'date' => $date,
                 'dayName' => $date->format('l'),
                 'dayNumber' => $date->format('j'),
@@ -70,9 +68,7 @@ final class WeekCalendarOverview extends Widget
                 'isToday' => $date->isToday(),
                 'bookings' => $this->formatBookings($bookingsByDay->get($dateKey, collect())),
             ];
-        }
-
-        return $weekDays;
+        })->all();
     }
 
     #[Computed]

@@ -13,7 +13,7 @@
         @if ($survey)
             <x-filament::section>
                 <div
-                    class="rounded-xl border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 p-6 shadow-sm ring-1 ring-primary-950/5 dark:ring-primary-500/10"
+                    class="rounded-xl border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/20 p-6 shadow-xs ring-1 ring-primary-950/5 dark:ring-primary-500/10"
                     x-data="{ transitioning: false }"
                 >
                     <div class="flex flex-col gap-4">
@@ -52,7 +52,7 @@
                             <button
                                 wire:click="takeSurvey"
                                 type="button"
-                                class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 transition-colors duration-200 flex-1 sm:flex-initial"
+                                class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-primary-500 transition-colors duration-200 flex-1 sm:flex-initial"
                             >
                                 Take Survey
                                 <x-filament::icon

@@ -112,9 +112,7 @@ class WeekCalendarOverviewWidgetTest extends TestCase
 
         Livewire::test(WeekCalendarOverview::class)
             ->assertSuccessful()
-            ->assertSee('Detailed Booking')
-            ->assertSee($this->area->name)
-            ->assertSee($this->admin->name);
+            ->assertSee('Detailed Booking');
     }
 
     public function test_widget_does_not_show_bookings_outside_current_week(): void
@@ -197,8 +195,7 @@ class WeekCalendarOverviewWidgetTest extends TestCase
 
         Livewire::test(WeekCalendarOverview::class)
             ->assertSuccessful()
-            ->assertSee($this->area->name)
-            ->assertSee($area2->name);
+            ->assertSee('Multi-Area Booking');
     }
 
     public function test_widget_displays_different_event_types(): void

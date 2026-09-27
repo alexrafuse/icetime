@@ -8,10 +8,25 @@ use App\Domain\Membership\Enums\MembershipCapacity;
 use App\Domain\Membership\Enums\MembershipTier;
 use App\Domain\Membership\Enums\ProductType;
 use App\Domain\Membership\Models\Product;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -21,46 +36,46 @@ class ProductsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('curlingio_id')
+        return $schema
+            ->components([
+                TextInput::make('curlingio_id')
                     ->label('Curling.io ID')
                     ->numeric()
                     ->unique(Product::class, 'curlingio_id', ignoreRecord: true)
                     ->helperText('Optional: ID from Curling.io system'),
 
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
-                Forms\Components\TextInput::make('slug')
+                TextInput::make('slug')
                     ->required()
                     ->maxLength(255)
                     ->unique(Product::class, 'slug', ignoreRecord: true),
 
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->maxLength(65535)
                     ->columnSpanFull()
                     ->rows(3),
 
-                Forms\Components\Select::make('product_type')
+                Select::make('product_type')
                     ->label('Product Type')
                     ->options(ProductType::class)
                     ->required()
                     ->live()
                     ->native(false),
 
-                Forms\Components\Select::make('membership_tier')
+                Select::make('membership_tier')
                     ->label('Membership Tier')
                     ->options(MembershipTier::class)
-                    ->visible(fn (Forms\Get $get) => $get('product_type') === ProductType::MEMBERSHIP->value)
+                    ->visible(fn (Get $get) => $get('product_type') === ProductType::MEMBERSHIP)
                     ->native(false),
 
-                Forms\Components\Select::make('capacity')
+                Select::make('capacity')
                     ->label('Membership Capacity')
                     ->options(MembershipCapacity::class)
                     ->default(MembershipCapacity::SINGLE)
@@ -68,7 +83,7 @@ class ProductsRelationManager extends RelationManager
                     ->native(false)
                     ->helperText('Select COUPLE for memberships that cover 2 people'),
 
-                Forms\Components\TextInput::make('price_cents')
+                TextInput::make('price_cents')
                     ->label('Price')
                     ->required()
                     ->numeric()
@@ -78,12 +93,12 @@ class ProductsRelationManager extends RelationManager
                     ->dehydrateStateUsing(fn ($state) => (int) ($state * 100))
                     ->formatStateUsing(fn ($state) => $state / 100),
 
-                Forms\Components\TextInput::make('currency')
+                TextInput::make('currency')
                     ->default('CAD')
                     ->required()
                     ->maxLength(3),
 
-                Forms\Components\Toggle::make('is_available')
+                Toggle::make('is_available')
                     ->label('Available for Purchase')
                     ->default(true),
             ]);
@@ -93,44 +108,44 @@ class ProductsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
                     ->wrap(),
 
-                Tables\Columns\TextColumn::make('product_type')
+                TextColumn::make('product_type')
                     ->label('Type')
                     ->badge()
                     ->formatStateUsing(fn (ProductType $state) => $state->getLabel())
                     ->color(fn (ProductType $state) => $state->getColor())
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('membership_tier')
+                TextColumn::make('membership_tier')
                     ->label('Tier')
                     ->badge()
                     ->formatStateUsing(fn (?MembershipTier $state) => $state?->getLabel() ?? '-')
                     ->color(fn (?MembershipTier $state) => $state?->getColor() ?? 'gray')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('capacity')
+                TextColumn::make('capacity')
                     ->label('Capacity')
                     ->badge()
                     ->formatStateUsing(fn (MembershipCapacity $state) => $state->getLabel())
                     ->color(fn (MembershipCapacity $state) => $state === MembershipCapacity::COUPLE ? 'info' : 'gray')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('price_cents')
+                TextColumn::make('price_cents')
                     ->label('Price')
                     ->money('CAD', divideBy: 100)
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_available')
+                IconColumn::make('is_available')
                     ->label('Available')
                     ->boolean()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('users_count')
+                TextColumn::make('users_count')
                     ->counts('users')
                     ->label('Purchases')
                     ->badge()
@@ -138,55 +153,55 @@ class ProductsRelationManager extends RelationManager
             ])
             ->defaultSort('name')
             ->filters([
-                Tables\Filters\SelectFilter::make('product_type')
+                SelectFilter::make('product_type')
                     ->label('Product Type')
                     ->options(ProductType::class)
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('membership_tier')
+                SelectFilter::make('membership_tier')
                     ->label('Membership Tier')
                     ->options(MembershipTier::class)
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('capacity')
+                SelectFilter::make('capacity')
                     ->label('Capacity')
                     ->options(MembershipCapacity::class)
                     ->native(false),
 
-                Tables\Filters\TernaryFilter::make('is_available')
+                TernaryFilter::make('is_available')
                     ->label('Availability')
                     ->placeholder('All products')
                     ->trueLabel('Available only')
                     ->falseLabel('Unavailable only'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('toggle_availability')
+            ->recordActions([
+                Action::make('toggle_availability')
                     ->label(fn (Product $record) => $record->is_available ? 'Disable' : 'Enable')
                     ->icon(fn (Product $record) => $record->is_available ? 'heroicon-o-eye-slash' : 'heroicon-o-eye')
                     ->color(fn (Product $record) => $record->is_available ? 'warning' : 'success')
                     ->action(fn (Product $record) => $record->update(['is_available' => ! $record->is_available])),
 
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('enable')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    BulkAction::make('enable')
                         ->label('Enable Selected')
                         ->icon('heroicon-o-eye')
                         ->color('success')
                         ->action(fn ($records) => $records->each->update(['is_available' => true])),
 
-                    Tables\Actions\BulkAction::make('disable')
+                    BulkAction::make('disable')
                         ->label('Disable Selected')
                         ->icon('heroicon-o-eye-slash')
                         ->color('warning')
                         ->action(fn ($records) => $records->each->update(['is_available' => false])),
 
-                    Tables\Actions\DeleteBulkAction::make(),
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

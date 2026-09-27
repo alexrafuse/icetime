@@ -8,39 +8,48 @@ use App\Enums\EventType;
 use App\Enums\PaymentStatus;
 use App\Filament\Forms\BookingFormBuilder;
 use App\Filament\Forms\RecurringPatternFormBuilder;
-use App\Filament\Resources\BookingResource\Pages;
+use App\Filament\Resources\BookingResource\Pages\CreateBooking;
+use App\Filament\Resources\BookingResource\Pages\EditBooking;
+use App\Filament\Resources\BookingResource\Pages\ListBookings;
 use Domain\Booking\Models\Booking;
-use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static ?string $navigationGroup = 'Manage';
+    protected static string|\UnitEnum|null $navigationGroup = 'Bookings';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     public static function getNavigationLabel(): string
     {
         return 'Bookings 🔒';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 BookingFormBuilder::groupedSchema(columns: 2),
 
                 Section::make('Recurring Booking')
                     ->schema([
-                        Forms\Components\Select::make('recurring_pattern_id')
+                        Select::make('recurring_pattern_id')
                             ->relationship(
                                 name: 'recurringPattern',
                                 titleAttribute: 'title'
@@ -55,33 +64,33 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('date')
+                TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('start_time')
+                TextColumn::make('start_time')
                     ->time()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('end_time')
+                TextColumn::make('end_time')
                     ->time()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('event_type')
+                TextColumn::make('event_type')
                     ->badge()
                     ->color(fn (EventType $state): string => $state->getColor()),
-                Tables\Columns\TextColumn::make('payment_status')
+                TextColumn::make('payment_status')
                     ->badge()
                     ->color(fn (PaymentStatus $state): string => $state->getColor()),
-                Tables\Columns\TextColumn::make('areas.name')
+                TextColumn::make('areas.name')
                     ->badge()
                     ->separator(',')
                     ->wrap(),
-                Tables\Columns\IconColumn::make('recurring_pattern_id')
+                IconColumn::make('recurring_pattern_id')
                     ->label('Recurring')
                     ->boolean()
                     ->action(
-                        Tables\Actions\Action::make('viewPattern')
+                        Action::make('viewPattern')
                             ->url(fn ($record) => $record->recurring_pattern_id
                                 ? RecurringPatternResource::getUrl('edit', ['record' => $record->recurring_pattern_id])
                                 : null)
@@ -89,26 +98,26 @@ class BookingResource extends Resource
                     ),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
+                SelectFilter::make('user')
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload(),
-                Tables\Filters\SelectFilter::make('event_type')
+                SelectFilter::make('event_type')
                     ->options(EventType::class),
-                Tables\Filters\SelectFilter::make('payment_status')
+                SelectFilter::make('payment_status')
                     ->options(PaymentStatus::class),
-                Tables\Filters\SelectFilter::make('areas')
+                SelectFilter::make('areas')
                     ->relationship('areas', 'name')
                     ->multiple()
                     ->preload(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -116,9 +125,9 @@ class BookingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBookings::route('/'),
-            'create' => Pages\CreateBooking::route('/create'),
-            'edit' => Pages\EditBooking::route('/{record}/edit'),
+            'index' => ListBookings::route('/'),
+            'create' => CreateBooking::route('/create'),
+            'edit' => EditBooking::route('/{record}/edit'),
         ];
     }
 }

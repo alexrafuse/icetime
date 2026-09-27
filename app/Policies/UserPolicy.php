@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\Permission;
 use Domain\User\Models\User;
 
 /**
@@ -19,7 +20,7 @@ final class UserPolicy extends BasePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $this->hasPermission($user, \App\Enums\Permission::VIEW_USERS->value);
+        return $this->hasPermission($user, Permission::VIEW_USERS->value);
     }
 
     /**
@@ -27,7 +28,7 @@ final class UserPolicy extends BasePolicy
      */
     public function view(User $user, mixed $model): bool
     {
-        return $this->hasPermission($user, \App\Enums\Permission::VIEW_USERS->value);
+        return $this->hasPermission($user, Permission::VIEW_USERS->value);
     }
 
     /**
@@ -35,7 +36,7 @@ final class UserPolicy extends BasePolicy
      */
     public function create(User $user): bool
     {
-        return $this->hasPermission($user, \App\Enums\Permission::MANAGE_USERS->value);
+        return $this->hasPermission($user, Permission::MANAGE_USERS->value);
     }
 
     /**
@@ -43,7 +44,7 @@ final class UserPolicy extends BasePolicy
      */
     public function update(User $user, mixed $model): bool
     {
-        return $this->hasPermission($user, \App\Enums\Permission::MANAGE_USERS->value);
+        return $this->hasPermission($user, Permission::MANAGE_USERS->value);
     }
 
     /**
@@ -51,6 +52,6 @@ final class UserPolicy extends BasePolicy
      */
     public function delete(User $user, mixed $model): bool
     {
-        return $this->hasPermission($user, \App\Enums\Permission::MANAGE_USERS->value);
+        return $this->hasPermission($user, Permission::MANAGE_USERS->value);
     }
 }

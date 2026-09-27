@@ -11,9 +11,12 @@ use App\Domain\Membership\Services\BulkImportBuffer;
 use App\Domain\Membership\Services\ImportDataCache;
 use App\Domain\Membership\Services\ImportLogger;
 use App\Domain\Membership\Services\OrderItemMembershipAssigner;
+use Domain\User\Models\User;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use RuntimeException;
 
 final class ImportCurlingIoOrderItemsAction
 {
@@ -85,7 +88,7 @@ final class ImportCurlingIoOrderItemsAction
         $season = Season::query()->where('is_current', true)->first();
 
         if (! $season) {
-            throw new \RuntimeException('No current season found. Please mark a season as current before importing.');
+            throw new RuntimeException('No current season found. Please mark a season as current before importing.');
         }
 
         return $season;
@@ -102,7 +105,7 @@ final class ImportCurlingIoOrderItemsAction
     {
         $handle = fopen($csvFilePath, 'r');
         if (! $handle) {
-            throw new \RuntimeException("Unable to open CSV file: {$csvFilePath}");
+            throw new RuntimeException("Unable to open CSV file: {$csvFilePath}");
         }
 
         $header = fgetcsv($handle);
@@ -153,7 +156,7 @@ final class ImportCurlingIoOrderItemsAction
         try {
             $orderItem = OrderItemImportData::fromCsvRow($data);
             $this->processOrderItem($orderItem, $season, $stats, $logger);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleProcessingError($e, $lineNumber, $data ?? null, $stats, $logger);
         }
     }
@@ -222,7 +225,7 @@ final class ImportCurlingIoOrderItemsAction
         $logger?->writeBlankLine(); // Empty line after each order
     }
 
-    private function handleProcessingError(\Exception $e, int $lineNumber, ?array $data, ImportStats $stats, ?ImportLogger $logger): void
+    private function handleProcessingError(Exception $e, int $lineNumber, ?array $data, ImportStats $stats, ?ImportLogger $logger): void
     {
         $warning = "Line {$lineNumber}: {$e->getMessage()}";
         $stats->addWarning($warning);
@@ -249,7 +252,7 @@ final class ImportCurlingIoOrderItemsAction
         $season = $this->getCurrentSeason();
 
         $affectedUserIds->each(function ($userId) use ($recalculateAction, $season) {
-            $user = \Domain\User\Models\User::find($userId);
+            $user = User::find($userId);
             if ($user) {
                 $recalculateAction->execute($user, $season);
             }

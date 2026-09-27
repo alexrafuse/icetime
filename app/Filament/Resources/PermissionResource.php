@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PermissionResource\Pages;
-use Filament\Forms;
-use Filament\Forms\Form;
+use App\Filament\Resources\PermissionResource\Pages\CreatePermission;
+use App\Filament\Resources\PermissionResource\Pages\EditPermission;
+use App\Filament\Resources\PermissionResource\Pages\ListPermissions;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Spatie\Permission\Models\Permission;
 
@@ -16,25 +26,25 @@ final class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $navigationGroup = 'Access Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Admin';
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
                             ->helperText('The unique name used to identify this permission in code.'),
 
-                        Forms\Components\Select::make('guard_name')
+                        Select::make('guard_name')
                             ->options([
                                 'web' => 'Web',
                                 'api' => 'API',
@@ -42,14 +52,14 @@ final class PermissionResource extends Resource
                             ->required()
                             ->default('web'),
 
-                        Forms\Components\Select::make('roles')
+                        Select::make('roles')
                             ->relationship('roles', 'name')
                             ->multiple()
                             ->preload()
                             ->searchable()
                             ->columnSpanFull(),
 
-                        Forms\Components\Textarea::make('description')
+                        Textarea::make('description')
                             ->maxLength(255)
                             ->columnSpanFull()
                             ->helperText('A human-readable description of what this permission grants access to.'),
@@ -63,39 +73,39 @@ final class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable()
                     ->description(fn (Permission $record): ?string => $record->description),
 
-                Tables\Columns\TextColumn::make('guard_name')
+                TextColumn::make('guard_name')
                     ->badge()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('roles.name')
+                TextColumn::make('roles.name')
                     ->badge()
                     ->color('primary')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('guard_name')
+                SelectFilter::make('guard_name')
                     ->options([
                         'web' => 'Web',
                         'api' => 'API',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -103,9 +113,9 @@ final class PermissionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPermissions::route('/'),
-            'create' => Pages\CreatePermission::route('/create'),
-            'edit' => Pages\EditPermission::route('/{record}/edit'),
+            'index' => ListPermissions::route('/'),
+            'create' => CreatePermission::route('/create'),
+            'edit' => EditPermission::route('/{record}/edit'),
         ];
     }
 

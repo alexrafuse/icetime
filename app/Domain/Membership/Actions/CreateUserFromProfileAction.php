@@ -141,48 +141,28 @@ final class CreateUserFromProfileAction
             $updates['curlingio_profile_id'] = $profile->curlingio_profile_id;
         }
 
-        // Update other profile fields if they have values
-        if ($profile->middle_initial) {
-            $updates['middle_initial'] = $profile->middle_initial;
-        }
-        if ($profile->date_of_birth) {
-            $updates['date_of_birth'] = $profile->date_of_birth;
-        }
-        if ($profile->gender) {
-            $updates['gender'] = $profile->gender;
-        }
-        if ($profile->phone) {
-            $updates['phone'] = $profile->phone;
-        }
-        if ($profile->secondary_phone) {
-            $updates['secondary_phone'] = $profile->secondary_phone;
-        }
-        if ($profile->secondary_email) {
-            $updates['secondary_email'] = $profile->secondary_email;
-        }
-        if ($profile->street_address) {
-            $updates['street_address'] = $profile->street_address;
-        }
-        if ($profile->unit) {
-            $updates['unit'] = $profile->unit;
-        }
-        if ($profile->city) {
-            $updates['city'] = $profile->city;
-        }
-        if ($profile->province_state) {
-            $updates['province_state'] = $profile->province_state;
-        }
-        if ($profile->postal_zip_code) {
-            $updates['postal_zip_code'] = $profile->postal_zip_code;
-        }
-        if ($profile->emergency_contact) {
-            $updates['emergency_contact_name'] = $profile->emergency_contact;
-        }
-        if ($profile->emergency_phone) {
-            $updates['emergency_contact_phone'] = $profile->emergency_phone;
-        }
+        $optionalFields = [
+            'middle_initial' => 'middle_initial',
+            'date_of_birth' => 'date_of_birth',
+            'gender' => 'gender',
+            'phone' => 'phone',
+            'secondary_phone' => 'secondary_phone',
+            'secondary_email' => 'secondary_email',
+            'street_address' => 'street_address',
+            'unit' => 'unit',
+            'city' => 'city',
+            'province_state' => 'province_state',
+            'postal_zip_code' => 'postal_zip_code',
+            'emergency_contact' => 'emergency_contact_name',
+            'emergency_phone' => 'emergency_contact_phone',
+        ];
 
-        $updates['show_contact_info'] = $profile->show_contact_info;
+        $updates = collect($optionalFields)
+            ->filter(fn (string $dbField, string $profileField) => ! empty($profile->{$profileField}))
+            ->mapWithKeys(fn (string $dbField, string $profileField) => [$dbField => $profile->{$profileField}])
+            ->merge($updates)
+            ->put('show_contact_info', $profile->show_contact_info)
+            ->all();
 
         // Use bulk buffer if available for better performance during imports
         if ($this->buffer) {

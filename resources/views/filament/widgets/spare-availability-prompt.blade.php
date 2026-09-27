@@ -1,7 +1,7 @@
 <x-filament-widgets::widget>
     <x-filament::section>
         @if ($hasSpareAvailability)
-            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 p-6 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10">
+            <div class="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 p-6 shadow-xs ring-1 ring-gray-950/5 dark:ring-white/10">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <x-filament::icon
@@ -15,7 +15,7 @@
                     <div class="flex-shrink-0">
                         <a
                             href="{{ route('filament.admin.resources.spare-availabilities.index') }}"
-                            class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 transition-colors duration-200"
+                            class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-xs hover:bg-primary-500 transition-colors duration-200"
                         >
                             View Spare List
                             <x-filament::icon
@@ -27,7 +27,7 @@
                 </div>
             </div>
         @else
-            <div class="rounded-xl border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/20 p-6 shadow-sm ring-1 ring-warning-950/5 dark:ring-warning-500/10">
+            <div class="rounded-xl border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/20 p-6 shadow-xs ring-1 ring-warning-950/5 dark:ring-warning-500/10">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <x-filament::icon
@@ -46,7 +46,7 @@
                     <div class="flex-shrink-0">
                         <a
                             href="{{ route('filament.admin.resources.spare-availabilities.create') }}"
-                            class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-warning-500 transition-colors duration-200"
+                            class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-xs hover:bg-warning-500 transition-colors duration-200"
                         >
                             Set Availability
                             <x-filament::icon

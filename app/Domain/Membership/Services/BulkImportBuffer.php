@@ -81,21 +81,16 @@ class BulkImportBuffer
                 'show_contact_info',
             ];
 
-            // Normalize all user records to have the same fields (set missing fields to null)
-            $userBatch = $this->usersToUpdate->values()->map(function ($userData) use ($updateFields) {
-                $normalized = [
+            $userBatch = $this->usersToUpdate->values()->map(fn ($userData) => collect($updateFields)
+                ->mapWithKeys(fn (string $field) => [$field => $userData[$field] ?? null])
+                ->merge([
                     'id' => $userData['id'],
                     'email' => $userData['email'],
-                    'password' => Hash::make(Str::random(32)), // Required for new user inserts
+                    'password' => Hash::make(Str::random(32)),
                     'email_verified_at' => null,
-                ];
-
-                foreach ($updateFields as $field) {
-                    $normalized[$field] = $userData[$field] ?? null;
-                }
-
-                return $normalized;
-            })->toArray();
+                ])
+                ->all()
+            )->toArray();
 
             User::upsert(
                 $userBatch,
@@ -106,12 +101,9 @@ class BulkImportBuffer
             $stats['users_updated'] = $this->usersToUpdate->count();
         }
 
-        // Bulk update memberships
         if ($this->membershipsToUpdate->isNotEmpty()) {
-            foreach ($this->membershipsToUpdate as $membership) {
-                UserProduct::where('id', $membership['id'])
-                    ->update(collect($membership)->except('id')->toArray());
-            }
+            $this->membershipsToUpdate->each(fn (array $membership) => UserProduct::where('id', $membership['id'])
+                ->update(collect($membership)->except('id')->toArray()));
             $stats['memberships_updated'] = $this->membershipsToUpdate->count();
         }
 

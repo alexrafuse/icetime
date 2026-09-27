@@ -6,7 +6,8 @@ namespace App\Filament\Resources\RecurringPatternResource\Pages;
 
 use App\Filament\Resources\RecurringPatternResource;
 use App\Services\RecurringBookingService;
-use Filament\Actions;
+use Exception;
+use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +19,7 @@ final class EditRecurringPattern extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()
+            DeleteAction::make()
                 ->before(function () {
                     // Delete all related bookings
                     $this->record->bookings()->delete();
@@ -83,7 +84,7 @@ final class EditRecurringPattern extends EditRecord
                 ->title('Pattern updated')
                 ->body('Bookings have been regenerated successfully.')
                 ->send();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Error regenerating bookings: '.$e->getMessage(), [
                 'pattern_id' => $this->record->id,
                 'exception' => $e,

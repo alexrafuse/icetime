@@ -11,7 +11,7 @@ use Filament\Widgets\Widget;
 
 final class SurveyPromptWidget extends Widget
 {
-    protected static string $view = 'filament.widgets.survey-prompt-widget';
+    protected string $view = 'filament.widgets.survey-prompt-widget';
 
     protected static ?int $sort = -2;
 

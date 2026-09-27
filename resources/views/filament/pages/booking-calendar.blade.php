@@ -57,7 +57,7 @@
         }
     }" x-init="initializeCalendar()">
         <!-- Calendar Container with Horizontal Scroll -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-xs border border-gray-200 dark:border-gray-700 overflow-hidden">
             <div class="overflow-x-auto overflow-y-hidden">
                 <div style="min-width: 600px;">
                     <!-- View Mode Toggle and Area Filters (Above Calendar) -->
@@ -69,7 +69,7 @@
                                     <button type="button"
                                         @click="switchViewMode('area')"
                                         :class="{
-                                            'bg-white dark:bg-gray-700 shadow-sm': viewMode === 'area',
+                                            'bg-white dark:bg-gray-700 shadow-xs': viewMode === 'area',
                                             'hover:bg-gray-100 dark:hover:bg-gray-800': viewMode !== 'area'
                                         }"
                                         class="px-2.5 py-0.5 text-xs font-medium rounded transition-all duration-200 text-gray-700 dark:text-gray-300">
@@ -78,7 +78,7 @@
                                     <button type="button"
                                         @click="switchViewMode('overall')"
                                         :class="{
-                                            'bg-white dark:bg-gray-700 shadow-sm': viewMode === 'overall',
+                                            'bg-white dark:bg-gray-700 shadow-xs': viewMode === 'overall',
                                             'hover:bg-gray-100 dark:hover:bg-gray-800': viewMode !== 'overall'
                                         }"
                                         class="px-2.5 py-0.5 text-xs font-medium rounded transition-all duration-200 text-gray-700 dark:text-gray-300">
@@ -95,7 +95,7 @@
                                     class="area-toggle inline-flex items-center px-2 py-0.5 text-xs font-medium rounded transition-all duration-200 border"
                                     x-on:click="toggleArea('{{ $area['id'] }}')"
                                     :class="{
-                                        'bg-primary-600 text-white border-primary-600 shadow-sm': isAreaActive('{{ $area['id'] }}'),
+                                        'bg-primary-600 text-white border-primary-600 shadow-xs': isAreaActive('{{ $area['id'] }}'),
                                         'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700': !isAreaActive('{{ $area['id'] }}')
                                     }">
                                     <span
@@ -119,7 +119,7 @@
         <!-- Create Booking Button -->
         <button
             id="create-booking-button"
-            class="hidden fixed bottom-4 right-4 z-50 inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition"
+            class="hidden fixed bottom-4 right-4 z-50 inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-medium text-white hover:bg-primary-500 focus:outline-hidden focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition"
             x-data
             @click="
                 const button = $el;

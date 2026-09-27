@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\DrawDocumentResource\Pages;
 
 use App\Filament\Resources\DrawDocumentResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListDrawDocuments extends ListRecords
@@ -15,7 +15,7 @@ final class ListDrawDocuments extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 

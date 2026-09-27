@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\AreaResource\Pages;
 
 use App\Filament\Resources\AreaResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditArea extends EditRecord
@@ -15,7 +15,7 @@ class EditArea extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

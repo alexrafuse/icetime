@@ -8,9 +8,9 @@ use Domain\User\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\SimplePage;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -19,7 +19,7 @@ class SetPassword extends SimplePage implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string $view = 'filament.pages.auth.set-password';
+    protected string $view = 'filament.pages.auth.set-password';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -46,10 +46,10 @@ class SetPassword extends SimplePage implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('password')
                     ->label('New Password')
                     ->password()

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\SpareAvailabilityResource\Pages;
 
 use App\Filament\Resources\SpareAvailabilityResource;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateSpareAvailability extends CreateRecord
@@ -13,13 +14,13 @@ class CreateSpareAvailability extends CreateRecord
 
     protected ?string $heading = 'Set your spare availability';
 
-    protected function getCreateFormAction(): \Filament\Actions\Action
+    protected function getCreateFormAction(): Action
     {
         return parent::getCreateFormAction()
             ->label('Save Preferences');
     }
 
-    protected function getCreateAnotherFormAction(): \Filament\Actions\Action
+    protected function getCreateAnotherFormAction(): Action
     {
         return parent::getCreateAnotherFormAction()
             ->hidden();

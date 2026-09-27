@@ -6,7 +6,7 @@ echo "📥 Pulling latest changes..."
 git pull origin main --force
 
 echo "📦 Installing PHP deps..."
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+composer install --no-interaction --prefer-dist --optimize-autoloader
 
 echo "🏗️ Building production assets..."
 npm install
@@ -26,7 +26,7 @@ php artisan migrate --force
 php artisan optimize
 
 echo "🔁 Reloading PHP-FPM..."
-echo "" | sudo -S service php8.4-fpm reload
+echo "" | sudo -S service php8.5-fpm reload
 
 echo "🚀 Application deployed!"
 

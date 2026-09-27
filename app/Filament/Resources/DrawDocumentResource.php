@@ -8,10 +8,20 @@ use App\Filament\Resources\DrawDocumentResource\Pages\CreateDrawDocument;
 use App\Filament\Resources\DrawDocumentResource\Pages\EditDrawDocument;
 use App\Filament\Resources\DrawDocumentResource\Pages\ListDrawDocuments;
 use Domain\Shared\Models\DrawDocument;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -22,30 +32,30 @@ final class DrawDocumentResource extends Resource
 {
     protected static ?string $model = DrawDocument::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Members Area';
+    protected static string|\UnitEnum|null $navigationGroup = 'Members Area';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationLabel(): string
     {
         return 'Draw Schedules';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
+        return $schema
+            ->components([
+                TextInput::make('title')
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\Select::make('day_of_week')
+                Select::make('day_of_week')
                     ->options(DrawDocument::getDayNames())
                     ->required(),
 
-                Forms\Components\FileUpload::make('file_path')
+                FileUpload::make('file_path')
                     ->label('PDF File')
                     ->directory('draws')
                     ->acceptedFileTypes(['application/pdf'])
@@ -53,11 +63,11 @@ final class DrawDocumentResource extends Resource
                     ->downloadable()
                     ->openable(),
 
-                Forms\Components\DatePicker::make('valid_from')
+                DatePicker::make('valid_from')
                     ->required()
                     ->native(false),
 
-                Forms\Components\DatePicker::make('valid_until')
+                DatePicker::make('valid_until')
                     ->after('valid_from')
                     ->native(false),
             ]);
@@ -67,34 +77,34 @@ final class DrawDocumentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('day_name')
+                TextColumn::make('day_name')
                     ->label('Day')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query
                         ->orderBy('day_of_week', $direction)),
 
-                Tables\Columns\TextColumn::make('valid_from')
+                TextColumn::make('valid_from')
                     ->date()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('valid_until')
+                TextColumn::make('valid_until')
                     ->date()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('day_of_week')
+                SelectFilter::make('day_of_week')
                     ->options(DrawDocument::getDayNames())
                     ->label('Day'),
 
-                Tables\Filters\Filter::make('current')
+                Filter::make('current')
                     ->query(fn (Builder $query): Builder => $query
                         ->where('valid_from', '<=', now())
                         ->where(function ($query) {
@@ -104,23 +114,23 @@ final class DrawDocumentResource extends Resource
                     ->label('Current Draws Only')
                     ->toggle(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('view')
+            ->recordActions([
+                Action::make('view')
                     ->label('View PDF')
                     ->icon('heroicon-m-eye')
                     ->url(fn (DrawDocument $record): string => $record->getFileUrl())
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make()
+                EditAction::make()
                     ->visible(fn () => Auth::user()->hasAnyRole(['admin', 'staff'])),
-                Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->visible(fn () => Auth::user()->hasAnyRole(['admin', 'staff']))
                     ->before(function (DrawDocument $record) {
                         Storage::disk('public')->delete($record->file_path);
                     }),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->visible(fn () => Auth::user()->hasAnyRole(['admin', 'staff']))
                         ->before(function (Collection $records) {
                             $records->each(function ($record) {

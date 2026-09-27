@@ -27,7 +27,7 @@
                 <button
                     wire:click="previousWeek"
                     type="button"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 transition-colors data-loading:opacity-50 data-loading:cursor-wait"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-hidden focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 transition-colors data-loading:opacity-50 data-loading:cursor-wait"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -38,7 +38,7 @@
                 <button
                     wire:click="goToCurrentWeek"
                     type="button"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 dark:bg-primary-500 rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 transition-colors data-loading:opacity-50 data-loading:cursor-wait"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary-600 dark:bg-primary-500 rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 focus:outline-hidden focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 transition-colors data-loading:opacity-50 data-loading:cursor-wait"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -49,7 +49,7 @@
                 <button
                     wire:click="nextWeek"
                     type="button"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 transition-colors data-loading:opacity-50 data-loading:cursor-wait"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-hidden focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 transition-colors data-loading:opacity-50 data-loading:cursor-wait"
                 >
                     <span>Next Week</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +66,7 @@
                     <div @class([
                         'rounded-xl bg-white dark:bg-gray-900/50 overflow-hidden transition-all duration-300',
                         'ring-2 ring-primary-500 dark:ring-primary-500 shadow-lg shadow-primary-500/20' => $day['isToday'],
-                        'ring-1 ring-gray-200 dark:ring-gray-700 shadow-sm hover:shadow-md hover:ring-gray-300 dark:hover:ring-gray-600' => ! $day['isToday'],
+                        'ring-1 ring-gray-200 dark:ring-gray-700 shadow-xs hover:shadow-md hover:ring-gray-300 dark:hover:ring-gray-600' => ! $day['isToday'],
                     ])>
                         {{-- Day Header --}}
                         <div @class([
@@ -143,7 +143,7 @@
                 <div @class([
                     'rounded-xl bg-white dark:bg-gray-900/50 overflow-hidden transition-all duration-300',
                     'ring-2 ring-primary-500 dark:ring-primary-500 shadow-lg shadow-primary-500/20' => $day['isToday'],
-                    'ring-1 ring-gray-200 dark:ring-gray-700 shadow-sm' => ! $day['isToday'],
+                    'ring-1 ring-gray-200 dark:ring-gray-700 shadow-xs' => ! $day['isToday'],
                 ])>
                     {{-- Accordion Header --}}
                     <button

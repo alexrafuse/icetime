@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\DrawDocumentResource\Pages;
 
 use App\Filament\Resources\DrawDocumentResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditDrawDocument extends EditRecord
@@ -15,7 +15,7 @@ final class EditDrawDocument extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

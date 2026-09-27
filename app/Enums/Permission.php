@@ -40,6 +40,28 @@ enum Permission: string
     case VIEW_RESOURCES = 'resources.view';
     case MANAGE_RESOURCES = 'resources.manage';
 
+    // Board Meetings
+    case VIEW_BOARD_MEETINGS = 'board.meetings.view';
+    case MANAGE_BOARD_MEETINGS = 'board.meetings.manage';
+
+    // Board Minutes
+    case VIEW_BOARD_MINUTES = 'board.minutes.view';
+    case MANAGE_BOARD_MINUTES = 'board.minutes.manage';
+
+    // Sponsors
+    case VIEW_SPONSORS = 'board.sponsors.view';
+    case MANAGE_SPONSORS = 'board.sponsors.manage';
+
+    // Donors
+    case VIEW_DONORS = 'board.donors.view';
+    case MANAGE_DONORS = 'board.donors.manage';
+
+    // Governance
+    case VIEW_CLUB_POLICIES = 'board.policies.view';
+    case MANAGE_CLUB_POLICIES = 'board.policies.manage';
+    case VIEW_CLUB_BYLAWS = 'board.bylaws.view';
+    case MANAGE_CLUB_BYLAWS = 'board.bylaws.manage';
+
     public static function values(): array
     {
         return array_column(self::cases(), 'value');
@@ -81,6 +103,28 @@ enum Permission: string
             // Resources
             self::VIEW_RESOURCES => 'View Resources',
             self::MANAGE_RESOURCES => 'Manage Resources',
+
+            // Board Meetings
+            self::VIEW_BOARD_MEETINGS => 'View Board Meetings',
+            self::MANAGE_BOARD_MEETINGS => 'Manage Board Meetings',
+
+            // Board Minutes
+            self::VIEW_BOARD_MINUTES => 'View Board Minutes',
+            self::MANAGE_BOARD_MINUTES => 'Manage Board Minutes',
+
+            // Sponsors
+            self::VIEW_SPONSORS => 'View Sponsors',
+            self::MANAGE_SPONSORS => 'Manage Sponsors',
+
+            // Donors
+            self::VIEW_DONORS => 'View Donors',
+            self::MANAGE_DONORS => 'Manage Donors',
+
+            // Governance
+            self::VIEW_CLUB_POLICIES => 'View Club Policies',
+            self::MANAGE_CLUB_POLICIES => 'Manage Club Policies',
+            self::VIEW_CLUB_BYLAWS => 'View Club Bylaws',
+            self::MANAGE_CLUB_BYLAWS => 'Manage Club Bylaws',
         };
     }
 
@@ -120,6 +164,28 @@ enum Permission: string
             'Resources' => [
                 self::VIEW_RESOURCES,
                 self::MANAGE_RESOURCES,
+            ],
+            'Board Meetings' => [
+                self::VIEW_BOARD_MEETINGS,
+                self::MANAGE_BOARD_MEETINGS,
+            ],
+            'Board Minutes' => [
+                self::VIEW_BOARD_MINUTES,
+                self::MANAGE_BOARD_MINUTES,
+            ],
+            'Sponsors' => [
+                self::VIEW_SPONSORS,
+                self::MANAGE_SPONSORS,
+            ],
+            'Donors' => [
+                self::VIEW_DONORS,
+                self::MANAGE_DONORS,
+            ],
+            'Governance' => [
+                self::VIEW_CLUB_POLICIES,
+                self::MANAGE_CLUB_POLICIES,
+                self::VIEW_CLUB_BYLAWS,
+                self::MANAGE_CLUB_BYLAWS,
             ],
         ];
     }

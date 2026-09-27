@@ -7,7 +7,13 @@ namespace App\Filament\Forms;
 use App\Enums\FrequencyType;
 use Domain\Shared\ValueObjects\DayOfWeek;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
+use Filament\Schemas\Components\Component;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -23,51 +29,51 @@ class RecurringPatternFormBuilder
      *
      * @param  bool  $includeTitle  Whether to include the title field
      * @param  bool  $includeHiddenUserId  Whether to include the hidden user_id field
-     * @return array<Forms\Components\Component>
+     * @return array<Component>
      */
     public static function schema(bool $includeTitle = true, bool $includeHiddenUserId = true): array
     {
         $components = [];
 
         if ($includeTitle) {
-            $components[] = Forms\Components\TextInput::make('title')
+            $components[] = TextInput::make('title')
                 ->required();
         }
 
         if ($includeHiddenUserId) {
-            $components[] = Forms\Components\Hidden::make('user_id')
+            $components[] = Hidden::make('user_id')
                 ->default(fn () => Auth::id());
         }
 
-        $components[] = Forms\Components\Select::make('frequency')
+        $components[] = Select::make('frequency')
             ->options(FrequencyType::class)
-            ->reactive()
+            ->live()
             ->required();
 
-        $components[] = Forms\Components\TextInput::make('interval')
+        $components[] = TextInput::make('interval')
             ->numeric()
             ->default(1)
             ->minValue(1)
             ->required();
 
-        $components[] = Forms\Components\DatePicker::make('start_date')
+        $components[] = DatePicker::make('start_date')
             ->required()
             ->native(false)
             ->minDate(now())
             ->displayFormat('M d, Y');
 
-        $components[] = Forms\Components\DatePicker::make('end_date')
+        $components[] = DatePicker::make('end_date')
             ->native(false)
             ->minDate(now())
             ->after('start_date')
             ->displayFormat('M d, Y')
             ->required();
 
-        $components[] = Forms\Components\CheckboxList::make('days_of_week')
+        $components[] = CheckboxList::make('days_of_week')
             ->options(DayOfWeek::options())
             ->columns(4)
-            ->visible(fn (Get $get) => $get('frequency') === FrequencyType::WEEKLY->value)
-            ->required(fn (Get $get) => $get('frequency') === FrequencyType::WEEKLY->value);
+            ->visible(fn (\Filament\Schemas\Components\Utilities\Get $get) => $get('frequency') === FrequencyType::WEEKLY)
+            ->required(fn (\Filament\Schemas\Components\Utilities\Get $get) => $get('frequency') === FrequencyType::WEEKLY);
 
         return $components;
     }
@@ -75,7 +81,7 @@ class RecurringPatternFormBuilder
     /**
      * Get the create form schema (includes title and user_id)
      *
-     * @return array<Forms\Components\Component>
+     * @return array<Component>
      */
     public static function createSchema(): array
     {
@@ -85,7 +91,7 @@ class RecurringPatternFormBuilder
     /**
      * Get the edit form schema (includes title but not user_id)
      *
-     * @return array<Forms\Components\Component>
+     * @return array<Component>
      */
     public static function editSchema(): array
     {

@@ -4,10 +4,19 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\AreaResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class AvailabilitiesRelationManager extends RelationManager
@@ -16,17 +25,17 @@ class AvailabilitiesRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'date';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\DatePicker::make('date')
+        return $schema
+            ->components([
+                DatePicker::make('date')
                     ->required(),
-                Forms\Components\TextInput::make('price_override')
+                TextInput::make('price_override')
                     ->numeric()
                     ->prefix('$')
                     ->nullable(),
-                Forms\Components\Toggle::make('is_available')
+                Toggle::make('is_available')
                     ->required()
                     ->default(true),
             ]);
@@ -36,31 +45,31 @@ class AvailabilitiesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('date')
+                TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('price_override')
+                TextColumn::make('price_override')
                     ->money('USD')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_available')
+                IconColumn::make('is_available')
                     ->boolean()
                     ->sortable(),
             ])
             ->defaultSort('date', 'desc')
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_available')
+                TernaryFilter::make('is_available')
                     ->label('Availability Status'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

@@ -7,6 +7,7 @@ namespace App\Domain\Membership\Services;
 use App\Domain\Membership\Data\OrderItemImportData;
 use App\Domain\Membership\Models\Product;
 use Carbon\Carbon;
+use RuntimeException;
 
 final class ImportLogger
 {
@@ -17,7 +18,7 @@ final class ImportLogger
     ) {
         $this->handle = fopen($this->logFilePath, 'w');
         if (! $this->handle) {
-            throw new \RuntimeException("Unable to create log file: {$this->logFilePath}");
+            throw new RuntimeException("Unable to create log file: {$this->logFilePath}");
         }
     }
 

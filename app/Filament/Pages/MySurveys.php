@@ -11,17 +11,17 @@ use Filament\Pages\Page;
 
 class MySurveys extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    protected static string $view = 'filament.pages.my-surveys';
+    protected string $view = 'filament.pages.my-surveys';
 
     protected static ?string $title = 'My Surveys';
 
     protected static ?string $navigationLabel = 'Surveys';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static string|\UnitEnum|null $navigationGroup = 'Members Area';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 7;
 
     public function getAvailableSurveys()
     {

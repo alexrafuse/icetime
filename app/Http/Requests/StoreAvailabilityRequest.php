@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Carbon\Carbon;
+use Domain\Facility\Models\Availability;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAvailabilityRequest extends FormRequest
@@ -40,7 +41,7 @@ class StoreAvailabilityRequest extends FormRequest
 
     public function validateUniqueAvailability(): bool
     {
-        $query = \Domain\Facility\Models\Availability::where('area_id', $this->area_id);
+        $query = Availability::where('area_id', $this->area_id);
 
         if ($this->day_of_week !== null) {
             // Weekly availability - check for duplicate day_of_week

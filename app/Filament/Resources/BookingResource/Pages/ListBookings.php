@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Resources\BookingResource\Pages;
 
 use App\Filament\Resources\BookingResource;
-use Filament\Actions;
+use App\Filament\Resources\RecurringPatternResource;
+use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListBookings extends ListRecords
@@ -15,7 +17,12 @@ final class ListBookings extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
+            Action::make('recurringPatterns')
+                ->label('Recurring Patterns')
+                ->icon('heroicon-o-arrow-path')
+                ->url(RecurringPatternResource::getUrl('index'))
+                ->color('gray'),
         ];
     }
 

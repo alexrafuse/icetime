@@ -6,14 +6,31 @@ namespace App\Filament\Resources;
 
 use App\Domain\Membership\Models\Season;
 use App\Filament\Concerns\HasSecurityLabel;
-use App\Filament\Resources\SeasonResource\Pages;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
+use App\Filament\Resources\SeasonResource\Pages\CreateSeason;
+use App\Filament\Resources\SeasonResource\Pages\EditSeason;
+use App\Filament\Resources\SeasonResource\Pages\ListSeasons;
+use App\Filament\Resources\SeasonResource\Pages\ViewSeason;
+use App\Filament\Resources\SeasonResource\RelationManagers\ProductsRelationManager;
+use Carbon\Carbon;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\TextSize;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class SeasonResource extends Resource
@@ -22,25 +39,25 @@ class SeasonResource extends Resource
 
     protected static ?string $model = Season::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static ?string $navigationGroup = 'Membership Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Season Information')
+        return $schema
+            ->components([
+                Section::make('Season Information')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->required()
                             ->maxLength(255)
                             ->placeholder('2025-2026')
                             ->helperText('Season name (e.g., 2025-2026)'),
 
-                        Forms\Components\TextInput::make('slug')
+                        TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
                             ->unique(Season::class, 'slug', ignoreRecord: true)
@@ -49,15 +66,15 @@ class SeasonResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Season Dates')
+                Section::make('Season Dates')
                     ->schema([
-                        Forms\Components\DatePicker::make('start_date')
+                        DatePicker::make('start_date')
                             ->required()
                             ->native(false)
                             ->displayFormat('M d, Y')
                             ->helperText('First day of the season'),
 
-                        Forms\Components\DatePicker::make('end_date')
+                        DatePicker::make('end_date')
                             ->required()
                             ->native(false)
                             ->displayFormat('M d, Y')
@@ -66,14 +83,14 @@ class SeasonResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Settings')
+                Section::make('Settings')
                     ->schema([
-                        Forms\Components\Toggle::make('is_current')
+                        Toggle::make('is_current')
                             ->label('Current Season')
                             ->helperText('Only one season can be marked as current')
                             ->live(),
 
-                        Forms\Components\Toggle::make('is_registration_open')
+                        Toggle::make('is_registration_open')
                             ->label('Registration Open')
                             ->helperText('Allow new member registrations'),
                     ])
@@ -85,65 +102,65 @@ class SeasonResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
-                Tables\Columns\TextColumn::make('start_date')
+                TextColumn::make('start_date')
                     ->date('M d, Y')
                     ->sortable()
                     ->label('Start Date'),
 
-                Tables\Columns\TextColumn::make('end_date')
+                TextColumn::make('end_date')
                     ->date('M d, Y')
                     ->sortable()
                     ->label('End Date'),
 
-                Tables\Columns\IconColumn::make('is_current')
+                IconColumn::make('is_current')
                     ->boolean()
                     ->label('Current')
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_registration_open')
+                IconColumn::make('is_registration_open')
                     ->boolean()
                     ->label('Registration Open')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('products_count')
+                TextColumn::make('products_count')
                     ->counts('products')
                     ->label('Products')
                     ->badge()
                     ->color('success'),
 
-                Tables\Columns\TextColumn::make('users_count')
+                TextColumn::make('users_count')
                     ->counts('users')
                     ->label('Members')
                     ->badge()
                     ->color('info'),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_current')
+                TernaryFilter::make('is_current')
                     ->label('Current Season')
                     ->placeholder('All seasons')
                     ->trueLabel('Current only')
                     ->falseLabel('Not current'),
 
-                Tables\Filters\TernaryFilter::make('is_registration_open')
+                TernaryFilter::make('is_registration_open')
                     ->label('Registration Status')
                     ->placeholder('All')
                     ->trueLabel('Open')
                     ->falseLabel('Closed'),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
 
-                Tables\Actions\Action::make('mark_current')
+                Action::make('mark_current')
                     ->label('Mark as Current')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
@@ -157,7 +174,7 @@ class SeasonResource extends Resource
                             ->send();
                     }),
 
-                Tables\Actions\Action::make('toggle_registration')
+                Action::make('toggle_registration')
                     ->label(fn (Season $record) => $record->is_registration_open ? 'Close Registration' : 'Open Registration')
                     ->icon(fn (Season $record) => $record->is_registration_open ? 'heroicon-o-lock-closed' : 'heroicon-o-lock-open')
                     ->color(fn (Season $record) => $record->is_registration_open ? 'warning' : 'success')
@@ -178,60 +195,60 @@ class SeasonResource extends Resource
                         }
                     }),
 
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('start_date', 'desc');
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\Section::make('Season Information')
+        return $schema
+            ->components([
+                Section::make('Season Information')
                     ->schema([
-                        Infolists\Components\TextEntry::make('name')
+                        TextEntry::make('name')
                             ->label('Season Name')
-                            ->size(Infolists\Components\TextEntry\TextEntrySize::Large)
+                            ->size(TextSize::Large)
                             ->weight('bold')
                             ->columnSpanFull(),
 
-                        Infolists\Components\TextEntry::make('slug')
+                        TextEntry::make('slug')
                             ->copyable()
                             ->icon('heroicon-m-link'),
 
-                        Infolists\Components\IconEntry::make('is_current')
+                        IconEntry::make('is_current')
                             ->label('Current Season')
                             ->boolean(),
 
-                        Infolists\Components\IconEntry::make('is_registration_open')
+                        IconEntry::make('is_registration_open')
                             ->label('Registration Status')
                             ->boolean(),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Season Dates')
+                Section::make('Season Dates')
                     ->schema([
-                        Infolists\Components\TextEntry::make('start_date')
+                        TextEntry::make('start_date')
                             ->label('Start Date')
                             ->date('F j, Y')
                             ->icon('heroicon-m-calendar'),
 
-                        Infolists\Components\TextEntry::make('end_date')
+                        TextEntry::make('end_date')
                             ->label('End Date')
                             ->date('F j, Y')
                             ->icon('heroicon-m-calendar'),
 
-                        Infolists\Components\TextEntry::make('duration')
+                        TextEntry::make('duration')
                             ->label('Duration')
                             ->state(function (Season $record) {
-                                $start = \Carbon\Carbon::parse($record->start_date);
-                                $end = \Carbon\Carbon::parse($record->end_date);
+                                $start = Carbon::parse($record->start_date);
+                                $end = Carbon::parse($record->end_date);
 
                                 return $start->diffInDays($end).' days ('.$start->diffInMonths($end).' months)';
                             })
@@ -239,30 +256,30 @@ class SeasonResource extends Resource
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Statistics')
+                Section::make('Statistics')
                     ->schema([
-                        Infolists\Components\TextEntry::make('products_count')
+                        TextEntry::make('products_count')
                             ->label('Total Products')
                             ->state(fn (Season $record) => $record->products()->count())
                             ->badge()
                             ->color('success')
                             ->icon('heroicon-m-shopping-bag'),
 
-                        Infolists\Components\TextEntry::make('available_products_count')
+                        TextEntry::make('available_products_count')
                             ->label('Available Products')
                             ->state(fn (Season $record) => $record->products()->where('is_available', true)->count())
                             ->badge()
                             ->color('info')
                             ->icon('heroicon-m-check-circle'),
 
-                        Infolists\Components\TextEntry::make('users_count')
+                        TextEntry::make('users_count')
                             ->label('Total Members')
                             ->state(fn (Season $record) => $record->users()->distinct()->count())
                             ->badge()
                             ->color('primary')
                             ->icon('heroicon-m-users'),
 
-                        Infolists\Components\TextEntry::make('total_revenue')
+                        TextEntry::make('total_revenue')
                             ->label('Total Revenue')
                             ->state(function (Season $record) {
                                 return $record->products()
@@ -274,12 +291,12 @@ class SeasonResource extends Resource
                             ->icon('heroicon-m-currency-dollar')
                             ->color('success'),
 
-                        Infolists\Components\TextEntry::make('created_at')
+                        TextEntry::make('created_at')
                             ->label('Created')
                             ->dateTime()
                             ->icon('heroicon-m-clock'),
 
-                        Infolists\Components\TextEntry::make('updated_at')
+                        TextEntry::make('updated_at')
                             ->label('Last Updated')
                             ->dateTime()
                             ->icon('heroicon-m-clock'),
@@ -291,17 +308,17 @@ class SeasonResource extends Resource
     public static function getRelations(): array
     {
         return [
-            SeasonResource\RelationManagers\ProductsRelationManager::class,
+            ProductsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSeasons::route('/'),
-            'create' => Pages\CreateSeason::route('/create'),
-            'view' => Pages\ViewSeason::route('/{record}'),
-            'edit' => Pages\EditSeason::route('/{record}/edit'),
+            'index' => ListSeasons::route('/'),
+            'create' => CreateSeason::route('/create'),
+            'view' => ViewSeason::route('/{record}'),
+            'edit' => EditSeason::route('/{record}/edit'),
         ];
     }
 }

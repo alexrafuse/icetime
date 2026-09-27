@@ -9,7 +9,7 @@ use Filament\Widgets\Widget;
 
 final class SpareAvailabilityPrompt extends Widget
 {
-    protected static string $view = 'filament.widgets.spare-availability-prompt';
+    protected string $view = 'filament.widgets.spare-availability-prompt';
 
     protected static ?int $sort = -1;
 

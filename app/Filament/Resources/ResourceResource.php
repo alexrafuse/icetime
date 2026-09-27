@@ -5,13 +5,31 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Domain\Shared\Enums\ResourceCategory;
-use App\Filament\Resources\ResourceResource\Pages;
+use App\Filament\Resources\ResourceResource\Pages\CreateResource;
+use App\Filament\Resources\ResourceResource\Pages\EditResource;
+use App\Filament\Resources\ResourceResource\Pages\ListResources;
+use App\Filament\Resources\ResourceResource\Pages\ViewResource;
 use Domain\Shared\Models\Resource as ResourceModel;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -20,43 +38,43 @@ class ResourceResource extends Resource
 {
     protected static ?string $model = ResourceModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-folder';
 
-    protected static ?string $navigationLabel = 'Resources';
+    protected static ?string $navigationLabel = 'Manage Resources';
 
-    protected static ?string $navigationGroup = 'Content';
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 6;
 
     public static function canViewAny(): bool
     {
         return auth()->user()?->hasAnyRole(['admin', 'staff']) ?? false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Resource Details')
+        return $schema
+            ->components([
+                Section::make('Resource Details')
                     ->schema([
-                        Forms\Components\TextInput::make('title')
+                        TextInput::make('title')
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
 
-                        Forms\Components\Textarea::make('description')
+                        Textarea::make('description')
                             ->maxLength(65535)
                             ->columnSpanFull()
                             ->rows(3)
                             ->helperText('Brief description shown to members'),
 
-                        Forms\Components\Select::make('category')
+                        Select::make('category')
                             ->options(ResourceCategory::class)
                             ->required()
                             ->native(false)
                             ->helperText('Category helps organize resources for members'),
 
-                        Forms\Components\Select::make('type')
+                        Select::make('type')
                             ->options([
                                 'url' => 'External URL',
                                 'file' => 'File Upload',
@@ -64,7 +82,7 @@ class ResourceResource extends Resource
                             ->required()
                             ->native(false)
                             ->live()
-                            ->afterStateUpdated(function (Forms\Set $set, ?string $state) {
+                            ->afterStateUpdated(function (Set $set, ?string $state) {
                                 if ($state === 'url') {
                                     $set('file_path', null);
                                 } else {
@@ -73,7 +91,7 @@ class ResourceResource extends Resource
                             })
                             ->helperText('Choose whether to link to an external URL or upload a file'),
 
-                        Forms\Components\TextInput::make('url')
+                        TextInput::make('url')
                             ->label('External URL')
                             ->url()
                             ->maxLength(255)
@@ -83,7 +101,7 @@ class ResourceResource extends Resource
                             ->placeholder('example.com/page')
                             ->helperText('Full URL to the external resource'),
 
-                        Forms\Components\FileUpload::make('file_path')
+                        FileUpload::make('file_path')
                             ->label('File')
                             ->directory('resources')
                             ->acceptedFileTypes([
@@ -104,7 +122,7 @@ class ResourceResource extends Resource
                             ->openable()
                             ->helperText('Supported: PDFs, images, Word, Excel, PowerPoint'),
 
-                        Forms\Components\Select::make('visibility')
+                        Select::make('visibility')
                             ->options([
                                 'all' => 'All Users',
                                 'admin_staff_only' => 'Admin & Staff Only',
@@ -114,12 +132,12 @@ class ResourceResource extends Resource
                             ->native(false)
                             ->helperText('Control who can view this resource'),
 
-                        Forms\Components\Toggle::make('is_active')
+                        Toggle::make('is_active')
                             ->label('Active')
                             ->default(true)
                             ->helperText('Only active resources are visible to members'),
 
-                        Forms\Components\TextInput::make('priority')
+                        TextInput::make('priority')
                             ->numeric()
                             ->default(999)
                             ->minValue(1)
@@ -127,14 +145,14 @@ class ResourceResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Validity Period')
+                Section::make('Validity Period')
                     ->description('Optional: Set a date range when this resource should be visible')
                     ->schema([
-                        Forms\Components\DatePicker::make('valid_from')
+                        DatePicker::make('valid_from')
                             ->label('Valid From')
                             ->native(false),
 
-                        Forms\Components\DatePicker::make('valid_until')
+                        DatePicker::make('valid_until')
                             ->label('Valid Until')
                             ->after('valid_from')
                             ->native(false),
@@ -148,18 +166,18 @@ class ResourceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->sortable()
                     ->limit(40),
 
-                Tables\Columns\TextColumn::make('category')
+                TextColumn::make('category')
                     ->badge()
                     ->sortable()
                     ->formatStateUsing(fn (ResourceCategory $state): string => $state->getLabel())
                     ->color(fn (ResourceCategory $state): string => $state->getColor()),
 
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -178,7 +196,7 @@ class ResourceResource extends Resource
                         default => 'heroicon-o-question-mark-circle',
                     }),
 
-                Tables\Columns\TextColumn::make('visibility')
+                TextColumn::make('visibility')
                     ->badge()
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -192,12 +210,12 @@ class ResourceResource extends Resource
                         default => 'gray',
                     }),
 
-                Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->label('Active')
                     ->boolean()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('priority')
+                TextColumn::make('priority')
                     ->sortable()
                     ->alignCenter()
                     ->badge()
@@ -207,54 +225,54 @@ class ResourceResource extends Resource
                         default => 'gray',
                     }),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('category')
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
+                SelectFilter::make('category')
                     ->options(ResourceCategory::class)
                     ->label('Category'),
 
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->options([
                         'url' => 'External URL',
                         'file' => 'File',
                     ])
                     ->label('Type'),
 
-                Tables\Filters\SelectFilter::make('visibility')
+                SelectFilter::make('visibility')
                     ->options([
                         'all' => 'All Users',
                         'admin_staff_only' => 'Admin & Staff Only',
                     ])
                     ->label('Visibility'),
 
-                Tables\Filters\TernaryFilter::make('is_active')
+                TernaryFilter::make('is_active')
                     ->label('Active Status')
                     ->placeholder('All resources')
                     ->trueLabel('Active only')
                     ->falseLabel('Inactive only'),
             ])
-            ->actions([
-                Tables\Actions\Action::make('open')
+            ->recordActions([
+                Action::make('open')
                     ->label('Open')
                     ->icon(fn (ResourceModel $record): string => $record->isUrl() ? 'heroicon-m-arrow-top-right-on-square' : 'heroicon-m-eye')
                     ->url(fn (ResourceModel $record): ?string => $record->isUrl() ? $record->url : $record->getFileUrl())
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                EditAction::make(),
+                DeleteAction::make()
                     ->before(function (ResourceModel $record) {
                         if ($record->file_path) {
                             Storage::disk('public')->delete($record->file_path);
                         }
                     }),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->before(function (Collection $records) {
                             $records->each(function ($record) {
                                 if ($record->file_path) {
@@ -269,10 +287,10 @@ class ResourceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListResources::route('/'),
-            'create' => Pages\CreateResource::route('/create'),
-            'view' => Pages\ViewResource::route('/{record}'),
-            'edit' => Pages\EditResource::route('/{record}/edit'),
+            'index' => ListResources::route('/'),
+            'create' => CreateResource::route('/create'),
+            'view' => ViewResource::route('/{record}'),
+            'edit' => EditResource::route('/{record}/edit'),
         ];
     }
 }

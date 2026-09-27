@@ -3,13 +3,14 @@
 namespace Domain\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use App\Domain\Membership\Enums\MembershipStatus;
 use App\Domain\Membership\Enums\MembershipTier;
 use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use App\Domain\Membership\Models\UserProduct;
+use App\Enums\Permission;
 use Database\Factories\UserFactory;
+use Domain\Board\Models\Sponsor;
 use Domain\Booking\Models\Booking;
 use Domain\Facility\Models\SpareAvailability;
 use Domain\Shared\Models\SurveyResponse;
@@ -27,7 +28,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
 
     protected static function newFactory(): Factory
@@ -97,6 +98,13 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(UserProduct::class);
     }
 
+    public function sponsors(): BelongsToMany
+    {
+        return $this->belongsToMany(Sponsor::class)
+            ->withPivot(['role', 'notes'])
+            ->withTimestamps();
+    }
+
     public function surveyResponses(): HasMany
     {
         return $this->hasMany(SurveyResponse::class);
@@ -161,6 +169,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canViewMembershipStatus(self $targetUser): bool
     {
-        return $this->id === $targetUser->id || $this->can(\App\Enums\Permission::VIEW_MEMBERSHIPS->value);
+        return $this->id === $targetUser->id || $this->can(Permission::VIEW_MEMBERSHIPS->value);
     }
 }

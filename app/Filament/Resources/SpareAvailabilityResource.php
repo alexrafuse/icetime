@@ -4,12 +4,27 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SpareAvailabilityResource\Pages;
+use App\Filament\Resources\SpareAvailabilityResource\Pages\CreateSpareAvailability;
+use App\Filament\Resources\SpareAvailabilityResource\Pages\EditSpareAvailability;
+use App\Filament\Resources\SpareAvailabilityResource\Pages\ListSpareAvailabilities;
 use Domain\Facility\Models\SpareAvailability;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -17,74 +32,78 @@ class SpareAvailabilityResource extends Resource
 {
     protected static ?string $model = SpareAvailability::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $navigationGroup = 'Members Area';
+    protected static string|\UnitEnum|null $navigationGroup = 'Members Area';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationLabel = 'Spare List';
 
     protected static ?string $heading = 'Spare List';
 
-    public static function form(Form $form): Form
+    protected static ?string $pluralModelLabel = 'Spare List';
+
+    protected static ?string $modelLabel = 'Spare Availability';
+
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
+        return $schema
+            ->components([
+                Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required()
                     ->searchable()
                     ->preload()
                     ->default(fn () => auth()->id())
                     ->visible(fn () => auth()->user()->can('manage spares')),
-                Forms\Components\Section::make('Availability')
+                Section::make('Availability')
                     ->schema([
-                        Forms\Components\Toggle::make('is_active')
+                        Toggle::make('is_active')
                             ->label('I am available to spare')
                             ->default(true)
                             ->inline(false)
                             ->live(),
-                        Forms\Components\Grid::make(4)
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\Toggle::make('monday')
+                                Toggle::make('monday')
                                     ->label('Monday Night')
                                     ->inline(false)
                                     ->visible(false),
-                                Forms\Components\Toggle::make('tuesday')
+                                Toggle::make('tuesday')
                                     ->label('Tuesday Night')
                                     ->inline(false),
-                                Forms\Components\Toggle::make('wednesday')
+                                Toggle::make('wednesday')
                                     ->label('Wednesday Night')
                                     ->inline(false),
-                                Forms\Components\Toggle::make('thursday')
+                                Toggle::make('thursday')
                                     ->label('Thursday Night')
                                     ->inline(false),
-                                Forms\Components\Toggle::make('friday')
+                                Toggle::make('friday')
                                     ->label('Friday Night')
                                     ->inline(false),
                             ])
-                            ->visible(fn (Forms\Get $get) => $get('is_active')),
+                            ->visible(fn (Get $get) => $get('is_active')),
                     ]),
-                Forms\Components\Section::make('Contact Preference')
+                Section::make('Contact Preference')
                     ->schema([
-                        Forms\Components\TextInput::make('phone_number')
+                        TextInput::make('phone_number')
                             ->tel()
                             ->nullable(),
-                        Forms\Components\Grid::make(2)
+                        Grid::make(2)
                             ->schema([
-                                Forms\Components\Toggle::make('sms_enabled')
+                                Toggle::make('sms_enabled')
                                     ->label('Available via SMS')
                                     ->inline(false),
-                                Forms\Components\Toggle::make('call_enabled')
+                                Toggle::make('call_enabled')
                                     ->label('Available via Phone Call')
                                     ->inline(false),
                             ]),
                     ]),
-                Forms\Components\Section::make('Additional Information')
+                Section::make('Additional Information')
                     ->description('Share any relevant details that will help teams find the right spare.')
                     ->schema([
-                        Forms\Components\Textarea::make('notes')
+                        Textarea::make('notes')
                             ->label('Notes')
                             ->placeholder('e.g., Preferred position (Lead, Second, Third, Skip), curling experience, availability constraints, etc.')
                             ->helperText('Include your preferred position, years of experience, skill level, or any scheduling constraints.')
@@ -107,29 +126,29 @@ class SpareAvailabilityResource extends Resource
                 }
             })
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('monday')
+                IconColumn::make('monday')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('tuesday')
+                IconColumn::make('tuesday')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('wednesday')
+                IconColumn::make('wednesday')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('thursday')
+                IconColumn::make('thursday')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('friday')
+                IconColumn::make('friday')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('phone_number'),
-                Tables\Columns\IconColumn::make('sms_enabled')
+                TextColumn::make('phone_number'),
+                IconColumn::make('sms_enabled')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('call_enabled')
+                IconColumn::make('call_enabled')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('days')
+                SelectFilter::make('days')
                     ->options([
                         'monday' => 'Monday',
                         'tuesday' => 'Tuesday',
@@ -145,18 +164,18 @@ class SpareAvailabilityResource extends Resource
                         }
                     })
                     ->multiple(),
-                Tables\Filters\TernaryFilter::make('is_active')
+                TernaryFilter::make('is_active')
                     ->label('Active Status'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->visible(fn (SpareAvailability $record) => auth()->user()->can('update', $record)),
-                Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->visible(fn (SpareAvailability $record) => auth()->user()->can('delete', $record)),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -164,9 +183,9 @@ class SpareAvailabilityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSpareAvailabilities::route('/'),
-            'create' => Pages\CreateSpareAvailability::route('/create'),
-            'edit' => Pages\EditSpareAvailability::route('/{record}/edit'),
+            'index' => ListSpareAvailabilities::route('/'),
+            'create' => CreateSpareAvailability::route('/create'),
+            'edit' => EditSpareAvailability::route('/{record}/edit'),
         ];
     }
 }

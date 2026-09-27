@@ -21,43 +21,7 @@ final class RecalculateMembershipStatusAction
             return $status;
         }
 
-        $hasActiveMembership = $user->userProducts()
-            ->forSeason($season)
-            ->active()
-            ->whereHas('product', function ($query) {
-                $query->memberships()
-                    ->where(function ($q) {
-                        $q->whereNull('expires_at')
-                            ->orWhere('expires_at', '>', now());
-                    });
-            })
-            ->exists();
-
-        if ($hasActiveMembership) {
-            $status = MembershipStatus::ACTIVE;
-        } else {
-            $hasPendingMembership = $user->userProducts()
-                ->forSeason($season)
-                ->where('status', MembershipStatus::PENDING)
-                ->whereHas('product', function ($query) {
-                    $query->memberships();
-                })
-                ->exists();
-
-            if ($hasPendingMembership) {
-                $status = MembershipStatus::PENDING;
-            } else {
-                $hasExpiredMembership = $user->userProducts()
-                    ->forSeason($season)
-                    ->whereHas('product', function ($query) {
-                        $query->memberships();
-                    })
-                    ->exists();
-
-                $status = $hasExpiredMembership ? MembershipStatus::EXPIRED : MembershipStatus::CANCELLED;
-            }
-        }
-
+        $status = $this->determineStatus($user, $season);
         $user->update(['current_membership_status' => $status]);
 
         return $status;
@@ -75,10 +39,30 @@ final class RecalculateMembershipStatusAction
             ->with(['userProducts' => function ($query) use ($season) {
                 $query->forSeason($season)->with('product');
             }])
-            ->chunk(100, function ($users) use ($season) {
-                foreach ($users as $user) {
-                    $this->execute($user, $season);
-                }
-            });
+            ->chunk(100, fn ($users) => $users->each(fn (User $user) => $this->execute($user, $season)));
+    }
+
+    private function determineStatus(User $user, Season $season): MembershipStatus
+    {
+        $membershipProducts = fn () => $user->userProducts()->forSeason($season)->whereHas('product', fn ($q) => $q->memberships());
+
+        $hasActive = (clone $membershipProducts)()
+            ->active()
+            ->whereHas('product', fn ($q) => $q->where(fn ($q) => $q->whereNull('expires_at')->orWhere('expires_at', '>', now())))
+            ->exists();
+
+        if ($hasActive) {
+            return MembershipStatus::ACTIVE;
+        }
+
+        if ((clone $membershipProducts)()->where('status', MembershipStatus::PENDING)->exists()) {
+            return MembershipStatus::PENDING;
+        }
+
+        if ((clone $membershipProducts)()->exists()) {
+            return MembershipStatus::EXPIRED;
+        }
+
+        return MembershipStatus::CANCELLED;
     }
 }

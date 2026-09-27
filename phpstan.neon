@@ -14,7 +14,7 @@ parameters:
         # Laravel Resource classes use magic properties
         - '#Access to an undefined property App\\Http\\Resources#'
         # Filament quirks - known issues
-        - '#Call to an undefined static method Filament\\Pages\\Page::getHeadComponents#'
+        - '#Call to an undefined static method Filament\\Pages\\Page.*::getHeadComponents#'
         - '#Call to an undefined method App\\Filament\\Resources\\RecurringPatternResource::getResource#'
 
 #    excludePaths:

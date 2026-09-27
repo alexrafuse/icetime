@@ -395,7 +395,7 @@ class BookingResourceTest extends TestCase
 
     public function test_user_id_defaults_to_authenticated_user(): void
     {
-        $this->actingAs($this->member);
+        $this->actingAs($this->staff);
 
         Livewire::test(BookingResource\Pages\CreateBooking::class)
             ->fillForm([
@@ -406,13 +406,12 @@ class BookingResourceTest extends TestCase
                 'event_type' => EventType::PRIVATE->value,
                 'payment_status' => PaymentStatus::PAID->value,
                 'areas' => [$this->area->id],
-                // Note: Not explicitly setting user_id
             ])
             ->call('create')
             ->assertHasNoFormErrors();
 
         $booking = Booking::where('title', 'Auto User ID')->first();
-        $this->assertEquals($this->member->id, $booking->user_id);
+        $this->assertEquals($this->staff->id, $booking->user_id);
     }
 
     public function test_can_add_optional_setup_instructions(): void

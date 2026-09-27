@@ -11,17 +11,17 @@ use Livewire\Attributes\Url;
 
 class MemberResources extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-folder-open';
 
-    protected static string $view = 'filament.pages.member-resources';
+    protected string $view = 'filament.pages.member-resources';
 
     protected static ?string $title = 'Resources';
 
     protected static ?string $navigationLabel = 'Resources';
 
-    protected static ?string $navigationGroup = 'Members Area';
+    protected static string|\UnitEnum|null $navigationGroup = 'Members Area';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     #[Url]
     public string $search = '';
@@ -67,10 +67,7 @@ class MemberResources extends Page
             ->get()
             ->groupBy(fn (Resource $resource) => $resource->category->value);
 
-        $categorizedResources = [];
-
-        // Define custom category order: General, Volunteer, Membership, then others
-        $categoryOrder = [
+        return collect([
             ResourceCategory::General,
             ResourceCategory::Volunteer,
             ResourceCategory::Membership,
@@ -78,18 +75,15 @@ class MemberResources extends Page
             ResourceCategory::Curriculum,
             ResourceCategory::Schedules,
             ResourceCategory::Rules,
-        ];
-
-        foreach ($categoryOrder as $category) {
-            if (isset($resources[$category->value]) && $resources[$category->value]->isNotEmpty()) {
-                $categorizedResources[$category->value] = [
+        ])
+            ->filter(fn (ResourceCategory $category) => isset($resources[$category->value]) && $resources[$category->value]->isNotEmpty())
+            ->mapWithKeys(fn (ResourceCategory $category) => [
+                $category->value => [
                     'category' => $category,
                     'resources' => $resources[$category->value],
-                ];
-            }
-        }
-
-        return $categorizedResources;
+                ],
+            ])
+            ->all();
     }
 
     public function updatedSearch(): void

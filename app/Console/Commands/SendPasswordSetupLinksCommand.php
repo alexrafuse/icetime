@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Domain\User\Actions\SendPasswordSetupLinkAction;
 use Domain\User\Models\User;
+use Exception;
 use Illuminate\Console\Command;
 
 class SendPasswordSetupLinksCommand extends Command
@@ -66,11 +67,7 @@ class SendPasswordSetupLinksCommand extends Command
 
         // Filter out users who already have valid setup links (unless --force is set)
         if (! $force) {
-            $usersWithValidLinks = $users->filter(function (User $user) {
-                return $user->temporary_password !== null
-                    && $user->temporary_password_expires_at !== null
-                    && $user->temporary_password_expires_at->isFuture();
-            });
+            $usersWithValidLinks = $users->filter(fn (User $user) => $this->hasValidSetupLink($user));
 
             if ($usersWithValidLinks->isNotEmpty()) {
                 $this->warn('The following users already have valid password setup links:');
@@ -124,37 +121,32 @@ class SendPasswordSetupLinksCommand extends Command
             $progressBar = $this->output->createProgressBar($users->count());
             $progressBar->start();
 
-            $sent = 0;
-            $failed = 0;
-            $failures = [];
-
-            foreach ($users as $user) {
+            $results = $users->map(function (User $user) use ($force, $progressBar) {
                 try {
                     $this->sendPasswordSetupLinkAction->execute($user, $force);
-                    $sent++;
-                } catch (\Exception $e) {
-                    $failed++;
-                    $failures[] = [
-                        'user' => $user->email,
-                        'error' => $e->getMessage(),
-                    ];
+                    $progressBar->advance();
+
+                    return ['success' => true, 'user' => $user->email, 'error' => null];
+                } catch (Exception $e) {
+                    $progressBar->advance();
+
+                    return ['success' => false, 'user' => $user->email, 'error' => $e->getMessage()];
                 }
-                $progressBar->advance();
-            }
+            });
 
             $progressBar->finish();
             $this->newLine(2);
 
-            // Display results
+            $sent = $results->where('success', true)->count();
+            $failures = $results->where('success', false);
+
             if ($sent > 0) {
                 $this->info("Successfully sent password setup links to {$sent} user(s).");
             }
 
-            if ($failed > 0) {
-                $this->error("Failed to send password setup links to {$failed} user(s):");
-                foreach ($failures as $failure) {
-                    $this->error("  - {$failure['user']}: {$failure['error']}");
-                }
+            if ($failures->isNotEmpty()) {
+                $this->error("Failed to send password setup links to {$failures->count()} user(s):");
+                $failures->each(fn ($failure) => $this->error("  - {$failure['user']}: {$failure['error']}"));
 
                 return self::FAILURE;
             }
@@ -163,5 +155,12 @@ class SendPasswordSetupLinksCommand extends Command
         }
 
         return self::SUCCESS;
+    }
+
+    private function hasValidSetupLink(User $user): bool
+    {
+        return $user->temporary_password !== null
+            && $user->temporary_password_expires_at !== null
+            && $user->temporary_password_expires_at->isFuture();
     }
 }

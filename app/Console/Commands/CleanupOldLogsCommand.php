@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Domain\System\Actions\CleanupOldLogsAction;
+use Exception;
 use Illuminate\Console\Command;
 
 class CleanupOldLogsCommand extends Command
@@ -44,7 +45,7 @@ class CleanupOldLogsCommand extends Command
             }
 
             return self::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->error("Cleanup failed: {$e->getMessage()}");
 
             return self::FAILURE;

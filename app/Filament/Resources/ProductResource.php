@@ -10,13 +10,36 @@ use App\Domain\Membership\Enums\ProductType;
 use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use App\Filament\Concerns\HasSecurityLabel;
-use App\Filament\Resources\ProductResource\Pages;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
+use App\Filament\Resources\ProductResource\Pages\CreateProduct;
+use App\Filament\Resources\ProductResource\Pages\EditProduct;
+use App\Filament\Resources\ProductResource\Pages\ListProducts;
+use App\Filament\Resources\ProductResource\Pages\ViewProduct;
+use App\Filament\Resources\ProductResource\RelationManagers\UserProductsRelationManager;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\KeyValueEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\TextSize;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -26,19 +49,19 @@ class ProductResource extends Resource
 
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static ?string $navigationGroup = 'Membership Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 7;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Product Information')
+        return $schema
+            ->components([
+                Section::make('Product Information')
                     ->schema([
-                        Forms\Components\Select::make('season_id')
+                        Select::make('season_id')
                             ->label('Season')
                             ->relationship('season', 'name')
                             ->required()
@@ -46,46 +69,46 @@ class ProductResource extends Resource
                             ->preload()
                             ->default(fn () => Season::query()->where('is_current', true)->first()?->id),
 
-                        Forms\Components\TextInput::make('curlingio_id')
+                        TextInput::make('curlingio_id')
                             ->label('Curling.io ID')
                             ->numeric()
                             ->unique(Product::class, 'curlingio_id', ignoreRecord: true)
                             ->helperText('Optional: ID from Curling.io system'),
 
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Forms\Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
-                        Forms\Components\TextInput::make('slug')
+                        TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
                             ->unique(Product::class, 'slug', ignoreRecord: true),
 
-                        Forms\Components\Textarea::make('description')
+                        Textarea::make('description')
                             ->maxLength(65535)
                             ->columnSpanFull()
                             ->rows(3),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Product Type & Pricing')
+                Section::make('Product Type & Pricing')
                     ->schema([
-                        Forms\Components\Select::make('product_type')
+                        Select::make('product_type')
                             ->label('Product Type')
                             ->options(ProductType::class)
                             ->required()
                             ->live()
                             ->native(false),
 
-                        Forms\Components\Select::make('membership_tier')
+                        Select::make('membership_tier')
                             ->label('Membership Tier')
                             ->options(MembershipTier::class)
-                            ->visible(fn (Forms\Get $get) => $get('product_type') === ProductType::MEMBERSHIP->value)
+                            ->visible(fn (Get $get) => $get('product_type') === ProductType::MEMBERSHIP)
                             ->native(false),
 
-                        Forms\Components\Select::make('capacity')
+                        Select::make('capacity')
                             ->label('Membership Capacity')
                             ->options(MembershipCapacity::class)
                             ->default(MembershipCapacity::SINGLE)
@@ -93,7 +116,7 @@ class ProductResource extends Resource
                             ->native(false)
                             ->helperText('Select COUPLE for memberships that cover 2 people'),
 
-                        Forms\Components\TextInput::make('price_cents')
+                        TextInput::make('price_cents')
                             ->label('Price')
                             ->required()
                             ->numeric()
@@ -103,20 +126,20 @@ class ProductResource extends Resource
                             ->dehydrateStateUsing(fn ($state) => (int) ($state * 100))
                             ->formatStateUsing(fn ($state) => $state / 100),
 
-                        Forms\Components\TextInput::make('currency')
+                        TextInput::make('currency')
                             ->default('CAD')
                             ->required()
                             ->maxLength(3),
 
-                        Forms\Components\Toggle::make('is_available')
+                        Toggle::make('is_available')
                             ->label('Available for Purchase')
                             ->default(true),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Additional Information')
+                Section::make('Additional Information')
                     ->schema([
-                        Forms\Components\KeyValue::make('metadata')
+                        KeyValue::make('metadata')
                             ->label('Metadata')
                             ->helperText('Store additional product information as key-value pairs')
                             ->columnSpanFull(),
@@ -130,219 +153,219 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable()
                     ->weight('bold')
                     ->wrap(),
 
-                Tables\Columns\TextColumn::make('product_type')
+                TextColumn::make('product_type')
                     ->label('Type')
                     ->badge()
                     ->formatStateUsing(fn (ProductType $state) => $state->getLabel())
                     ->color(fn (ProductType $state) => $state->getColor())
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('membership_tier')
+                TextColumn::make('membership_tier')
                     ->label('Tier')
                     ->badge()
                     ->formatStateUsing(fn (?MembershipTier $state) => $state?->getLabel() ?? '-')
                     ->color(fn (?MembershipTier $state) => $state?->getColor() ?? 'gray')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('capacity')
+                TextColumn::make('capacity')
                     ->label('Capacity')
                     ->badge()
                     ->formatStateUsing(fn (MembershipCapacity $state) => $state->getLabel())
                     ->color(fn (MembershipCapacity $state) => $state === MembershipCapacity::COUPLE ? 'info' : 'gray')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('price_cents')
+                TextColumn::make('price_cents')
                     ->label('Price')
                     ->money('CAD', divideBy: 100)
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('season.name')
+                TextColumn::make('season.name')
                     ->label('Season')
                     ->badge()
                     ->color('info')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('curlingio_id')
+                TextColumn::make('curlingio_id')
                     ->label('Curling.io ID')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\IconColumn::make('is_available')
+                IconColumn::make('is_available')
                     ->label('Available')
                     ->boolean()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('users_count')
+                TextColumn::make('users_count')
                     ->counts('users')
                     ->label('Purchases')
                     ->badge()
                     ->color('success'),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('season_id')
+                SelectFilter::make('season_id')
                     ->label('Season')
                     ->relationship('season', 'name')
                     ->searchable()
                     ->preload(),
 
-                Tables\Filters\SelectFilter::make('product_type')
+                SelectFilter::make('product_type')
                     ->label('Product Type')
                     ->options(ProductType::class)
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('membership_tier')
+                SelectFilter::make('membership_tier')
                     ->label('Membership Tier')
                     ->options(MembershipTier::class)
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('capacity')
+                SelectFilter::make('capacity')
                     ->label('Capacity')
                     ->options(MembershipCapacity::class)
                     ->native(false),
 
-                Tables\Filters\TernaryFilter::make('is_available')
+                TernaryFilter::make('is_available')
                     ->label('Availability')
                     ->placeholder('All products')
                     ->trueLabel('Available only')
                     ->falseLabel('Unavailable only'),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
 
-                Tables\Actions\Action::make('toggle_availability')
+                Action::make('toggle_availability')
                     ->label(fn (Product $record) => $record->is_available ? 'Disable' : 'Enable')
                     ->icon(fn (Product $record) => $record->is_available ? 'heroicon-o-eye-slash' : 'heroicon-o-eye')
                     ->color(fn (Product $record) => $record->is_available ? 'warning' : 'success')
                     ->action(fn (Product $record) => $record->update(['is_available' => ! $record->is_available])),
 
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('enable')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    BulkAction::make('enable')
                         ->label('Enable Selected')
                         ->icon('heroicon-o-eye')
                         ->color('success')
                         ->action(fn ($records) => $records->each->update(['is_available' => true])),
 
-                    Tables\Actions\BulkAction::make('disable')
+                    BulkAction::make('disable')
                         ->label('Disable Selected')
                         ->icon('heroicon-o-eye-slash')
                         ->color('warning')
                         ->action(fn ($records) => $records->each->update(['is_available' => false])),
 
-                    Tables\Actions\DeleteBulkAction::make(),
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\Section::make('Product Information')
+        return $schema
+            ->components([
+                Section::make('Product Information')
                     ->schema([
-                        Infolists\Components\TextEntry::make('name')
-                            ->size(Infolists\Components\TextEntry\TextEntrySize::Large)
+                        TextEntry::make('name')
+                            ->size(TextSize::Large)
                             ->weight('bold')
                             ->columnSpanFull(),
 
-                        Infolists\Components\TextEntry::make('slug')
+                        TextEntry::make('slug')
                             ->copyable()
                             ->icon('heroicon-m-link'),
 
-                        Infolists\Components\TextEntry::make('season.name')
+                        TextEntry::make('season.name')
                             ->label('Season')
                             ->badge()
                             ->color('info'),
 
-                        Infolists\Components\TextEntry::make('description')
+                        TextEntry::make('description')
                             ->placeholder('No description')
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Product Details')
+                Section::make('Product Details')
                     ->schema([
-                        Infolists\Components\TextEntry::make('product_type')
+                        TextEntry::make('product_type')
                             ->label('Product Type')
                             ->badge()
                             ->formatStateUsing(fn (ProductType $state) => $state->getLabel())
                             ->color(fn (ProductType $state) => $state->getColor()),
 
-                        Infolists\Components\TextEntry::make('membership_tier')
+                        TextEntry::make('membership_tier')
                             ->label('Membership Tier')
                             ->badge()
                             ->formatStateUsing(fn (?MembershipTier $state) => $state?->getLabel() ?? 'N/A')
                             ->color(fn (?MembershipTier $state) => $state?->getColor() ?? 'gray')
                             ->placeholder('N/A'),
 
-                        Infolists\Components\TextEntry::make('capacity')
+                        TextEntry::make('capacity')
                             ->label('Capacity')
                             ->badge()
                             ->formatStateUsing(fn (MembershipCapacity $state) => $state->getLabel())
                             ->color(fn (MembershipCapacity $state) => $state === MembershipCapacity::COUPLE ? 'info' : 'gray'),
 
-                        Infolists\Components\TextEntry::make('price_cents')
+                        TextEntry::make('price_cents')
                             ->label('Price')
                             ->money('CAD', divideBy: 100)
-                            ->size(Infolists\Components\TextEntry\TextEntrySize::Large)
+                            ->size(TextSize::Large)
                             ->weight('bold'),
 
-                        Infolists\Components\TextEntry::make('currency')
+                        TextEntry::make('currency')
                             ->badge(),
 
-                        Infolists\Components\IconEntry::make('is_available')
+                        IconEntry::make('is_available')
                             ->label('Available for Purchase')
                             ->boolean(),
                     ])
                     ->columns(3),
 
-                Infolists\Components\Section::make('Statistics')
+                Section::make('Statistics')
                     ->schema([
-                        Infolists\Components\TextEntry::make('users_count')
+                        TextEntry::make('users_count')
                             ->label('Total Purchases')
                             ->state(fn (Product $record) => $record->users()->count())
                             ->badge()
                             ->color('success')
                             ->icon('heroicon-m-shopping-cart'),
 
-                        Infolists\Components\TextEntry::make('revenue')
+                        TextEntry::make('revenue')
                             ->label('Total Revenue')
                             ->state(fn (Product $record) => $record->users()->count() * ($record->price_cents / 100))
                             ->money('CAD')
                             ->icon('heroicon-m-currency-dollar')
                             ->color('success'),
 
-                        Infolists\Components\TextEntry::make('created_at')
+                        TextEntry::make('created_at')
                             ->label('Created')
                             ->dateTime()
                             ->icon('heroicon-m-calendar'),
 
-                        Infolists\Components\TextEntry::make('updated_at')
+                        TextEntry::make('updated_at')
                             ->label('Last Updated')
                             ->dateTime()
                             ->icon('heroicon-m-clock'),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Curling.io Integration')
+                Section::make('Curling.io Integration')
                     ->schema([
-                        Infolists\Components\TextEntry::make('curlingio_id')
+                        TextEntry::make('curlingio_id')
                             ->label('Curling.io ID')
                             ->placeholder('Not linked')
                             ->copyable(),
@@ -350,9 +373,9 @@ class ProductResource extends Resource
                     ->collapsed()
                     ->collapsible(),
 
-                Infolists\Components\Section::make('Metadata')
+                Section::make('Metadata')
                     ->schema([
-                        Infolists\Components\KeyValueEntry::make('metadata')
+                        KeyValueEntry::make('metadata')
                             ->label('')
                             ->placeholder('No metadata')
                             ->columnSpanFull(),
@@ -366,17 +389,17 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ProductResource\RelationManagers\UserProductsRelationManager::class,
+            UserProductsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'view' => Pages\ViewProduct::route('/{record}'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => ListProducts::route('/'),
+            'create' => CreateProduct::route('/create'),
+            'view' => ViewProduct::route('/{record}'),
+            'edit' => EditProduct::route('/{record}/edit'),
         ];
     }
 }

@@ -6,6 +6,7 @@ namespace App\Filament\Resources\RecurringPatternResource\Pages;
 
 use App\Filament\Resources\RecurringPatternResource;
 use App\Services\RecurringBookingService;
+use Exception;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -24,7 +25,7 @@ final class CreateRecurringPattern extends CreateRecord
                 ->title('Recurring pattern created')
                 ->body('Bookings have been generated successfully.')
                 ->send();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Notification::make()
                 ->danger()
                 ->title('Error generating bookings')

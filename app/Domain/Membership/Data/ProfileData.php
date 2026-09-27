@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Membership\Data;
 
 use Carbon\Carbon;
+use Exception;
 use Spatie\LaravelData\Data;
 
 class ProfileData extends Data
@@ -42,7 +43,7 @@ class ProfileData extends Data
         if (! empty($row['Curler Date of birth'])) {
             try {
                 $dateOfBirth = Carbon::parse($row['Curler Date of birth']);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Skip invalid dates
             }
         }

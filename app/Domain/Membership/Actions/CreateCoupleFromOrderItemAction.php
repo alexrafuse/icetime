@@ -10,6 +10,7 @@ use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use Domain\User\Models\User;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 final class CreateCoupleFromOrderItemAction
 {
@@ -29,7 +30,7 @@ final class CreateCoupleFromOrderItemAction
         Season $season,
     ): Collection {
         if (! $orderItem->hasSecondMember()) {
-            throw new \InvalidArgumentException('Order item must have a second member to create a couple');
+            throw new InvalidArgumentException('Order item must have a second member to create a couple');
         }
 
         // Create first user from primary profile

@@ -10,43 +10,67 @@ use App\Domain\Membership\Models\Product;
 use App\Domain\Membership\Models\Season;
 use App\Enums\Permission;
 use App\Enums\RoleEnum;
-use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\SponsorsRelationManager;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
+use App\Filament\Resources\UserResource\Pages\EditUser;
+use App\Filament\Resources\UserResource\Pages\ListUsers;
+use App\Filament\Resources\UserResource\Pages\ViewUser;
+use Carbon\Carbon;
 use Domain\User\Models\User;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\TextSize;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use STS\FilamentImpersonate\Tables\Actions\Impersonate;
+use STS\FilamentImpersonate\Actions\Impersonate;
 
 final class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'User Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Registration';
 
-    public static function form(Form $form): Form
+    protected static ?int $navigationSort = 1;
+
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Account Information')
+        return $schema
+            ->components([
+                Section::make('Account Information')
                     ->schema([
-                        Forms\Components\TextInput::make('email')
+                        TextInput::make('email')
                             ->email()
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
                             ->columnSpanFull(),
-                        Forms\Components\DateTimePicker::make('email_verified_at')
+                        DateTimePicker::make('email_verified_at')
                             ->native(false),
-                        Forms\Components\TextInput::make('password')
+                        TextInput::make('password')
                             ->password()
                             ->dehydrateStateUsing(fn ($state) => ! empty($state) ? bcrypt($state) : null)
                             ->required(fn (string $operation): bool => $operation === 'create')
@@ -54,78 +78,78 @@ final class UserResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Personal Information')
+                Section::make('Personal Information')
                     ->schema([
-                        Forms\Components\TextInput::make('first_name')
+                        TextInput::make('first_name')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('last_name')
+                        TextInput::make('last_name')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('middle_initial')
+                        TextInput::make('middle_initial')
                             ->maxLength(10)
                             ->label('Middle Initial'),
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->label('Full Name')
                             ->maxLength(255)
                             ->helperText('Auto-generated from first/last name if not provided'),
-                        Forms\Components\DatePicker::make('date_of_birth')
+                        DatePicker::make('date_of_birth')
                             ->native(false)
                             ->maxDate(now()),
-                        Forms\Components\TextInput::make('gender')
+                        TextInput::make('gender')
                             ->maxLength(50),
-                        Forms\Components\Toggle::make('show_contact_info')
+                        Toggle::make('show_contact_info')
                             ->label('Show Contact Info in Directory')
                             ->default(false)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Contact Information')
+                Section::make('Contact Information')
                     ->schema([
-                        Forms\Components\TextInput::make('phone')
+                        TextInput::make('phone')
                             ->tel()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('secondary_phone')
+                        TextInput::make('secondary_phone')
                             ->tel()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('secondary_email')
+                        TextInput::make('secondary_email')
                             ->email()
                             ->maxLength(255),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Address')
+                Section::make('Address')
                     ->schema([
-                        Forms\Components\TextInput::make('street_address')
+                        TextInput::make('street_address')
                             ->maxLength(255)
                             ->columnSpanFull(),
-                        Forms\Components\TextInput::make('unit')
+                        TextInput::make('unit')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('city')
+                        TextInput::make('city')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('province_state')
+                        TextInput::make('province_state')
                             ->label('Province/State')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('postal_zip_code')
+                        TextInput::make('postal_zip_code')
                             ->label('Postal/Zip Code')
                             ->maxLength(255),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Emergency Contact')
+                Section::make('Emergency Contact')
                     ->schema([
-                        Forms\Components\TextInput::make('emergency_contact_name')
+                        TextInput::make('emergency_contact_name')
                             ->label('Name')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('emergency_contact_phone')
+                        TextInput::make('emergency_contact_phone')
                             ->label('Phone')
                             ->tel()
                             ->maxLength(255),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Roles & Permissions')
+                Section::make('Roles & Permissions')
                     ->schema([
-                        Forms\Components\Select::make('roles')
+                        Select::make('roles')
                             ->relationship('roles', 'name')
                             ->multiple()
                             ->preload()
@@ -134,9 +158,9 @@ final class UserResource extends Resource
                     ])
                     ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
 
-                Forms\Components\Section::make('Curling.io Integration')
+                Section::make('Curling.io Integration')
                     ->schema([
-                        Forms\Components\TextInput::make('curlingio_profile_id')
+                        TextInput::make('curlingio_profile_id')
                             ->label('Curling.io Profile ID')
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
@@ -152,28 +176,28 @@ final class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(['name', 'first_name', 'last_name'])
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->searchable()
                     ->copyable(),
 
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('city')
+                TextColumn::make('city')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('province_state')
+                TextColumn::make('province_state')
                     ->label('Province')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('current_membership_status')
+                TextColumn::make('current_membership_status')
                     ->label('Membership')
                     ->badge()
                     ->formatStateUsing(fn (?MembershipStatus $state) => $state?->getLabel() ?? 'No Membership')
@@ -181,18 +205,18 @@ final class UserResource extends Resource
                     ->sortable()
                     ->visible(fn () => auth()->user()->can(Permission::VIEW_MEMBERSHIPS->value)),
 
-                Tables\Columns\IconColumn::make('email_verified_at')
+                IconColumn::make('email_verified_at')
                     ->boolean()
                     ->label('Verified')
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('curlingio_profile_id')
+                TextColumn::make('curlingio_profile_id')
                     ->label('Curling.io ID')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('roles.name')
+                TextColumn::make('roles.name')
                     ->label('Roles')
                     ->badge()
                     ->color('warning')
@@ -200,59 +224,59 @@ final class UserResource extends Resource
                     ->toggleable()
                     ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\Filter::make('verified')
+                Filter::make('verified')
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at')),
 
-                Tables\Filters\Filter::make('unverified')
+                Filter::make('unverified')
                     ->query(fn (Builder $query): Builder => $query->whereNull('email_verified_at')),
 
-                Tables\Filters\SelectFilter::make('current_membership_status')
+                SelectFilter::make('current_membership_status')
                     ->label('Membership Status')
                     ->options(MembershipStatus::class)
                     ->native(false)
                     ->visible(fn () => Auth::user()->can(Permission::VIEW_MEMBERSHIPS->value)),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                ViewAction::make(),
+                DeleteAction::make(),
                 Impersonate::make()
                     ->redirectTo(route('filament.admin.pages.dashboard'))
                     ->visible(fn () => auth()->user()->hasRole(RoleEnum::ADMIN->value)),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\Section::make('Account Information')
+        return $schema
+            ->components([
+                Section::make('Account Information')
                     ->schema([
-                        Infolists\Components\TextEntry::make('email')
+                        TextEntry::make('email')
                             ->copyable()
                             ->icon('heroicon-m-envelope'),
-                        Infolists\Components\IconEntry::make('email_verified_at')
+                        IconEntry::make('email_verified_at')
                             ->boolean()
                             ->label('Email Verified'),
-                        Infolists\Components\TextEntry::make('created_at')
+                        TextEntry::make('created_at')
                             ->dateTime()
                             ->label('Member Since'),
-                        Infolists\Components\TextEntry::make('curlingio_profile_id')
+                        TextEntry::make('curlingio_profile_id')
                             ->label('Curling.io Profile ID')
                             ->placeholder('Not linked')
                             ->copyable(),
-                        Infolists\Components\TextEntry::make('roles.name')
+                        TextEntry::make('roles.name')
                             ->label('Roles')
                             ->badge()
                             ->color('warning')
@@ -261,40 +285,40 @@ final class UserResource extends Resource
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Personal Information')
+                Section::make('Personal Information')
                     ->schema([
-                        Infolists\Components\TextEntry::make('name')
+                        TextEntry::make('name')
                             ->label('Full Name')
-                            ->size(Infolists\Components\TextEntry\TextEntrySize::Large)
+                            ->size(TextSize::Large)
                             ->weight('bold')
                             ->columnSpanFull(),
-                        Infolists\Components\TextEntry::make('first_name'),
-                        Infolists\Components\TextEntry::make('last_name'),
-                        Infolists\Components\TextEntry::make('middle_initial')
+                        TextEntry::make('first_name'),
+                        TextEntry::make('last_name'),
+                        TextEntry::make('middle_initial')
                             ->label('Middle Initial')
                             ->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('date_of_birth')
+                        TextEntry::make('date_of_birth')
                             ->date()
                             ->placeholder('Not provided'),
-                        Infolists\Components\TextEntry::make('gender')
+                        TextEntry::make('gender')
                             ->placeholder('Not specified'),
-                        Infolists\Components\IconEntry::make('show_contact_info')
+                        IconEntry::make('show_contact_info')
                             ->boolean()
                             ->label('Show Contact in Directory'),
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Contact Information')
+                Section::make('Contact Information')
                     ->schema([
-                        Infolists\Components\TextEntry::make('phone')
+                        TextEntry::make('phone')
                             ->icon('heroicon-m-phone')
                             ->copyable()
                             ->placeholder('Not provided'),
-                        Infolists\Components\TextEntry::make('secondary_phone')
+                        TextEntry::make('secondary_phone')
                             ->icon('heroicon-m-phone')
                             ->copyable()
                             ->placeholder('Not provided'),
-                        Infolists\Components\TextEntry::make('secondary_email')
+                        TextEntry::make('secondary_email')
                             ->icon('heroicon-m-envelope')
                             ->copyable()
                             ->placeholder('Not provided')
@@ -302,20 +326,20 @@ final class UserResource extends Resource
                     ])
                     ->columns(2),
 
-                Infolists\Components\Section::make('Address')
+                Section::make('Address')
                     ->schema([
-                        Infolists\Components\TextEntry::make('street_address')
+                        TextEntry::make('street_address')
                             ->icon('heroicon-m-map-pin')
                             ->placeholder('Not provided')
                             ->columnSpanFull(),
-                        Infolists\Components\TextEntry::make('unit')
+                        TextEntry::make('unit')
                             ->placeholder('N/A'),
-                        Infolists\Components\TextEntry::make('city')
+                        TextEntry::make('city')
                             ->placeholder('Not provided'),
-                        Infolists\Components\TextEntry::make('province_state')
+                        TextEntry::make('province_state')
                             ->label('Province/State')
                             ->placeholder('Not provided'),
-                        Infolists\Components\TextEntry::make('postal_zip_code')
+                        TextEntry::make('postal_zip_code')
                             ->label('Postal/Zip Code')
                             ->placeholder('Not provided'),
                     ])
@@ -323,13 +347,13 @@ final class UserResource extends Resource
                     ->collapsed()
                     ->collapsible(),
 
-                Infolists\Components\Section::make('Emergency Contact')
+                Section::make('Emergency Contact')
                     ->schema([
-                        Infolists\Components\TextEntry::make('emergency_contact_name')
+                        TextEntry::make('emergency_contact_name')
                             ->label('Name')
                             ->icon('heroicon-m-user')
                             ->placeholder('Not provided'),
-                        Infolists\Components\TextEntry::make('emergency_contact_phone')
+                        TextEntry::make('emergency_contact_phone')
                             ->label('Phone')
                             ->icon('heroicon-m-phone')
                             ->copyable()
@@ -339,43 +363,43 @@ final class UserResource extends Resource
                     ->collapsed()
                     ->collapsible(),
 
-                Infolists\Components\Section::make('Membership Information')
+                Section::make('Membership Information')
                     ->schema([
-                        Infolists\Components\TextEntry::make('current_membership_status')
+                        TextEntry::make('current_membership_status')
                             ->label('Current Status')
                             ->badge()
                             ->formatStateUsing(fn (?MembershipStatus $state) => $state?->getLabel() ?? 'No Membership')
                             ->color(fn (?MembershipStatus $state) => $state?->getColor() ?? 'gray'),
 
-                        Infolists\Components\RepeatableEntry::make('userProducts')
+                        RepeatableEntry::make('userProducts')
                             ->label('Products & Memberships')
                             ->schema([
-                                Infolists\Components\TextEntry::make('season.name')
+                                TextEntry::make('season.name')
                                     ->label('Season')
                                     ->badge()
                                     ->color('info'),
 
-                                Infolists\Components\TextEntry::make('product.name')
+                                TextEntry::make('product.name')
                                     ->label('Product')
                                     ->weight('bold'),
 
-                                Infolists\Components\TextEntry::make('product.product_type')
+                                TextEntry::make('product.product_type')
                                     ->label('Type')
                                     ->badge()
                                     ->formatStateUsing(fn ($state) => $state?->getLabel())
                                     ->color(fn ($state) => $state?->getColor()),
 
-                                Infolists\Components\TextEntry::make('status')
+                                TextEntry::make('status')
                                     ->label('Status')
                                     ->badge()
                                     ->formatStateUsing(fn ($state) => $state?->getLabel())
                                     ->color(fn ($state) => $state?->getColor()),
 
-                                Infolists\Components\TextEntry::make('assigned_at')
+                                TextEntry::make('assigned_at')
                                     ->label('Assigned')
                                     ->dateTime(),
 
-                                Infolists\Components\TextEntry::make('expires_at')
+                                TextEntry::make('expires_at')
                                     ->label('Expires')
                                     ->dateTime()
                                     ->placeholder('No expiry'),
@@ -385,13 +409,13 @@ final class UserResource extends Resource
                     ])
                     ->visible(fn (User $record) => auth()->user()->canViewMembershipStatus($record))
                     ->headerActions([
-                        Infolists\Components\Actions\Action::make('assign_product')
+                        Action::make('assign_product')
                             ->label('Assign Product')
                             ->icon('heroicon-o-plus-circle')
                             ->color('success')
                             ->visible(fn () => auth()->user()->can(Permission::MANAGE_MEMBERSHIPS->value))
-                            ->form([
-                                Forms\Components\Select::make('season_id')
+                            ->schema([
+                                Select::make('season_id')
                                     ->label('Season')
                                     ->options(Season::query()->pluck('name', 'id'))
                                     ->default(fn () => Season::query()->where('is_current', true)->first()?->id)
@@ -399,9 +423,9 @@ final class UserResource extends Resource
                                     ->live()
                                     ->searchable(),
 
-                                Forms\Components\Select::make('product_id')
+                                Select::make('product_id')
                                     ->label('Product')
-                                    ->options(function (Forms\Get $get) {
+                                    ->options(function (Get $get) {
                                         $seasonId = $get('season_id');
                                         if (! $seasonId) {
                                             return [];
@@ -415,14 +439,14 @@ final class UserResource extends Resource
                                     ->required()
                                     ->searchable(),
 
-                                Forms\Components\Select::make('status')
+                                Select::make('status')
                                     ->label('Status')
                                     ->options(MembershipStatus::class)
                                     ->default(MembershipStatus::ACTIVE)
                                     ->required()
                                     ->native(false),
 
-                                Forms\Components\DateTimePicker::make('expires_at')
+                                DateTimePicker::make('expires_at')
                                     ->label('Expiry Date (Optional)')
                                     ->native(false),
                             ])
@@ -435,7 +459,7 @@ final class UserResource extends Resource
                                     user: $record,
                                     product: $product,
                                     season: $season,
-                                    expiresAt: $data['expires_at'] ? \Carbon\Carbon::parse($data['expires_at']) : null,
+                                    expiresAt: $data['expires_at'] ? Carbon::parse($data['expires_at']) : null,
                                     status: MembershipStatus::from($data['status'])
                                 );
 
@@ -451,17 +475,17 @@ final class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SponsorsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-            'view' => Pages\ViewUser::route('/{record}'),
+            'index' => ListUsers::route('/'),
+            'create' => CreateUser::route('/create'),
+            'edit' => EditUser::route('/{record}/edit'),
+            'view' => ViewUser::route('/{record}'),
         ];
     }
 }

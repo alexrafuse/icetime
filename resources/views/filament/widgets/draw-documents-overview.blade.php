@@ -14,7 +14,7 @@
             @foreach ($days as $dayNumber => $dayName)
                 <div class="relative group">
                     <div @class([
-                        'rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 p-4 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10',
+                        'rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 p-4 shadow-xs ring-1 ring-gray-950/5 dark:ring-white/10',
                         'opacity-75' => ! isset($currentDraws[$dayNumber]),
                     ])>
                         <div class="flex items-center justify-between">

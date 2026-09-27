@@ -51,6 +51,28 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::MANAGE_RESOURCES,
         ]);
 
+        $boardMember = Role::create(['name' => 'board_member']);
+        $boardMember->givePermissionTo([
+            Permission::VIEW_BOARD_MEETINGS,
+            Permission::MANAGE_BOARD_MEETINGS,
+            Permission::VIEW_BOARD_MINUTES,
+            Permission::MANAGE_BOARD_MINUTES,
+            Permission::VIEW_SPONSORS,
+            Permission::MANAGE_SPONSORS,
+            Permission::VIEW_DONORS,
+            Permission::MANAGE_DONORS,
+            Permission::VIEW_CLUB_POLICIES,
+            Permission::MANAGE_CLUB_POLICIES,
+            Permission::VIEW_CLUB_BYLAWS,
+            Permission::MANAGE_CLUB_BYLAWS,
+            Permission::VIEW_SPARES,
+            Permission::VIEW_BOOKINGS,
+            Permission::VIEW_AREAS,
+            Permission::VIEW_MEMBERSHIPS,
+            Permission::VIEW_PRODUCTS,
+            Permission::VIEW_RESOURCES,
+        ]);
+
         $admin = Role::create(['name' => 'admin']);
         $admin->givePermissionTo(Permission::values());
 

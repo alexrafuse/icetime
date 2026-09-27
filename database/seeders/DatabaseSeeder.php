@@ -50,7 +50,10 @@ class DatabaseSeeder extends Seeder
             LeagueSeeder::class,
             SurveysSeeder::class,
             FormsSeeder::class,
-
+            SponsorshipLevelSeeder::class,
+            SponsorsSeeder::class,
+            DonorsSeeder::class,x
+            ClubPoliciesAndBylawsSeeder::class,
         ]);
     }
 }

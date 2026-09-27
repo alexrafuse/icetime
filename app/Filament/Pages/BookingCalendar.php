@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Vite;
 
 final class BookingCalendar extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
     protected static ?string $navigationLabel = 'Calendar';
 
@@ -26,11 +26,11 @@ final class BookingCalendar extends Page
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = 'Members Area';
+    protected static string|\UnitEnum|null $navigationGroup = 'Members Area';
 
     protected Collection $bookings;
 
-    protected static string $view = 'filament.pages.booking-calendar';
+    protected string $view = 'filament.pages.booking-calendar';
 
     public function mount(): void
     {

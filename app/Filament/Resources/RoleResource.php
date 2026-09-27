@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RoleResource\Pages;
-use Filament\Forms;
-use Filament\Forms\Form;
+use App\Filament\Resources\RoleResource\Pages\CreateRole;
+use App\Filament\Resources\RoleResource\Pages\EditRole;
+use App\Filament\Resources\RoleResource\Pages\ListRoles;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Spatie\Permission\Models\Role;
 
@@ -16,9 +24,9 @@ final class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static ?string $navigationGroup = 'Access Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'Admin';
 
     protected static ?int $navigationSort = 1;
 
@@ -27,25 +35,25 @@ final class RoleResource extends Resource
         return 'Roles 🔒';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\Select::make('guard_name')
+                        Select::make('guard_name')
                             ->options([
                                 'web' => 'Web',
                             ])
                             ->default('web')
                             ->required(),
 
-                        Forms\Components\Select::make('permissions')
+                        Select::make('permissions')
                             ->relationship('permissions', 'name')
                             ->multiple()
                             ->preload()
@@ -60,38 +68,38 @@ final class RoleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('permissions.name')
+                TextColumn::make('permissions.name')
                     ->badge()
                     ->color('primary')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('guard_name')
+                TextColumn::make('guard_name')
                     ->badge()
                     ->color('gray'),
 
-                Tables\Columns\TextColumn::make('users_count')
+                TextColumn::make('users_count')
                     ->label('Users')
                     ->counts('users')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -99,9 +107,9 @@ final class RoleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRoles::route('/'),
-            'create' => Pages\CreateRole::route('/create'),
-            'edit' => Pages\EditRole::route('/{record}/edit'),
+            'index' => ListRoles::route('/'),
+            'create' => CreateRole::route('/create'),
+            'edit' => EditRole::route('/{record}/edit'),
         ];
     }
 }

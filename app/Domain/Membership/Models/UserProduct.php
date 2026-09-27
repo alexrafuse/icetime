@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Membership\Models;
 
 use App\Domain\Membership\Enums\MembershipStatus;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -55,7 +56,7 @@ class UserProduct extends Pivot
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\Domain\User\Models\User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function product(): BelongsTo
@@ -101,7 +102,7 @@ class UserProduct extends Pivot
         return $query->where('season_id', $season->id);
     }
 
-    public function scopeForUser($query, \Domain\User\Models\User $user)
+    public function scopeForUser($query, User $user)
     {
         return $query->where('user_id', $user->id);
     }

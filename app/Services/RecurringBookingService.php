@@ -8,6 +8,7 @@ use App\Enums\FrequencyType;
 use Domain\Booking\Models\Booking;
 use Domain\Booking\Models\RecurringPattern;
 use Domain\Facility\Models\Area;
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -102,7 +103,7 @@ final class RecurringBookingService
 
                     // Ensure booking was created and has an ID
                     if (! $booking || ! $booking->id) {
-                        throw new \Exception('Failed to create booking');
+                        throw new Exception('Failed to create booking');
                     }
 
                     // Attach areas using sync instead of attach
@@ -111,7 +112,7 @@ final class RecurringBookingService
                     DB::commit();
 
                     return $booking;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     DB::rollBack();
                     Log::error('Failed to create subsequent booking', [
                         'error' => $e->getMessage(),
@@ -210,7 +211,7 @@ final class RecurringBookingService
                 $primaryBooking = $pattern->primaryBooking;
 
                 if (! $primaryBooking) {
-                    throw new \Exception('Primary booking not found');
+                    throw new Exception('Primary booking not found');
                 }
 
                 Log::debug('Primary booking found:', [
@@ -264,7 +265,7 @@ final class RecurringBookingService
                     'booking_ids' => $newBookings->pluck('id')->toArray(),
                 ]);
 
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error('Failed to regenerate bookings', [
                     'pattern_id' => $pattern->id,
                     'error' => $e->getMessage(),

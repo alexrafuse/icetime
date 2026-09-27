@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 final class DrawDocumentsOverview extends Widget
 {
-    protected static string $view = 'filament.widgets.draw-documents-overview';
+    protected string $view = 'filament.widgets.draw-documents-overview';
 
     protected int|string|array $columnSpan = 'full';
 
