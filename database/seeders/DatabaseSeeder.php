@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             FormsSeeder::class,
             SponsorshipLevelSeeder::class,
             SponsorsSeeder::class,
-            DonorsSeeder::class,x
+            DonorsSeeder::class,
             ClubPoliciesAndBylawsSeeder::class,
         ]);
     }
