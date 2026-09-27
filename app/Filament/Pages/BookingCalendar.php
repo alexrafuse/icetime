@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
-use App\Enums\EventType;
 use App\Http\Resources\FullCalArea;
 use App\Http\Resources\FullCalBooking;
 use Domain\Booking\Models\Booking;
@@ -89,16 +88,6 @@ final class BookingCalendar extends Page
     public static function shouldRegisterNavigation(): bool
     {
         return true;
-    }
-
-    private function getEventColor(EventType $eventType): string
-    {
-        return match ($eventType) {
-            EventType::PRIVATE => '#4ade80',
-            EventType::LEAGUE => '#3b82f6',
-            EventType::TOURNAMENT => '#f97316',
-            EventType::DROP_IN => '#06b6d4',
-        };
     }
 
     protected function getViewData(): array

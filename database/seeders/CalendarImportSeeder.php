@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use Domain\Booking\Models\Booking;
 use Domain\Facility\Models\Area;
 use Domain\User\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -42,7 +43,7 @@ class CalendarImportSeeder extends Seeder
         }
 
         // Get available areas (ice sheets)
-        $sheets = Area::where('name', 'like', 'Sheet %')->get();
+        $sheets = Area::iceSheets()->get();
         if ($sheets->isEmpty()) {
             $this->command->error('No ice sheets found. Please run AreaAndAvailabilitySeeder first.');
 
@@ -150,7 +151,7 @@ class CalendarImportSeeder extends Seeder
     /**
      * Determine which areas/sheets to assign based on sheet count or title hints
      *
-     * @param  \Illuminate\Database\Eloquent\Collection  $sheets
+     * @param  Collection  $sheets
      */
     private function determineAreas($sheets, ?string $sheetCount, string $title): array
     {

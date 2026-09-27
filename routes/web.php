@@ -2,6 +2,7 @@
 
 use App\Enums\Permission;
 use App\Filament\Pages\Auth\SetPassword;
+use App\Http\Controllers\IceCalendarEmbedController;
 use App\Services\BookingValidationService;
 use Domain\Booking\Models\Booking;
 use Domain\Facility\Models\Area;
@@ -28,3 +29,6 @@ use Illuminate\Support\Facades\Route;
 
 // Password setup route (magic link)
 Route::get('/admin/set-password', SetPassword::class)->name('filament.admin.pages.set-password');
+
+// Public, iframe-embeddable ice rental calendar for the club website
+Route::get('/embed/ice-calendar', IceCalendarEmbedController::class)->name('embed.ice-calendar');

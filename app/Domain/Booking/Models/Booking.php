@@ -11,6 +11,7 @@ use Domain\Facility\Models\Area;
 use Domain\Payment\Models\Payment;
 use Domain\Shared\Models\Notification;
 use Domain\User\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -62,5 +63,23 @@ class Booking extends Model
     public function recurringPattern(): BelongsTo
     {
         return $this->belongsTo(RecurringPattern::class);
+    }
+
+    public function iceSheets(): BelongsToMany
+    {
+        return $this->areas()->iceSheets()->active();
+    }
+
+    public function scopeOnIceSheets(Builder $query): Builder
+    {
+        return $query->whereHas('iceSheets');
+    }
+
+    /**
+     * Private rental titles often name the renter, so the public calendar hides them.
+     */
+    public function publicTitle(): string
+    {
+        return $this->event_type === EventType::PRIVATE ? 'Private rental' : $this->title;
     }
 }

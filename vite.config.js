@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/calendar.js',
+                'resources/js/embed-calendar.js',
                 'resources/css/filament/admin/theme.css',
             ],
             refresh: true,

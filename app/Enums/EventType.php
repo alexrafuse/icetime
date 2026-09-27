@@ -21,6 +21,16 @@ enum EventType: string
         };
     }
 
+    public function hexColor(): string
+    {
+        return match ($this) {
+            self::PRIVATE => '#4ade80',
+            self::LEAGUE => '#3b82f6',
+            self::TOURNAMENT => '#f97316',
+            self::DROP_IN => '#06b6d4',
+        };
+    }
+
     public function getLabel(): string
     {
         return match ($this) {

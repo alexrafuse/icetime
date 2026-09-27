@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\PublicBylawController;
+use App\Http\Controllers\Api\V1\PublicIceCalendarController;
 use App\Http\Controllers\Api\V1\PublicPolicyController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,4 +11,8 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/bylaws', [PublicBylawController::class, 'index']);
     Route::get('/bylaws/{slug}', [PublicBylawController::class, 'show']);
+
+    Route::get('/ice-calendar', PublicIceCalendarController::class)
+        ->middleware('throttle:60,1')
+        ->name('api.ice-calendar');
 });

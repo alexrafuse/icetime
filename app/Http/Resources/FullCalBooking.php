@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Enums\EventType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -17,12 +16,7 @@ final class FullCalBooking extends JsonResource
         $startTime = Carbon::parse($this->start_time)->format('H:i:s');
         $endTime = Carbon::parse($this->end_time)->format('H:i:s');
 
-        $backgroundColor = match ($this->event_type) {
-            EventType::PRIVATE => '#4ade80',
-            EventType::LEAGUE => '#3b82f6',
-            EventType::TOURNAMENT => '#f97316',
-            EventType::DROP_IN => '#06b6d4',
-        };
+        $backgroundColor = $this->event_type->hexColor();
 
         return [
             'id' => $this->id,

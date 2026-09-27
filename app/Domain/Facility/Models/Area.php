@@ -6,6 +6,7 @@ namespace Domain\Facility\Models;
 
 use Database\Factories\AreaFactory;
 use Domain\Booking\Models\Booking;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,8 @@ class Area extends Model
     {
         return AreaFactory::new();
     }
+
+    public const ICE_SHEET_NAME_PREFIX = 'Sheet ';
 
     protected $fillable = [
         'name',
@@ -42,5 +45,15 @@ class Area extends Model
     public function availabilities(): HasMany
     {
         return $this->hasMany(Availability::class);
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeIceSheets(Builder $query): Builder
+    {
+        return $query->where('name', 'like', self::ICE_SHEET_NAME_PREFIX.'%');
     }
 }
