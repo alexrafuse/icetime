@@ -1,5 +1,5 @@
 <x-filament-panels::page.simple>
-    <x-filament-panels::form wire:submit="setPassword">
+    <form wire:submit="setPassword" class="grid gap-y-6">
         {{ $this->form }}
 
         <x-filament::button
@@ -8,5 +8,5 @@
         >
             Set Password
         </x-filament::button>
-    </x-filament-panels::form>
+    </form>
 </x-filament-panels::page.simple>
