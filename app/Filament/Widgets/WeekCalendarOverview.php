@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Enums\EventType;
 use Carbon\Carbon;
 use Domain\Booking\Models\Booking;
 use Filament\Widgets\Widget;
@@ -91,18 +90,8 @@ final class WeekCalendarOverview extends Widget
                 'areas' => $booking->areas->pluck('name')->join(', '),
                 'user_name' => $booking->user->name ?? 'N/A',
                 'event_type' => $booking->event_type,
-                'color' => $this->getEventColor($booking->event_type),
+                'color' => $booking->event_type->hexColor(),
             ];
         })->toArray();
-    }
-
-    private function getEventColor(EventType $eventType): string
-    {
-        return match ($eventType) {
-            EventType::PRIVATE => '#4ade80',
-            EventType::LEAGUE => '#3b82f6',
-            EventType::TOURNAMENT => '#f97316',
-            EventType::DROP_IN => '#a855f7',
-        };
     }
 }

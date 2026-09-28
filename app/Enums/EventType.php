@@ -10,6 +10,7 @@ enum EventType: string
     case LEAGUE = 'league';
     case TOURNAMENT = 'tournament';
     case DROP_IN = 'drop_in';
+    case LEARN_TO_CURL = 'learn_to_curl';
 
     public function getColor(): string
     {
@@ -18,6 +19,7 @@ enum EventType: string
             self::LEAGUE => 'success',
             self::TOURNAMENT => 'warning',
             self::DROP_IN => 'info',
+            self::LEARN_TO_CURL => 'primary',
         };
     }
 
@@ -28,6 +30,7 @@ enum EventType: string
             self::LEAGUE => '#3b82f6',
             self::TOURNAMENT => '#f97316',
             self::DROP_IN => '#06b6d4',
+            self::LEARN_TO_CURL => '#a855f7',
         };
     }
 
@@ -38,6 +41,7 @@ enum EventType: string
             self::LEAGUE => 'League',
             self::TOURNAMENT => 'Tournament',
             self::DROP_IN => 'Drop-In',
+            self::LEARN_TO_CURL => 'Learn to Curl',
         };
     }
 }

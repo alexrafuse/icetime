@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\EventType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -26,18 +25,8 @@ class BookingResource extends JsonResource
             'title' => $this->title ?? ' no title',
             'start' => Carbon::parse($date.' '.$startTime)->format('Y-m-d\TH:i:s'),
             'end' => Carbon::parse($date.' '.$endTime)->format('Y-m-d\TH:i:s'),
-            'backgroundColor' => match ($this->event_type) {
-                EventType::PRIVATE => '#4ade80',
-                EventType::LEAGUE => '#3b82f6',
-                EventType::TOURNAMENT => '#f97316',
-                EventType::DROP_IN => '#06b6d4',
-            },
-            'borderColor' => match ($this->event_type) {
-                EventType::PRIVATE => '#4ade80',
-                EventType::LEAGUE => '#3b82f6',
-                EventType::TOURNAMENT => '#f97316',
-                EventType::DROP_IN => '#06b6d4',
-            },
+            'backgroundColor' => $this->event_type->hexColor(),
+            'borderColor' => $this->event_type->hexColor(),
             'areas' => $this->whenLoaded('areas', function () {
                 return $this->areas->map(function ($area) {
                     return [

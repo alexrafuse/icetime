@@ -63,7 +63,7 @@ class LeagueSeeder extends Seeder
             'start_time' => '18:00',
             'end_time' => '19:45',
             'areas' => 'all',
-            'event_type' => EventType::PRIVATE,
+            'event_type' => EventType::LEARN_TO_CURL,
         ],
         [
             'title' => 'Monday Night Drop-In Curling',
